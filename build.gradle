@@ -52,6 +52,17 @@ task('api-jar', type: Jar, dependsOn: ['classes']) {
 
 task('clear-portal', type: Delete) {
     group 'Virtual1'
-    println file("${tomcatDir}/../deploy/${apiJarFileName}.jar")
-    delete "${tomcatDir}/../deploy/${apiJarFileName}.jar", "${tomcatDir}/webapps/${portletWarFileName}", "${tomcatDir}/work/Catalina"
+    delete files("${tomcatDir}/../deploy/${apiJarFileName}.jar",
+            "${tomcatDir}/webapps/${portletWarFileName}",
+            "${tomcatDir}/work/Catalina)")
+
+    doLast {
+        fileTree("${tomcatDir}/temp").visit { f ->
+            if (!f.invalid()) {
+                println f;
+                f.delete();
+            }
+        }
+    }
+
 }
