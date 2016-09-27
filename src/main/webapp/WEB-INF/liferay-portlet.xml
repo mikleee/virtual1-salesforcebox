@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<!DOCTYPE liferay-portlet-app PUBLIC "-//Liferay//DTD Portlet Application 6.2.0//EN" "http://www.liferay.com/dtd/liferay-portlet-app_6_2_0.dtd">
+
+<liferay-portlet-app>
+
+    <portlet>
+        <portlet-name>salesforce-box</portlet-name>
+        <icon>/img/icon.png</icon>
+        <friendly-url-mapper-class>com.liferay.portal.kernel.portlet.DefaultFriendlyURLMapper</friendly-url-mapper-class>
+        <friendly-url-mapping>salesforce-box</friendly-url-mapping>
+        <friendly-url-routes>/routes/salesforce-box-routes.xml</friendly-url-routes>
+        <instanceable>false</instanceable>
+    </portlet>
+
+</liferay-portlet-app>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/virtual1-salesforcebox.iml" filepath="$PROJECT_DIR$/.idea/modules/virtual1-salesforcebox.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/virtual1-salesforcebox_main.iml" filepath="$PROJECT_DIR$/.idea/modules/virtual1-salesforcebox_main.iml" group="virtual1-salesforcebox" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/virtual1-salesforcebox_test.iml" filepath="$PROJECT_DIR$/.idea/modules/virtual1-salesforcebox_test.iml" group="virtual1-salesforcebox" />
+    </modules>
+  </component>
+</project>
