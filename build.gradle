@@ -4,7 +4,9 @@ version '1.0.0.0'
 ext {
     springVersion = "3.0.7.RELEASE"
     liferayVersion = "6.2.3"
-    liferayDir = 'D:\\jsoft\\liferay-6.2-ga3'
+    tomcatDir = 'D:\\jsoft\\liferay-6.2-ga3\\tomcat-7.0.42'
+    portletWarFileName = 'virtual1-salesforcebox-portlet'
+    apiJarFileName = 'virtual1-salesforcebox-api'
 }
 
 apply plugin: 'java'
@@ -34,15 +36,22 @@ dependencies {
 
 task('deploy', type: War) {
     group 'Virtual1'
-    archiveName 'salesforcebox-portlet.war'
-    destinationDir file("${liferayDir}/deploy")
+    archiveName "${portletWarFileName}.war"
+    destinationDir file("${tomcatDir}/../deploy")
     classpath files('/src/main/resources')
 }
 
-task('apiJar', type: Jar, dependsOn: ['classes']) {
+task('api-jar', type: Jar, dependsOn: ['classes']) {
     group 'Virtual1'
     from('/build/classes/main') {
         exclude '**/service/'
         exclude '**/controller/'
     }
+    archiveName "${apiJarFileName}.jar"
+}
+
+task('clear-portal', type: Delete) {
+    group 'Virtual1'
+    println file("${tomcatDir}/../deploy/${apiJarFileName}.jar")
+    delete "${tomcatDir}/../deploy/${apiJarFileName}.jar", "${tomcatDir}/webapps/${portletWarFileName}", "${tomcatDir}/work/Catalina"
 }

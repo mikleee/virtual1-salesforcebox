@@ -1,11 +1,11 @@
 <component name="ArtifactManager">
-  <artifact type="exploded-war" name="Gradle : com.virtual1 : salesforcebox-portlet.war (exploded)">
-    <output-path>$PROJECT_DIR$/out/artifacts/virtual1-salesforcebox/exploded/salesforcebox-portlet.war</output-path>
+  <artifact type="exploded-war" name="Gradle : com.virtual1 : virtual1-salesforcebox-portlet.war (exploded)">
+    <output-path>$PROJECT_DIR$/out/artifacts/virtual1-salesforcebox/exploded/virtual1-salesforcebox-portlet.war</output-path>
     <properties id="gradle-properties">
       <options external-project-path="$PROJECT_DIR$" />
     </properties>
     <root id="root">
-      <element id="javaee-facet-resources" facet="virtual1-salesforcebox_main/web/Web Gradle : salesforcebox-portlet.war" />
+      <element id="javaee-facet-resources" facet="virtual1-salesforcebox_main/web/Web Gradle : virtual1-salesforcebox-portlet.war" />
       <element id="directory" name="WEB-INF">
         <element id="directory" name="classes">
           <element id="module-output" name="virtual1-salesforcebox_main" />
@@ -13,7 +13,7 @@
         </element>
       </element>
       <element id="directory" name="META-INF">
-        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/virtual1-salesforcebox/exploded/salesforcebox-portlet.war/META-INF/MANIFEST.MF" />
+        <element id="file-copy" path="$PROJECT_DIR$/out/artifacts/virtual1-salesforcebox/exploded/virtual1-salesforcebox-portlet.war/META-INF/MANIFEST.MF" />
       </element>
     </root>
   </artifact>
