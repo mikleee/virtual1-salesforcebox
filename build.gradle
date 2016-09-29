@@ -3,8 +3,8 @@ version '1.0.0.0'
 
 ext {
     springVersion = "3.0.7.RELEASE"
-    liferayVersion = "6.2.3"
-    tomcatDir = 'D:\\jsoft\\liferay-6.2-ga3\\tomcat-7.0.42'
+    liferayVersion = "6.2.0-ga1"
+    tomcatDir = '/home/misha/Work/Liferay/upshot-62/tomcat-7.0.42'
     portletWarFileName = 'virtual1-salesforcebox-portlet'
     apiJarFileName = 'virtual1-salesforcebox-api'
 }
@@ -19,8 +19,13 @@ repositories {
 }
 
 dependencies {
+    compile fileTree(dir: 'lib', include: '*.jar')
 
-    providedCompile group: 'log4j', name: 'log4j', version: '1.2.17'
+    compile group: 'log4j', name: 'log4j', version: '1.2.17'
+    compile group: 'commons-lang', name: 'commons-lang', version: '2.6'
+
+//    providedCompile group: 'log4j', name: 'log4j', version: '1.2.17'
+//    providedCompile group: 'commons-lang', name: 'commons-lang', version: '2.6'
     providedCompile group: 'org.springframework', name: 'spring-webmvc-portlet', version: springVersion
     providedCompile group: 'org.springframework', name: 'spring-aop', version: springVersion
     providedCompile group: 'org.springframework', name: 'spring-orm', version: springVersion

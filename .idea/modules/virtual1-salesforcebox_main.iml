@@ -31,13 +31,32 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../lib/force-partner-29.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../lib/force-wsc-29.0.0.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" name="Gradle: log4j:log4j:1.2.17" level="project" />
+    <orderEntry type="library" name="Gradle: commons-lang:commons-lang:2.6" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.springframework:spring-webmvc-portlet:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.springframework:spring-aop:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.springframework:spring-orm:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: javax.portlet:portlet-api:2.0" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.liferay.portal:portal-impl:6.2.3" level="project" />
-    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.liferay.portal:portal-service:6.2.3" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.liferay.portal:portal-impl:6.2.0-ga1" level="project" />
+    <orderEntry type="library" scope="PROVIDED" name="Gradle: com.liferay.portal:portal-service:6.2.0-ga1" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.springframework:spring-asm:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.springframework:spring-beans:3.0.7.RELEASE" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.springframework:spring-context:3.0.7.RELEASE" level="project" />

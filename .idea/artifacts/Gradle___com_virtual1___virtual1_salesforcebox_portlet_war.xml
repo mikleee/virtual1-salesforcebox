@@ -10,6 +10,12 @@
         <element id="directory" name="classes">
           <element id="module-output" name="virtual1-salesforcebox_main" />
           <element id="dir-copy" path="$PROJECT_DIR$/build/resources/main" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/force-partner-29.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/force-wsc-29.0.0.jar" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Gradle: log4j:log4j:1.2.17" />
+          <element id="library" level="project" name="Gradle: commons-lang:commons-lang:2.6" />
         </element>
       </element>
       <element id="directory" name="META-INF">
