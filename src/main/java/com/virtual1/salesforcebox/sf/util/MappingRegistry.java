@@ -4,6 +4,7 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import com.virtual1.salesforcebox.sf.model.Account;
+import com.virtual1.salesforcebox.sf.model.Contact;
 import com.virtual1.salesforcebox.sf.model.EndCustomer;
 import com.virtual1.salesforcebox.sf.model.User;
 import org.apache.commons.lang.StringUtils;
@@ -22,8 +23,9 @@ public class MappingRegistry {
 
     private final static List<Class<?>> CONTEXT = new ArrayList<Class<?>>() {{
         add(Account.class);
-        add(User.class);
+        add(Contact.class);
         add(EndCustomer.class);
+        add(User.class);
     }};
 
     private static Map<Class<?>, Map<Field, SfAccessor>> accessors = new HashMap<>();
@@ -86,8 +88,22 @@ public class MappingRegistry {
     private static String buildBaseQuery(Class<?> type) {
         String table = type.getAnnotation(SalesforceObject.class).name();
         String fieldSequence = getFieldSequence(type);
+        String staticClause = type.getAnnotation(SalesforceObject.class).staticClause();
 
-        return String.format("SELECT %s FROM %s ", fieldSequence, table);
+        StringBuilder result = new StringBuilder()
+                .append("SELECT ")
+                .append(fieldSequence)
+                .append(" FROM ")
+                .append(table);
+
+        if (StringUtils.isNotBlank(staticClause)) {
+            result
+                    .append(" WHERE ")
+                    .append(staticClause)
+                    .append(" ");
+        }
+
+        return result.toString();
     }
 
     private static String getFieldSequence(Class<?> type) {

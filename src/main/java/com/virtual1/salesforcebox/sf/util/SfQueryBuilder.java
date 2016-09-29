@@ -1,7 +1,7 @@
 package com.virtual1.salesforcebox.sf.util;
 
-import com.virtual1.salesforcebox.sf.SalesforceException;
 import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
+import org.apache.commons.lang.StringUtils;
 
 /**
  * @author Mikhail Tkachenko created on 29.09.16 12:50
@@ -21,10 +21,10 @@ public class SfQueryBuilder {
     public SfQueryBuilder where(String where) {
         if (isWithoutCondition()) {
             query.append(" WHERE ").append(where);
+            return this;
         } else {
-            throw new SalesforceException("Query is invalid: " + query.append(" WHERE ").append(where));
+            return and(where);
         }
-        return this;
     }
 
     public SfQueryBuilder where(String field, String value) {
@@ -53,6 +53,22 @@ public class SfQueryBuilder {
 
     public SfQueryBuilder or(String field, String value) {
         return or(String.format("%s='%s'", field, value));
+    }
+
+    public SfQueryBuilder andIncludes(String field, String... values) {
+        if (isWithoutCondition()) {
+            query.append(" WHERE ");
+        }
+        query.append(" AND ").append(field).append(" includes ").append("(").append(StringUtils.join(values, ",")).append(") ");
+        return this;
+    }
+
+    public SfQueryBuilder orIncludes(String field, String... values) {
+        if (isWithoutCondition()) {
+            query.append(" WHERE ");
+        }
+        query.append(" OR ").append(field).append(" includes ").append("(").append(StringUtils.join(values, ",")).append(") ");
+        return this;
     }
 
     public String byId(String id) {

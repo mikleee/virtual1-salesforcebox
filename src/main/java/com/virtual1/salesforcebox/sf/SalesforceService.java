@@ -3,52 +3,14 @@ package com.virtual1.salesforcebox.sf;
 import com.sforce.soap.partner.Field;
 import com.sforce.soap.partner.PicklistEntry;
 import com.sforce.soap.partner.sobject.SObject;
-import com.virtual1.salesforcebox.sf.model.Access;
-import com.virtual1.salesforcebox.sf.model.Account;
-import com.virtual1.salesforcebox.sf.model.AccountPbt;
-import com.virtual1.salesforcebox.sf.model.AnalogueLine;
-import com.virtual1.salesforcebox.sf.model.Asset;
-import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
-import com.virtual1.salesforcebox.sf.model.Case;
-import com.virtual1.salesforcebox.sf.model.CaseComment;
-import com.virtual1.salesforcebox.sf.model.CaseContactRole;
-import com.virtual1.salesforcebox.sf.model.ChargeType;
-import com.virtual1.salesforcebox.sf.model.CloudProvisioning;
-import com.virtual1.salesforcebox.sf.model.Component;
-import com.virtual1.salesforcebox.sf.model.Contact;
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.Exchange;
-import com.virtual1.salesforcebox.sf.model.FeedItem;
-import com.virtual1.salesforcebox.sf.model.InnerVLAN;
-import com.virtual1.salesforcebox.sf.model.NNI;
-import com.virtual1.salesforcebox.sf.model.NetOpsCase;
-import com.virtual1.salesforcebox.sf.model.Opportunity;
-import com.virtual1.salesforcebox.sf.model.PartnerConnectWrapper;
-import com.virtual1.salesforcebox.sf.model.PricingEntry;
-import com.virtual1.salesforcebox.sf.model.Project;
-import com.virtual1.salesforcebox.sf.model.Quote;
-import com.virtual1.salesforcebox.sf.model.Radius;
-import com.virtual1.salesforcebox.sf.model.RecordType;
-import com.virtual1.salesforcebox.sf.model.RetailPortalLead;
-import com.virtual1.salesforcebox.sf.model.SFIPJustDevice;
-import com.virtual1.salesforcebox.sf.model.SfAttachment;
-import com.virtual1.salesforcebox.sf.model.SfEmail;
-import com.virtual1.salesforcebox.sf.model.SfIpJust;
-import com.virtual1.salesforcebox.sf.model.Site;
-import com.virtual1.salesforcebox.sf.model.User;
-import com.virtual1.salesforcebox.sf.model.VPN;
-import com.virtual1.salesforcebox.sf.model.Virtual1DatacentrePostcode;
+import com.virtual1.salesforcebox.sf.model.*;
 import com.virtual1.salesforcebox.sf.util.SfObjectConverter;
 import com.virtual1.salesforcebox.sf.util.SfQueryBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.virtual1.salesforcebox.sf.QueryTemplates.*;
 import static java.lang.String.format;
@@ -84,43 +46,84 @@ public class SalesforceService implements SalesforceApi {
         return map;
     }
 
+
+    // ------------------------ accounts ------------------------
+
+
+    public Account getAccount(String id) {
+        return findById(Account.class, id);
+    }
+
+    public Account getAccountByName(String name) {
+        String query = SfQueryBuilder.queryFor(Account.class).byField("Name", name);
+        return retrieveOne(query, Account.class);
+    }
+
+    public Contact getContact(String id) {
+        return findById(Contact.class, id);
+    }
+
+    public Contact getContactByEmail(String accountId, String email) {
+        String query = SfQueryBuilder.queryFor(EndCustomer.class)
+                .where("AccountId", accountId)
+                .and("Email", email)
+                .toString();
+        return retrieveOne(query, Contact.class);
+    }
+
+    public List<Contact> getContactsByRole(String accountId, String role) {
+        String query = SfQueryBuilder.queryFor(Contact.class)
+                .where("AccountId", accountId)
+                .andIncludes("Role__c", role)
+                .toString();
+        return retrieveAll(query, Contact.class);
+    }
+
+    public List<Contact> getContactsByRoleOld(String accountId, String role) {
+        String query = format("SELECT %s FROM Contact WHERE Account.Id = '%s' and Left_the_Company__c = false", CONTACT_FIELDS, accountId);
+
+        if (StringUtils.isNotBlank(role)) {
+            query += " and Role__c includes ('" + escapeSOQL(role) + "')";
+        }
+        query += " ORDER BY Name ASC";
+
+        List<Contact> result = new ArrayList<>();
+        for (SObject sObject : retrieveAll(query)) {
+            Contact contact = converter.convertContact(sObject);
+            result.add(contact);
+        }
+        return result;
+    }
+
+    public Contact getContactByEmailOld(String accountId, String email) {
+        String query = format("SELECT %s FROM Contact WHERE Account.Id = '%s' and Left_the_Company__c = false and Email= '%s'", CONTACT_FIELDS, accountId, escapeSOQL(email));
+        return retrieveContact(query);
+    }
+
+    public Contact getContactByIdOld(String contactId) {
+        String query = format("SELECT %s FROM Contact WHERE Id = '%s'", CONTACT_FIELDS, contactId);
+        return retrieveContact(query);
+    }
+
+    public EndCustomer getEndCustomer(String id) {
+        return findById(EndCustomer.class, id);
+    }
+
+    public EndCustomer getEndCustomerByName(String accountId, String name) {
+        String query = SfQueryBuilder.queryFor(EndCustomer.class)
+                .where("Account_Name__c", accountId)
+                .and("Name", name)
+                .toString();
+        return retrieveOne(query, EndCustomer.class);
+    }
+
     public void testConnection() {
         String queryString = "SELECT count() FROM Account";
         dataSource.retrieveAll(queryString);
     }
 
-
-    // ------------------------ accounts ------------------------
-
-    public Account getAccountOld(String id) {
-        String query = format("SELECT %s FROM Account WHERE Id = '%s'", ACCOUNT_FIELDS, id);
-        return retrieveAccount(query);
-    }
-
-    public Account getAccountByNameOld(String name) {
-        String query = format("SELECT %s FROM Account WHERE Name = '%s'", ACCOUNT_FIELDS, name);
-        return retrieveAccount(query);
-    }
-
-    public Account getAccount(String id) {
-        String query = SfQueryBuilder.queryFor(Account.class).byId(id);
-        return retrieveOne(query, Account.class);
-    }
-
-    public Account getAccountByName(String name) {
-        String query = SfQueryBuilder.queryFor(Account.class).byField("Name", name);
-        return retrieveAccount(query);
-    }
-
     public User getUser(String id) {
-        String query = SfQueryBuilder.queryFor(User.class).byId(id);
-        return retrieveOne(query, User.class);
-    }
-
-
-    private Account retrieveAccount(String query) {
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertAccount(sObject);
+        return findById(User.class, id);
     }
 
     public AccountPbt getAccountPBT(String accountId) {
@@ -473,31 +476,6 @@ public class SalesforceService implements SalesforceApi {
 
     // ------------------------ contacts ------------------------
 
-    public List<Contact> getContactsByRole(String accountId, String role) {
-        String query = format("SELECT %s FROM Contact WHERE Account.Id = '%s' and Left_the_Company__c = false", CONTACT_FIELDS, accountId);
-
-        if (StringUtils.isNotBlank(role)) {
-            query += " and Role__c includes ('" + escapeSOQL(role) + "')";
-        }
-        query += " ORDER BY Name ASC";
-
-        List<Contact> result = new ArrayList<>();
-        for (SObject sObject : retrieveAll(query)) {
-            Contact contact = converter.convertContact(sObject);
-            result.add(contact);
-        }
-        return result;
-    }
-
-    public Contact getContactByEmail(String accountId, String email) {
-        String query = format("SELECT %s FROM Contact WHERE Account.Id = '%s' and Left_the_Company__c = false and Email= '%s'", CONTACT_FIELDS, accountId, escapeSOQL(email));
-        return retrieveContact(query);
-    }
-
-    public Contact getContactById(String contactId) {
-        String query = format("SELECT %s FROM Contact WHERE Id = '%s'", CONTACT_FIELDS, contactId);
-        return retrieveContact(query);
-    }
 
     private Contact retrieveContact(String query) {
         SObject sObject = retrieveOne(query);
@@ -518,34 +496,6 @@ public class SalesforceService implements SalesforceApi {
 
 
     // ------------------------ end customer ------------------------
-
-    public EndCustomer getEndCustomer(String id) {
-        String query = SfQueryBuilder.queryFor(EndCustomer.class).byId(id);
-        return retrieveOne(query, EndCustomer.class);
-    }
-
-    public EndCustomer getEndCustomerByName(String accountId, String name) {
-        String query = SfQueryBuilder.queryFor(EndCustomer.class)
-                .where("Account_Name__c", accountId)
-                .and("Name", name)
-                .toString();
-        return retrieveOne(query, EndCustomer.class);
-    }
-
-    public EndCustomer getEndCustomerOld(String endCustomerId) {
-        String query = format("SELECT %s FROM End_Customer__c  WHERE Id = '%s'", END_CUSTOMER_FIELDS, endCustomerId);
-        return retrieveEndCustomer(query);
-    }
-
-    public EndCustomer getEndCustomerByNameOld(String accountId, String name) {
-        String query = format("SELECT %s FROM End_Customer__c  WHERE Account_Name__c = '%s' and Name = '%s'", END_CUSTOMER_FIELDS, accountId, name);
-        return retrieveEndCustomer(query);
-    }
-
-    private EndCustomer retrieveEndCustomer(String query) {
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertEndCustomer(sObject);
-    }
 
 
     public List<EndCustomer> getEndCustomers(String accountId) {
@@ -1131,6 +1081,12 @@ public class SalesforceService implements SalesforceApi {
     private SObject retrieveOne(String query) {
         List<SObject> list = retrieveAll(query);
         return list.isEmpty() ? null : list.get(0);
+    }
+
+
+    private <T extends BaseSalesforceObject> T findById(Class<T> type, String id) {
+        String query = SfQueryBuilder.queryFor(type).byId(id);
+        return retrieveOne(query, type);
     }
 
     private <T extends BaseSalesforceObject> List<T> retrieveAll(String query, Class<T> type) {

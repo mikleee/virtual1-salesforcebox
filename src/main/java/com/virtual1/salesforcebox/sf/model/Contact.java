@@ -1,122 +1,134 @@
 package com.virtual1.salesforcebox.sf.model;
 
+import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 import org.apache.commons.lang.StringUtils;
 
+@SalesforceObject(name = "Contact", staticClause = "Left_the_Company__c = false")
 public class Contact extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-    private String accountId;
-    private String telephone;
-    private String email;
+    @SalesforceField(name = "Name")
+    private String name;
+    @SalesforceField(name = "FirstName")
     private String firstName;
+    @SalesforceField(name = "LastName")
     private String lastName;
-    private String jobTitle; //Title
+    @SalesforceField(name = "Phone")
+    private String telephone;
+    @SalesforceField(name = "Email")
+    private String email;
+    @SalesforceField(name = "Title")
+    private String jobTitle;
+    @SalesforceField(name = "Role__c")
     private String roles;
+    @SalesforceField(name = "X1Portal_User__c")
+    private Boolean x1PortalUSer = true;
+    @SalesforceField(name = "HasOptedOutOfEmail")
+    private Boolean hasOptedOutOfEmail = false;
+    @SalesforceField(name = "DoNotCall")
+    private Boolean doNotCall = false;
+    @SalesforceField(name = "Department")
+    private String department = StringUtils.EMPTY;
+    @SalesforceParentId
+    @SalesforceField(name = "AccountId")
+    private String accountId;
 
-	private Boolean x1PortalUSer = true; //X1Portal_User__c
-	private Boolean hasOptedOutOfEmail = false; //HasOptedOutOfEmail
-	private Boolean doNotCall = false; //DoNotCall
-	private String department = StringUtils.EMPTY; //Department
 
-    /**
-     * @return the telephone
-     */
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
     public String getTelephone() {
         return telephone;
     }
 
-    /**
-     * @param telephone the telephone to set
-     */
     public void setTelephone(String telephone) {
         this.telephone = telephone;
     }
 
-    /**
-     * @return the email
-     */
     public String getEmail() {
         return email;
     }
 
-    /**
-     * @param email the email to set
-     */
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public String getFirstName() {
-		return firstName;
-	}
+    public String getJobTitle() {
+        return jobTitle;
+    }
 
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
-	}
+    public void setJobTitle(String jobTitle) {
+        this.jobTitle = jobTitle;
+    }
 
-	public String getLastName() {
-		return lastName;
-	}
+    public String getRoles() {
+        return roles;
+    }
 
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
-	}
-	
-	public String getAccountId() {
-		return accountId;
-	}
+    public void setRoles(String roles) {
+        this.roles = roles;
+    }
 
-	public void setAccountId(String accountId) {
-		this.accountId = accountId;
-	}
+    public Boolean getX1PortalUSer() {
+        return x1PortalUSer;
+    }
 
-	public String getRoles() {
-		return roles;
-	}
+    public void setX1PortalUSer(Boolean x1PortalUSer) {
+        this.x1PortalUSer = x1PortalUSer;
+    }
 
-	public void setRoles(String roles) {
-		this.roles = roles;
-	}
-	
-	public String getJobTitle() {
-		return jobTitle;
-	}
+    public Boolean getHasOptedOutOfEmail() {
+        return hasOptedOutOfEmail;
+    }
 
-	public void setJobTitle(String jobTitle) {
-		this.jobTitle = jobTitle;
-	}
+    public void setHasOptedOutOfEmail(Boolean hasOptedOutOfEmail) {
+        this.hasOptedOutOfEmail = hasOptedOutOfEmail;
+    }
 
-	public Boolean getX1PortalUSer() {
-		return x1PortalUSer;
-	}
+    public Boolean getDoNotCall() {
+        return doNotCall;
+    }
 
-	public void setX1PortalUSer(Boolean x1PortalUSer) {
-		this.x1PortalUSer = x1PortalUSer;
-	}
+    public void setDoNotCall(Boolean doNotCall) {
+        this.doNotCall = doNotCall;
+    }
 
-	public Boolean getHasOptedOutOfEmail() {
-		return hasOptedOutOfEmail;
-	}
+    public String getDepartment() {
+        return department;
+    }
 
-	public void setHasOptedOutOfEmail(Boolean hasOptedOutOfEmail) {
-		this.hasOptedOutOfEmail = hasOptedOutOfEmail;
-	}
+    public void setDepartment(String department) {
+        this.department = department;
+    }
 
-	public Boolean getDoNotCall() {
-		return doNotCall;
-	}
+    public String getAccountId() {
+        return accountId;
+    }
 
-	public void setDoNotCall(Boolean doNotCall) {
-		this.doNotCall = doNotCall;
-	}
-
-	public String getDepartment() {
-		return department;
-	}
-
-	public void setDepartment(String department) {
-		this.department = department;
-	}
-
-	
+    public void setAccountId(String accountId) {
+        this.accountId = accountId;
+    }
 }

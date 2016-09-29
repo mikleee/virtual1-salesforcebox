@@ -1,6 +1,7 @@
 
 import com.virtual1.salesforcebox.sf.SalesforceService;
 import com.virtual1.salesforcebox.sf.model.Account;
+import com.virtual1.salesforcebox.sf.model.Contact;
 import com.virtual1.salesforcebox.sf.model.EndCustomer;
 import com.virtual1.salesforcebox.sf.model.User;
 import com.virtual1.salesforcebox.sf.util.MappingRegistry;
@@ -21,6 +22,7 @@ public class Main {
 //        Account account = salesforceService.getAccount("0013000000pI4zg");
 //
 //        User user = salesforceService.getUser("005a0000009d6mq");
+        Contact contact = salesforceService.getContact("a0cS0000001i5Fq");
         EndCustomer endCustomer = salesforceService.getEndCustomer("a0cS0000001i5Fq");
         EndCustomer endCustomer1 = salesforceService.getEndCustomerByName(endCustomer.getAccountId(), endCustomer.getName());
 
