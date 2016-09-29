@@ -90,7 +90,6 @@ public class SalesforceService implements SalesforceApi {
     }
 
 
-
     // ------------------------ accounts ------------------------
 
     public Account getAccountOld(String id) {
@@ -104,17 +103,17 @@ public class SalesforceService implements SalesforceApi {
     }
 
     public Account getAccount(String id) {
-        String query = SfQueryBuilder.queryFor(Account.class).where("Id = '%s'", id).toString();
+        String query = SfQueryBuilder.queryFor(Account.class).byId(id);
         return retrieveOne(query, Account.class);
     }
 
     public Account getAccountByName(String name) {
-        String query = SfQueryBuilder.queryFor(Account.class).where("Name = '%s'", name).toString();
+        String query = SfQueryBuilder.queryFor(Account.class).byField("Name", name);
         return retrieveAccount(query);
     }
 
     public User getUser(String id) {
-        String query = SfQueryBuilder.queryFor(User.class).where("Id = '%s'", id).toString();
+        String query = SfQueryBuilder.queryFor(User.class).byId(id);
         return retrieveOne(query, User.class);
     }
 
@@ -520,12 +519,25 @@ public class SalesforceService implements SalesforceApi {
 
     // ------------------------ end customer ------------------------
 
-    public EndCustomer getEndCustomer(String endCustomerId) {
+    public EndCustomer getEndCustomer(String id) {
+        String query = SfQueryBuilder.queryFor(EndCustomer.class).byId(id);
+        return retrieveOne(query, EndCustomer.class);
+    }
+
+    public EndCustomer getEndCustomerByName(String accountId, String name) {
+        String query = SfQueryBuilder.queryFor(EndCustomer.class)
+                .where("Account_Name__c", accountId)
+                .and("Name", name)
+                .toString();
+        return retrieveOne(query, EndCustomer.class);
+    }
+
+    public EndCustomer getEndCustomerOld(String endCustomerId) {
         String query = format("SELECT %s FROM End_Customer__c  WHERE Id = '%s'", END_CUSTOMER_FIELDS, endCustomerId);
         return retrieveEndCustomer(query);
     }
 
-    public EndCustomer getEndCustomerByName(String accountId, String name) {
+    public EndCustomer getEndCustomerByNameOld(String accountId, String name) {
         String query = format("SELECT %s FROM End_Customer__c  WHERE Account_Name__c = '%s' and Name = '%s'", END_CUSTOMER_FIELDS, accountId, name);
         return retrieveEndCustomer(query);
     }

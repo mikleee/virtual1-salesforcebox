@@ -2,6 +2,7 @@ package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
@@ -10,15 +11,8 @@ import java.util.Date;
 public class Account extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-
-//        XmlObject child = sObject.getChild("Owner");
-//        if (child != null) {
-//            account.setAccountOwnerId((String) child.getField("Id"));
-//            account.setAccountOwnerName((String) child.getField("Name"));
-//            account.setAccountOwnerEmail((String) child.getField("Email"));
-//            account.setAccountOwnerMobileNumber((String) child.getField("MobilePhone"));
-//        }
-
+    @SalesforceField(name = "Name")
+    private String name;
     @SalesforceField(name = "PRTG_Username__c")
     private String oneViewUsername;
     @SalesforceField(name = "PRTG_Password__c")
@@ -54,51 +48,23 @@ public class Account extends BaseSalesforceObject {
     @SalesforceField(name = "RID_Number__c")
     private String ridNumber;
     @SalesforceField(name = "X1Cloud_Demo_Request_Blackout__c")
-    private Date X1CloudDemoRequestBlackout;
+    private Date x1CloudDemoRequestBlackout;
     @SalesforceField(name = "Status__c")
     private String status;
     @SalesforceField(name = "PBT__c")
     private String pbt;
     @SalesforceField(name = "Sales_Order_Special_Instructions__c")
     private String salesOrderSpecialInstructions;
+    @SalesforceRelation(name = "Owner")
+    private User owner;
 
 
-    private String accountOwnerId;
-    private String accountOwnerName;
-    private String accountOwnerEmail;
-    private String accountOwnerMobileNumber;
-
-
-    public String getAccountOwnerEmail() {
-        return accountOwnerEmail;
+    public String getName() {
+        return name;
     }
 
-    public void setAccountOwnerEmail(String accountOwnerEmail) {
-        this.accountOwnerEmail = accountOwnerEmail;
-    }
-
-    public String getAccountOwnerId() {
-        return accountOwnerId;
-    }
-
-    public void setAccountOwnerId(String accountOwnerId) {
-        this.accountOwnerId = accountOwnerId;
-    }
-
-    public String getAccountOwnerMobileNumber() {
-        return accountOwnerMobileNumber;
-    }
-
-    public void setAccountOwnerMobileNumber(String accountOwnerMobileNumber) {
-        this.accountOwnerMobileNumber = accountOwnerMobileNumber;
-    }
-
-    public String getAccountOwnerName() {
-        return accountOwnerName;
-    }
-
-    public void setAccountOwnerName(String accountOwnerName) {
-        this.accountOwnerName = accountOwnerName;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getBillingCity() {
@@ -266,11 +232,19 @@ public class Account extends BaseSalesforceObject {
     }
 
     public Date getX1CloudDemoRequestBlackout() {
-        return X1CloudDemoRequestBlackout;
+        return x1CloudDemoRequestBlackout;
     }
 
     public void setX1CloudDemoRequestBlackout(Date x1CloudDemoRequestBlackout) {
-        X1CloudDemoRequestBlackout = x1CloudDemoRequestBlackout;
+        this.x1CloudDemoRequestBlackout = x1CloudDemoRequestBlackout;
+    }
+
+    public User getOwner() {
+        return owner;
+    }
+
+    public void setOwner(User owner) {
+        this.owner = owner;
     }
 
     public boolean isActive() {

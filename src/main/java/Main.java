@@ -1,6 +1,7 @@
 
 import com.virtual1.salesforcebox.sf.SalesforceService;
 import com.virtual1.salesforcebox.sf.model.Account;
+import com.virtual1.salesforcebox.sf.model.EndCustomer;
 import com.virtual1.salesforcebox.sf.model.User;
 import com.virtual1.salesforcebox.sf.util.MappingRegistry;
 
@@ -17,11 +18,13 @@ public class Main {
     public static void main(String[] args) {
        new MappingRegistry();
         SalesforceService salesforceService = new SalesforceService(userName, password, token, sandbox, identifier);
-        Account account = salesforceService.getAccount("0013000000pI4zg");
+//        Account account = salesforceService.getAccount("0013000000pI4zg");
+//
+//        User user = salesforceService.getUser("005a0000009d6mq");
+        EndCustomer endCustomer = salesforceService.getEndCustomer("a0cS0000001i5Fq");
+        EndCustomer endCustomer1 = salesforceService.getEndCustomerByName(endCustomer.getAccountId(), endCustomer.getName());
 
-        User user = salesforceService.getUser("005a0000009d6mq");
 
-        System.out.println(account);
     }
 
 

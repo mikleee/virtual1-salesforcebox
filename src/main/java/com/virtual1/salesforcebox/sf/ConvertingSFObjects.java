@@ -87,10 +87,10 @@ public class ConvertingSFObjects {
 
         XmlObject child = sObject.getChild("Owner");
         if (child != null) {
-            account.setAccountOwnerId((String) child.getField("Id"));
-            account.setAccountOwnerName((String) child.getField("Name"));
-            account.setAccountOwnerEmail((String) child.getField("Email"));
-            account.setAccountOwnerMobileNumber((String) child.getField("MobilePhone"));
+//            account.setAccountOwnerId((String) child.getField("Id"));
+//            account.setAccountOwnerName((String) child.getField("Name"));
+//            account.setAccountOwnerEmail((String) child.getField("Email"));
+//            account.setAccountOwnerMobileNumber((String) child.getField("MobilePhone"));
         }
 
         return account;

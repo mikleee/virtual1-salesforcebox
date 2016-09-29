@@ -13,7 +13,6 @@ public abstract class BaseSalesforceObject extends CachedSalesforceObject {
 
     @SalesforceField(name = "Id")
     protected String id;
-    @SalesforceField(name = "Name")
     protected String name;
     @SalesforceField(name = "CreatedDate")
     protected Date createdDate;
@@ -82,7 +81,6 @@ public abstract class BaseSalesforceObject extends CachedSalesforceObject {
     public String toString() {
         StringBuilder builder = new StringBuilder().append(getClass().getSimpleName()).append(": ");
         if (id != null) builder.append("id=").append(id).append(" ");
-        if (name != null) builder.append("name=").append(name).append(" ");
         if (recordType != null) builder.append("recordType=").append(recordType);
         return builder.toString();
     }

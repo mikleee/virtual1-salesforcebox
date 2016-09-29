@@ -2,7 +2,7 @@ package com.virtual1.salesforcebox.sf.util;
 
 import com.sforce.ws.bind.XmlObject;
 import com.sforce.ws.util.Base64;
-import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
@@ -15,7 +15,7 @@ import java.util.Map;
  */
 public class SfObjectConverter {
 
-    public <T extends BaseSalesforceObject> T convert(XmlObject sObject, Class<T> type) {
+    public <T> T convert(XmlObject sObject, Class<T> type) {
         T t = instantiate(type);
         Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type);
         for (Map.Entry<Field, SfAccessor> entry : accessors.entrySet()) {
@@ -27,7 +27,7 @@ public class SfObjectConverter {
     }
 
 
-    private <T extends BaseSalesforceObject> T instantiate(Class<T> type) {
+    private <T> T instantiate(Class<T> type) {
         try {
             return type.newInstance();
         } catch (Exception e) {
@@ -42,9 +42,12 @@ public class SfObjectConverter {
             return getDate(sObject, key);
         } else if (type == Boolean.class || type == boolean.class) {
             return getBoolean(sObject, key);
+        } else if (type.isAnnotationPresent(SalesforceObject.class)) {
+            XmlObject child = sObject.getChild(key);
+            return child != null && child.hasChildren() ? convert(child, type) : null;
         }
 
-        throw new SalesforceConfigurationException("Cant retrieve value with type " + type + " from raw salesforce object");
+        throw new SalesforceConfigurationException("Cant retrieve value with type " + type + " from raw salesforce object. If it is Salesforce object it must be marked as @SalesforceObject");
     }
 
     private String getString(XmlObject sObject, String key) {

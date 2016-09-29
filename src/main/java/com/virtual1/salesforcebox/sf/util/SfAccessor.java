@@ -1,7 +1,5 @@
 package com.virtual1.salesforcebox.sf.util;
 
-import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
-
 import java.lang.reflect.Field;
 
 /**
@@ -10,9 +8,9 @@ import java.lang.reflect.Field;
 class SfAccessor extends Accessor {
     private final String sfField;
 
-    SfAccessor(Field field, SalesforceField annotation) {
+    SfAccessor(Field field, String sfField) {
         super(field);
-        this.sfField = annotation.name();
+        this.sfField = sfField;
     }
 
 

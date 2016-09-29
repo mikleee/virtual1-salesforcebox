@@ -18,29 +18,49 @@ public class SfQueryBuilder {
         return new SfQueryBuilder(baseQuery);
     }
 
-    public SfQueryBuilder where(String where, String... args) {
+    public SfQueryBuilder where(String where) {
         if (isWithoutCondition()) {
-            query.append(" WHERE ").append(String.format(where, args));
+            query.append(" WHERE ").append(where);
         } else {
-            throw new SalesforceException("Query is invalid: " + query.append(" WHERE ").append(String.format(where, args)));
+            throw new SalesforceException("Query is invalid: " + query.append(" WHERE ").append(where));
         }
         return this;
     }
 
-    public SfQueryBuilder and(String and, String... args) {
+    public SfQueryBuilder where(String field, String value) {
+        return where(String.format("%s='%s'", field, value));
+    }
+
+    public SfQueryBuilder and(String and) {
         if (isWithoutCondition()) {
             query.append(" WHERE ");
         }
-        query.append(" AND ").append(String.format(and, args));
+        query.append(" AND ").append(and).append(" ");
         return this;
     }
 
-    public SfQueryBuilder or(String or, String... args) {
+    public SfQueryBuilder and(String field, String value) {
+        return and(String.format("%s='%s'", field, value));
+    }
+
+    public SfQueryBuilder or(String or) {
         if (isWithoutCondition()) {
             query.append(" WHERE ");
         }
-        query.append(" OR ").append(String.format(or, args));
+        query.append(" OR ").append(or).append(" ");
         return this;
+    }
+
+    public SfQueryBuilder or(String field, String value) {
+        return or(String.format("%s='%s'", field, value));
+    }
+
+    public String byId(String id) {
+        return byField("Id", id);
+    }
+
+    public String byField(String field, String value) {
+        return where(field, value).toString();
     }
 
     private boolean isWithoutCondition() {
