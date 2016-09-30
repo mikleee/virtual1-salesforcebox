@@ -8,7 +8,7 @@ import java.util.List;
 
 /**
  * @author nsaputro
- * SF object name: Retail_Portal_Leads__c
+ * SF object table: Retail_Portal_Leads__c
  */
 public class RetailPortalLead extends BaseSalesforceObject {
 

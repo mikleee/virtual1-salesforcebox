@@ -1,5 +1,8 @@
 package com.virtual1.salesforcebox.sf.util;
 
+import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
+
 import java.lang.reflect.Field;
 
 /**
@@ -7,10 +10,19 @@ import java.lang.reflect.Field;
  */
 class SfAccessor extends Accessor {
     private final String sfField;
+    private final boolean immutable;
 
-    SfAccessor(Field field, String sfField) {
+
+    SfAccessor(Field field, SalesforceField a) {
         super(field);
-        this.sfField = sfField;
+        this.sfField = a.name();
+        this.immutable = a.immutable();
+    }
+
+    SfAccessor(Field field, SalesforceRelation a) {
+        super(field);
+        this.sfField = a.name();
+        this.immutable = false; //todo
     }
 
 
@@ -18,4 +30,7 @@ class SfAccessor extends Accessor {
         return sfField;
     }
 
+    public boolean isImmutable() {
+        return immutable;
+    }
 }

@@ -1,5 +1,6 @@
 package com.virtual1.salesforcebox.sf.util;
 
+import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.bind.XmlObject;
 import com.sforce.ws.util.Base64;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
@@ -24,6 +25,21 @@ public class SfObjectConverter {
             accessor.set(t, value);
         }
         return t;
+    }
+
+
+    public SObject convert(Object o) {
+        SObject sObject = new SObject();
+        Class<?> type = o.getClass();
+        sObject.setType(type.getAnnotation(SalesforceObject.class).type());
+        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type);
+        for (Map.Entry<Field, SfAccessor> entry : accessors.entrySet()) {
+            SfAccessor accessor = entry.getValue();
+            if (!accessor.isImmutable()) {
+                sObject.setField(accessor.getSfField(), accessor.get(o));
+            }
+        }
+        return sObject;
     }
 
 
@@ -68,6 +84,7 @@ public class SfObjectConverter {
         String str = (String) sObject.getField(fieldName);
         return str != null ? Base64.decode(str.getBytes()) : null;
     }
+
 
 }
 

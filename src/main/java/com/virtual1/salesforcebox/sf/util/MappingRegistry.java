@@ -71,9 +71,9 @@ public class MappingRegistry {
         while (true) {
             for (Field field : currentType.getDeclaredFields()) {
                 if (field.isAnnotationPresent(SalesforceField.class)) {
-                    result.put(field, new SfAccessor(field, field.getAnnotation(SalesforceField.class).name()));
+                    result.put(field, new SfAccessor(field, field.getAnnotation(SalesforceField.class)));
                 } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
-                    result.put(field, new SfAccessor(field, field.getAnnotation(SalesforceRelation.class).name()));
+                    result.put(field, new SfAccessor(field, field.getAnnotation(SalesforceRelation.class)));
                 }
             }
 
@@ -86,7 +86,7 @@ public class MappingRegistry {
     }
 
     private static String buildBaseQuery(Class<?> type) {
-        String table = type.getAnnotation(SalesforceObject.class).name();
+        String table = type.getAnnotation(SalesforceObject.class).table();
         String fieldSequence = getFieldSequence(type);
         String staticClause = type.getAnnotation(SalesforceObject.class).staticClause();
 

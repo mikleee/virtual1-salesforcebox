@@ -59,7 +59,7 @@ public class SfQueryBuilder {
         if (isWithoutCondition()) {
             query.append(" WHERE ");
         }
-        query.append(" AND ").append(field).append(" includes ").append("(").append(StringUtils.join(values, ",")).append(") ");
+        query.append(" AND ").append(field).append(" includes ").append("('").append(StringUtils.join(values, ";")).append("') ");
         return this;
     }
 

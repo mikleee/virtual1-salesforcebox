@@ -7,7 +7,7 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
 
-@SalesforceObject(name = "Account")
+@SalesforceObject(table = "Account")
 public class Account extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 

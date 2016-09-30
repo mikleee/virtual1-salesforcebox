@@ -4,7 +4,7 @@
 <resource-action-mapping>
 
     <!--<portlet-resource>-->
-        <!--<portlet-name>themes-switcher</portlet-name>-->
+        <!--<portlet-table>themes-switcher</portlet-table>-->
         <!--<permissions>-->
             <!--<supports>-->
                 <!--<action-key>ACCESS_IN_CONTROL_PANEL</action-key>-->
@@ -28,9 +28,9 @@
     <!--</portlet-resource>-->
 
     <!--<model-resource>-->
-        <!--<model-name>com.aimprosoft.lfs.model.persist.LookAndFeel</model-name>-->
+        <!--<model-table>com.aimprosoft.lfs.model.persist.LookAndFeel</model-table>-->
         <!--<portlet-ref>-->
-            <!--<portlet-name>themes-switcher</portlet-name>-->
+            <!--<portlet-table>themes-switcher</portlet-table>-->
         <!--</portlet-ref>-->
         <!--<permissions>-->
             <!--<supports>-->

@@ -34,7 +34,7 @@ public class Opportunity extends BaseSalesforceObject {
 
 	private String numberOfSites;        // Default to "1", No_of_Sites__c
 
-	private Boolean bdukOpportunity;      // If the Primary Access product name contains the Value "BDUK"  seto to true, otherwise leave blank, BDUK_Opportunity__c
+	private Boolean bdukOpportunity;      // If the Primary Access product table contains the Value "BDUK"  seto to true, otherwise leave blank, BDUK_Opportunity__c
 
 	private Boolean pmRequired;           // Default to Flase, PM_Required__c
 

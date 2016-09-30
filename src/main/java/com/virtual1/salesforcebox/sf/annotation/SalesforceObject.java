@@ -11,7 +11,9 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.TYPE})
 public @interface SalesforceObject {
-    String name();
+    String table();
+
+    String type() default "";
 
     String staticClause() default "";
 

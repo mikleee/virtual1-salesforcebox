@@ -3,7 +3,7 @@ package com.virtual1.salesforcebox.sf.model;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 
-@SalesforceObject(name = "User")
+@SalesforceObject(table = "User")
 public class User extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 

@@ -12,4 +12,6 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface SalesforceField {
     String name();
+
+    boolean immutable() default false;
 }

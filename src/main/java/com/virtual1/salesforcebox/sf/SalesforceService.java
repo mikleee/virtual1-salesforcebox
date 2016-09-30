@@ -3,14 +3,53 @@ package com.virtual1.salesforcebox.sf;
 import com.sforce.soap.partner.Field;
 import com.sforce.soap.partner.PicklistEntry;
 import com.sforce.soap.partner.sobject.SObject;
-import com.virtual1.salesforcebox.sf.model.*;
+import com.sforce.ws.bind.XmlObject;
+import com.virtual1.salesforcebox.sf.model.Access;
+import com.virtual1.salesforcebox.sf.model.Account;
+import com.virtual1.salesforcebox.sf.model.AccountPbt;
+import com.virtual1.salesforcebox.sf.model.AnalogueLine;
+import com.virtual1.salesforcebox.sf.model.Asset;
+import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
+import com.virtual1.salesforcebox.sf.model.Case;
+import com.virtual1.salesforcebox.sf.model.CaseComment;
+import com.virtual1.salesforcebox.sf.model.CaseContactRole;
+import com.virtual1.salesforcebox.sf.model.ChargeType;
+import com.virtual1.salesforcebox.sf.model.CloudProvisioning;
+import com.virtual1.salesforcebox.sf.model.Component;
+import com.virtual1.salesforcebox.sf.model.Contact;
+import com.virtual1.salesforcebox.sf.model.EndCustomer;
+import com.virtual1.salesforcebox.sf.model.Exchange;
+import com.virtual1.salesforcebox.sf.model.FeedItem;
+import com.virtual1.salesforcebox.sf.model.InnerVLAN;
+import com.virtual1.salesforcebox.sf.model.NNI;
+import com.virtual1.salesforcebox.sf.model.NetOpsCase;
+import com.virtual1.salesforcebox.sf.model.Opportunity;
+import com.virtual1.salesforcebox.sf.model.PartnerConnectWrapper;
+import com.virtual1.salesforcebox.sf.model.PricingEntry;
+import com.virtual1.salesforcebox.sf.model.Project;
+import com.virtual1.salesforcebox.sf.model.Quote;
+import com.virtual1.salesforcebox.sf.model.Radius;
+import com.virtual1.salesforcebox.sf.model.RecordType;
+import com.virtual1.salesforcebox.sf.model.RetailPortalLead;
+import com.virtual1.salesforcebox.sf.model.SFIPJustDevice;
+import com.virtual1.salesforcebox.sf.model.SfAttachment;
+import com.virtual1.salesforcebox.sf.model.SfEmail;
+import com.virtual1.salesforcebox.sf.model.SfIpJust;
+import com.virtual1.salesforcebox.sf.model.Site;
+import com.virtual1.salesforcebox.sf.model.User;
+import com.virtual1.salesforcebox.sf.model.VPN;
+import com.virtual1.salesforcebox.sf.model.Virtual1DatacentrePostcode;
 import com.virtual1.salesforcebox.sf.util.SfObjectConverter;
 import com.virtual1.salesforcebox.sf.util.SfQueryBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.nio.charset.Charset;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.virtual1.salesforcebox.sf.QueryTemplates.*;
 import static java.lang.String.format;
@@ -64,7 +103,7 @@ public class SalesforceService implements SalesforceApi {
     }
 
     public Contact getContactByEmail(String accountId, String email) {
-        String query = SfQueryBuilder.queryFor(EndCustomer.class)
+        String query = SfQueryBuilder.queryFor(Contact.class)
                 .where("AccountId", accountId)
                 .and("Email", email)
                 .toString();
@@ -79,30 +118,25 @@ public class SalesforceService implements SalesforceApi {
         return retrieveAll(query, Contact.class);
     }
 
-    public List<Contact> getContactsByRoleOld(String accountId, String role) {
-        String query = format("SELECT %s FROM Contact WHERE Account.Id = '%s' and Left_the_Company__c = false", CONTACT_FIELDS, accountId);
-
-        if (StringUtils.isNotBlank(role)) {
-            query += " and Role__c includes ('" + escapeSOQL(role) + "')";
-        }
-        query += " ORDER BY Name ASC";
-
-        List<Contact> result = new ArrayList<>();
-        for (SObject sObject : retrieveAll(query)) {
-            Contact contact = converter.convertContact(sObject);
-            result.add(contact);
-        }
-        return result;
+    public String createContact(Contact contact) {
+        SObject sObject = objectConverter.convert(contact);
+        return create(sObject);
     }
 
-    public Contact getContactByEmailOld(String accountId, String email) {
-        String query = format("SELECT %s FROM Contact WHERE Account.Id = '%s' and Left_the_Company__c = false and Email= '%s'", CONTACT_FIELDS, accountId, escapeSOQL(email));
-        return retrieveContact(query);
+    public String updateContact(Contact contact) {
+        XmlObject xmlObject = objectConverter.convert(contact);
+        return "asdasd";
     }
 
-    public Contact getContactByIdOld(String contactId) {
-        String query = format("SELECT %s FROM Contact WHERE Id = '%s'", CONTACT_FIELDS, contactId);
-        return retrieveContact(query);
+
+    public String createContactOld(Contact contact) {
+        SObject sfObject = converter.convert(contact);
+        return createOld(sfObject, contact);
+    }
+
+    public String updateContactOld(Contact contact) {
+        SObject sfObject = converter.convert(contact);
+        return update(sfObject, contact);
     }
 
     public EndCustomer getEndCustomer(String id) {
@@ -202,7 +236,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createAccess(Access access) {
         SObject sfObject = converter.convert(access);
-        return create(sfObject, access);
+        return createOld(sfObject, access);
     }
 
     public String updateAccess(Access access) {
@@ -233,7 +267,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createAnalogueLine(AnalogueLine analogueLine) {
         SObject sfObject = converter.convert(analogueLine);
-        return create(sfObject, analogueLine);
+        return createOld(sfObject, analogueLine);
     }
 
     // ------------------------
@@ -290,7 +324,7 @@ public class SalesforceService implements SalesforceApi {
     public String createAsset(Asset asset) {
         SObject sfObject = converter.convert(asset);
         sfObject.setFieldsToNull(new String[]{"Loopback_IPv6__c"});
-        return create(sfObject, asset);
+        return createOld(sfObject, asset);
     }
 
 
@@ -391,7 +425,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createCase(Case sfcase) {
         SObject caseObject = converter.convert(sfcase);
-        return create(caseObject, sfcase);
+        return createOld(caseObject, sfcase);
     }
 
     public String updateCase(Case sfcase) {
@@ -421,12 +455,12 @@ public class SalesforceService implements SalesforceApi {
 
     public String addCaseComment(CaseComment caseComment) {
         SObject sObject = converter.convert(caseComment);
-        return create(sObject, caseComment);
+        return createOld(sObject, caseComment);
     }
 
     public String addCaseContactRole(CaseContactRole caseContactRole) {
         SObject sObject = converter.convert(caseContactRole);
-        return create(sObject, caseContactRole);
+        return createOld(sObject, caseContactRole);
     }
 
     // ------------------------
@@ -450,7 +484,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String сreateChargeType(ChargeType chargeType) {
         SObject sObject = converter.convert(chargeType);
-        return create(sObject, chargeType);
+        return createOld(sObject, chargeType);
     }
 
     // ------------------------
@@ -477,20 +511,20 @@ public class SalesforceService implements SalesforceApi {
     // ------------------------ contacts ------------------------
 
 
-    private Contact retrieveContact(String query) {
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertContact(sObject);
-    }
-
-    public String createContact(Contact contact) {
-        SObject sfObject = converter.convert(contact);
-        return create(sfObject, contact);
-    }
-
-    public String updateContact(Contact contact) {
-        SObject sfObject = converter.convert(contact);
-        return update(sfObject, contact);
-    }
+//    private Contact retrieveContact(String query) {
+//        SObject sObject = retrieveOne(query);
+//        return sObject == null ? null : converter.convertContact(sObject);
+//    }
+//
+//    public String createContact(Contact contact) {
+//        SObject sfObject = converter.convert(contact);
+//        return createOld(sfObject, contact);
+//    }
+//
+//    public String updateContact(Contact contact) {
+//        SObject sfObject = converter.convert(contact);
+//        return update(sfObject, contact);
+//    }
 
     // -----------------------------
 
@@ -510,7 +544,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createEndCustomer(EndCustomer endCustomer) {
         SObject sObject = converter.convert(endCustomer);
-        return create(sObject, endCustomer);
+        return createOld(sObject, endCustomer);
     }
 
     public String updateEndCustomer(EndCustomer endCustomer) {
@@ -540,7 +574,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createExchangeCode(Exchange exchange) {
         SObject sfObject = converter.convert(exchange);
-        return create(sfObject, exchange);
+        return createOld(sfObject, exchange);
     }
 
     // -----------------------------
@@ -571,7 +605,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createSfIpJust(SfIpJust sfIpJust) {
         SObject sfObject = converter.convert(sfIpJust);
-        String id = create(sfObject, sfIpJust);
+        String id = createOld(sfObject, sfIpJust);
         sfIpJust.setId(id);
 
         List<SFIPJustDevice> devices = sfIpJust.getSfipJustDevices();
@@ -687,7 +721,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createPricingEntry(PricingEntry pricingEntry) {
         SObject sfObject = converter.convert(pricingEntry);
-        return create(sfObject, pricingEntry);
+        return createOld(sfObject, pricingEntry);
     }
 
     // -----------------------------
@@ -743,7 +777,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createProject(Project project) {
         SObject sfObject = converter.convert(project);
-        return create(sfObject, project);
+        return createOld(sfObject, project);
     }
 
     public String updateProject(Project project) {
@@ -809,7 +843,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createSite(Site site) {
         SObject sfObject = converter.convert(site);
-        return create(sfObject, site);
+        return createOld(sfObject, site);
     }
 
     public String updateSite(Site site) {
@@ -844,7 +878,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createVPN(VPN vpn) {
         SObject sObject = converter.convert(vpn, this);
-        return create(sObject, vpn);
+        return createOld(sObject, vpn);
     }
 
     // -----------------------------
@@ -901,7 +935,7 @@ public class SalesforceService implements SalesforceApi {
      */
     String createOpportunity(Opportunity opportunity) {
         SObject sObject = converter.convert(opportunity);
-        return create(sObject, opportunity);
+        return createOld(sObject, opportunity);
     }
 
     @SuppressWarnings("unused")
@@ -921,7 +955,7 @@ public class SalesforceService implements SalesforceApi {
      */
     String addFeedItem(FeedItem feedItem) {
         SObject sObject = converter.convert(feedItem);
-        return create(sObject, feedItem);
+        return createOld(sObject, feedItem);
     }
 
     public void createRetailPortalLead(RetailPortalLead lead) {
@@ -937,7 +971,7 @@ public class SalesforceService implements SalesforceApi {
         leadObject.setField("Telephone_Number__c", lead.getTelephoneNumber());
         leadObject.setField("Name__c", lead.getLeadName());
 
-        String leadId = create(leadObject, lead);
+        String leadId = createOld(leadObject, lead);
 
         List<SObject> quoteObjects = new ArrayList<>();
         for (Quote quote : lead.getQuotes()) {
@@ -961,13 +995,13 @@ public class SalesforceService implements SalesforceApi {
     // TODO: 19.08.16
     public String createRadius(Radius radius) {
         SObject sfObject = converter.convert(radius);
-        return create(sfObject, radius);
+        return createOld(sfObject, radius);
     }
 
     // TODO: 19.08.16
     public String createComponent(Component component) {
         SObject sfObject = converter.convert(component);
-        return create(sfObject, component);
+        return createOld(sfObject, component);
     }
 
 
@@ -1011,7 +1045,7 @@ public class SalesforceService implements SalesforceApi {
 
     String createAttachment(SfAttachment attachment) {
         SObject sObject = converter.convert(attachment);
-        return create(sObject, attachment);
+        return createOld(sObject, attachment);
     }
 
     public String createAttachment(String parentId, String name, byte[] content) {
@@ -1036,7 +1070,7 @@ public class SalesforceService implements SalesforceApi {
 
     public String createEmailMessage(SfEmail sfEmail) {
         SObject sObject = converter.convert(sfEmail);
-        return create(sObject, sfEmail);
+        return createOld(sObject, sfEmail);
     }
 
 
@@ -1058,10 +1092,15 @@ public class SalesforceService implements SalesforceApi {
         return id;
     }
 
-    private String create(SObject sObject, BaseSalesforceObject object) {
+    private String createOld(SObject sObject, BaseSalesforceObject object) {
         String id = dataSource.create(sObject);
         object.setId(id);
         LOGGER.info("Created " + object);
+        return id;
+    }
+
+    private String create(SObject sObject) {
+        String id = dataSource.create(sObject);
         return id;
     }
 

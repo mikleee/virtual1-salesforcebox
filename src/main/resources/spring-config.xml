@@ -32,14 +32,14 @@
 
     <!--&lt;!&ndash;entity manager factory&ndash;&gt;-->
     <!--<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">-->
-        <!--<property name="dataSource" ref="liferayDataSource"/>-->
-        <!--<property name="jpaVendorAdapter">-->
+        <!--<property table="dataSource" ref="liferayDataSource"/>-->
+        <!--<property table="jpaVendorAdapter">-->
             <!--<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter">-->
-                <!--<property name="showSql" value="false"/>-->
-                <!--<property name="generateDdl" value="true"/>-->
+                <!--<property table="showSql" value="false"/>-->
+                <!--<property table="generateDdl" value="true"/>-->
             <!--</bean>-->
         <!--</property>-->
-        <!--<property name="jpaProperties">-->
+        <!--<property table="jpaProperties">-->
             <!--<props>-->
                 <!--<prop key="hibernate.hbm2ddl.auto">update</prop>-->
             <!--</props>-->
@@ -51,7 +51,7 @@
 
     <!--&lt;!&ndash;transaction manager&ndash;&gt;-->
     <!--<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">-->
-        <!--<property name="entityManagerFactory" ref="entityManagerFactory"/>-->
+        <!--<property table="entityManagerFactory" ref="entityManagerFactory"/>-->
     <!--</bean>-->
 
 </beans>

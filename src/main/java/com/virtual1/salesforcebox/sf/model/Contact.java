@@ -5,11 +5,11 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 import org.apache.commons.lang.StringUtils;
 
-@SalesforceObject(name = "Contact", staticClause = "Left_the_Company__c = false")
+@SalesforceObject(table = "Contact", type = "Contact", staticClause = "Left_the_Company__c = false")
 public class Contact extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-    @SalesforceField(name = "Name")
+    @SalesforceField(name = "Name", immutable = true)
     private String name;
     @SalesforceField(name = "FirstName")
     private String firstName;
