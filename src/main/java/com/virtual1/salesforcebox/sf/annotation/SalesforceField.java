@@ -13,5 +13,5 @@ import java.lang.annotation.Target;
 public @interface SalesforceField {
     String name();
 
-    boolean immutable() default false;
+    boolean readOnly() default false;
 }

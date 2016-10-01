@@ -16,7 +16,7 @@ class SfAccessor extends Accessor {
     SfAccessor(Field field, SalesforceField a) {
         super(field);
         this.sfField = a.name();
-        this.immutable = a.immutable();
+        this.immutable = a.readOnly();
     }
 
     SfAccessor(Field field, SalesforceRelation a) {

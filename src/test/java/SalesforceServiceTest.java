@@ -41,12 +41,12 @@ public class SalesforceServiceTest {
     public void contact() {
         Contact contact;
         {
-            String id = "003a000002Nfv4t";
+            final String id = "003a000002Nfv4t";
             contact = salesforceService.getContact(id);
             Assert.assertNotNull(contact);
             Contact contact2 = salesforceService.getContactByEmail(contact.getAccountId(), contact.getEmail());
             Assert.assertNotNull(contact2);
-            Assert.assertEquals(contact.getId(), contact2.getId());
+            Assert.assertEquals(contact, contact2);
             List<Contact> contactsByRoles = salesforceService.getContactsByRole(contact.getAccountId(), contact.getRoles());
             Assert.assertNotEquals(0, contactsByRoles.size());
         }
