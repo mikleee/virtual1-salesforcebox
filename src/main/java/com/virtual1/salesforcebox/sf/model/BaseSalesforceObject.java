@@ -2,6 +2,7 @@ package com.virtual1.salesforcebox.sf.model;
 
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceId;
 import com.virtual1.salesforcebox.sf.cache.CachedSalesforceObject;
 
 import java.util.Date;
@@ -11,12 +12,13 @@ import java.util.Map;
 public abstract class BaseSalesforceObject extends CachedSalesforceObject {
     private static final long serialVersionUID = 1L;
 
+    @SalesforceId
     @SalesforceField(name = "Id")
     protected String id;
     protected String name;
-    @SalesforceField(name = "CreatedDate")
+    @SalesforceField(name = "CreatedDate", readOnly = true)
     protected Date createdDate;
-    @SalesforceField(name = "LastModifiedDate")
+    @SalesforceField(name = "LastModifiedDate", readOnly = true)
     protected Date lastModifiedDate;
 
     private String recordTypeId;

@@ -31,8 +31,7 @@ public class Contact extends BaseSalesforceObject {
     private Boolean doNotCall = false;
     @SalesforceField(name = "Department")
     private String department = StringUtils.EMPTY;
-    @SalesforceParentId
-    @SalesforceField(name = "AccountId")
+    @SalesforceParentId(name = "AccountId")
     private String accountId;
 
 
@@ -130,45 +129,5 @@ public class Contact extends BaseSalesforceObject {
 
     public void setAccountId(String accountId) {
         this.accountId = accountId;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!super.equals(o)) return false;
-
-        Contact contact = (Contact) o;
-        if (name != null ? !name.equals(contact.name) : contact.name != null) return false;
-        if (firstName != null ? !firstName.equals(contact.firstName) : contact.firstName != null) return false;
-        if (lastName != null ? !lastName.equals(contact.lastName) : contact.lastName != null) return false;
-        if (telephone != null ? !telephone.equals(contact.telephone) : contact.telephone != null) return false;
-        if (email != null ? !email.equals(contact.email) : contact.email != null) return false;
-        if (jobTitle != null ? !jobTitle.equals(contact.jobTitle) : contact.jobTitle != null) return false;
-        if (roles != null ? !roles.equals(contact.roles) : contact.roles != null) return false;
-        if (x1PortalUSer != null ? !x1PortalUSer.equals(contact.x1PortalUSer) : contact.x1PortalUSer != null)
-            return false;
-        if (hasOptedOutOfEmail != null ? !hasOptedOutOfEmail.equals(contact.hasOptedOutOfEmail) : contact.hasOptedOutOfEmail != null)
-            return false;
-        if (doNotCall != null ? !doNotCall.equals(contact.doNotCall) : contact.doNotCall != null) return false;
-        if (department != null ? !department.equals(contact.department) : contact.department != null) return false;
-        return accountId != null ? accountId.equals(contact.accountId) : contact.accountId == null;
-
-    }
-
-    @Override
-    public int hashCode() {
-        int result = super.hashCode();
-        result = 31 * result + (name != null ? name.hashCode() : 0);
-        result = 31 * result + (firstName != null ? firstName.hashCode() : 0);
-        result = 31 * result + (lastName != null ? lastName.hashCode() : 0);
-        result = 31 * result + (telephone != null ? telephone.hashCode() : 0);
-        result = 31 * result + (email != null ? email.hashCode() : 0);
-        result = 31 * result + (jobTitle != null ? jobTitle.hashCode() : 0);
-        result = 31 * result + (roles != null ? roles.hashCode() : 0);
-        result = 31 * result + (x1PortalUSer != null ? x1PortalUSer.hashCode() : 0);
-        result = 31 * result + (hasOptedOutOfEmail != null ? hasOptedOutOfEmail.hashCode() : 0);
-        result = 31 * result + (doNotCall != null ? doNotCall.hashCode() : 0);
-        result = 31 * result + (department != null ? department.hashCode() : 0);
-        result = 31 * result + (accountId != null ? accountId.hashCode() : 0);
-        return result;
     }
 }

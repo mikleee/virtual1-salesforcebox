@@ -3,7 +3,10 @@ package com.virtual1.salesforcebox.sf.util;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.bind.XmlObject;
 import com.sforce.ws.util.Base64;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
@@ -18,7 +21,7 @@ public class SfObjectConverter {
 
     public <T> T convert(XmlObject sObject, Class<T> type) {
         T t = instantiate(type);
-        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type);
+        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type).getAccessors();
         for (Map.Entry<Field, SfAccessor> entry : accessors.entrySet()) {
             SfAccessor accessor = entry.getValue();
             Object value = retrieveFieldValue(accessor.getType(), accessor.getSfField(), sObject);
@@ -28,18 +31,49 @@ public class SfObjectConverter {
     }
 
 
-    public SObject convert(Object o) {
+    public SObject convert(Object source) {
         SObject sObject = new SObject();
-        Class<?> type = o.getClass();
+        Class<?> type = source.getClass();
         sObject.setType(type.getAnnotation(SalesforceObject.class).type());
-        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type);
-        for (Map.Entry<Field, SfAccessor> entry : accessors.entrySet()) {
-            SfAccessor accessor = entry.getValue();
-            if (!accessor.isImmutable()) {
-                sObject.setField(accessor.getSfField(), accessor.get(o));
+
+        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type).getAccessors();
+        for (Field field : accessors.keySet()) {
+            SfAccessor accessor = accessors.get(field);
+            if (field.isAnnotationPresent(SalesforceField.class)) {
+                setSalesforceField(sObject, accessor, source);
+            } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
+                setSalesforceRelation(sObject, accessor, source);
+            } else if (field.isAnnotationPresent(SalesforceParentId.class)) {
+                setSalesforceParentId(sObject, accessor, source);
             }
         }
+
         return sObject;
+    }
+
+    private void setSalesforceField(SObject sObject, SfAccessor accessor, Object source) {
+        if (!accessor.isImmutable()) {
+            sObject.setField(accessor.getSfField(), accessor.get(source));
+        }
+    }
+
+    private void setSalesforceRelation(SObject sObject, SfAccessor accessor, Object source) {
+        Object value = accessor.get(source);
+        if (value == null) {
+            sObject.setFieldsToNull(new String[]{accessor.getSfField()});
+        } else {
+            SfObjectAccessor relationAccessor = MappingRegistry.getAccessors(accessor.getType());
+            sObject.setField(accessor.getSfField(), relationAccessor.getId(value));
+        }
+    }
+
+    private void setSalesforceParentId(SObject sObject, SfAccessor accessor, Object source) {
+        Object value = accessor.get(source);
+        if (value == null) {
+            sObject.setFieldsToNull(new String[]{accessor.getSfField()});
+        } else {
+            sObject.setField(accessor.getSfField(), value);
+        }
     }
 
 

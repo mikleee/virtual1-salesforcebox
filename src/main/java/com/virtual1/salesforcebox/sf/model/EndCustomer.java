@@ -16,8 +16,7 @@ public class EndCustomer extends BaseSalesforceObject {
     private String prtgLogin;
     @SalesforceField(name = "PRTG_Password__c")
     private String prtgPassword;
-    @SalesforceParentId
-    @SalesforceField(name = "Account_Name__c")
+    @SalesforceParentId(name = "Account_Name__c")
     private String accountId;
 
 

@@ -3,7 +3,6 @@ package com.virtual1.salesforcebox.sf;
 import com.sforce.soap.partner.Field;
 import com.sforce.soap.partner.PicklistEntry;
 import com.sforce.soap.partner.sobject.SObject;
-import com.sforce.ws.bind.XmlObject;
 import com.virtual1.salesforcebox.sf.model.Access;
 import com.virtual1.salesforcebox.sf.model.Account;
 import com.virtual1.salesforcebox.sf.model.AccountPbt;
@@ -124,8 +123,8 @@ public class SalesforceService implements SalesforceApi {
     }
 
     public String updateContact(Contact contact) {
-        XmlObject xmlObject = objectConverter.convert(contact);
-        return "asdasd";
+        SObject sObject = objectConverter.convert(contact);
+        return update(sObject);
     }
 
 
@@ -1100,8 +1099,11 @@ public class SalesforceService implements SalesforceApi {
     }
 
     private String create(SObject sObject) {
-        String id = dataSource.create(sObject);
-        return id;
+        return dataSource.create(sObject);
+    }
+
+    private String update(SObject sObject) {
+        return dataSource.update(sObject);
     }
 
     private String update(SObject sObject, BaseSalesforceObject object) {

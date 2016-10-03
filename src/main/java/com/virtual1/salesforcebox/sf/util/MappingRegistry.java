@@ -2,6 +2,7 @@ package com.virtual1.salesforcebox.sf.util;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import com.virtual1.salesforcebox.sf.model.Account;
 import com.virtual1.salesforcebox.sf.model.Contact;
@@ -28,17 +29,17 @@ public class MappingRegistry {
         add(User.class);
     }};
 
-    private static Map<Class<?>, Map<Field, SfAccessor>> accessors = new HashMap<>();
+    private static Map<Class<?>, SfObjectAccessor> accessors = new HashMap<>();
     private static Map<Class<?>, String> queries = new HashMap<>();
 
 
-    public static Map<Field, SfAccessor> getAccessors(Class<?> type) {
+    public static SfObjectAccessor getAccessors(Class<?> type) {
         return accessors.get(type);
     }
 
     public static Map<Field, SfAccessor> getAccessors(Class<?> type, Class<? extends Annotation> annotation) {
         Map<Field, SfAccessor> result = new HashMap<>();
-        for (Map.Entry<Field, SfAccessor> entry : getAccessors(type).entrySet()) {
+        for (Map.Entry<Field, SfAccessor> entry : getAccessors(type).getAccessors().entrySet()) {
             if (entry.getKey().isAnnotationPresent(annotation)) {
                 result.put(entry.getKey(), entry.getValue());
             }
@@ -64,16 +65,19 @@ public class MappingRegistry {
         }
     }
 
-    private static Map<Field, SfAccessor> getModelAccessors(Class<?> type) {
-        Map<Field, SfAccessor> result = new HashMap<>();
+    private static SfObjectAccessor getModelAccessors(Class<?> type) {
+        SfObjectAccessor objectAccessor = new SfObjectAccessor();
+        Map<Field, SfAccessor> map = objectAccessor.getAccessors();
 
         Class<?> currentType = type;
         while (true) {
             for (Field field : currentType.getDeclaredFields()) {
                 if (field.isAnnotationPresent(SalesforceField.class)) {
-                    result.put(field, new SfAccessor(field, field.getAnnotation(SalesforceField.class)));
+                    map.put(field, new SfAccessor(field, field.getAnnotation(SalesforceField.class)));
+                } else if (field.isAnnotationPresent(SalesforceParentId.class)) {
+                    map.put(field, new SfAccessor(field, field.getAnnotation(SalesforceParentId.class)));
                 } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
-                    result.put(field, new SfAccessor(field, field.getAnnotation(SalesforceRelation.class)));
+                    map.put(field, new SfAccessor(field, field.getAnnotation(SalesforceRelation.class)));
                 }
             }
 
@@ -82,7 +86,7 @@ public class MappingRegistry {
                 break;
             }
         }
-        return result;
+        return objectAccessor;
     }
 
     private static String buildBaseQuery(Class<?> type) {
@@ -124,6 +128,7 @@ public class MappingRegistry {
     private static String getFieldSequence(Class<?> type, String allias) {
         StringBuilder result = new StringBuilder();
         Map<Field, SfAccessor> accessors = getAccessors(type, SalesforceField.class);
+        accessors.putAll(getAccessors(type, SalesforceParentId.class));
         int position = 0;
         for (Map.Entry<Field, SfAccessor> accessorEntry : accessors.entrySet()) {
             if (StringUtils.isNotBlank(allias)) {
