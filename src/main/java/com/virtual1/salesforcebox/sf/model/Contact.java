@@ -5,7 +5,7 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 import org.apache.commons.lang.StringUtils;
 
-@SalesforceObject(table = "Contact", type = "Contact", staticClause = "Left_the_Company__c = false")
+@SalesforceObject(table = "Contact", staticClause = "Left_the_Company__c = false")
 public class Contact extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 

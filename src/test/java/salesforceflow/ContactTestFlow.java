@@ -46,7 +46,7 @@ public class ContactTestFlow extends AbstractTestFlow {
         contact.setDepartment("Department");
         contact.setAccountId(ACCOUNT_ID);
 
-        String id = getSalesforceService().createContact(contact);
+        String id = getSalesforceService().create(contact);
         contact.setId(id);
         Assert.assertNotNull(id);
         try {
@@ -73,7 +73,7 @@ public class ContactTestFlow extends AbstractTestFlow {
         contact.setDepartment("Department1");
         contact.setAccountId(null);
 
-        getSalesforceService().updateContact(contact);
+        getSalesforceService().update(contact);
         checkInSalesforce(contact);
         return contact;
     }

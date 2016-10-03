@@ -13,8 +13,6 @@ import java.lang.annotation.Target;
 public @interface SalesforceObject {
     String table();
 
-    String type() default "";
-
     String staticClause() default "";
 
 }

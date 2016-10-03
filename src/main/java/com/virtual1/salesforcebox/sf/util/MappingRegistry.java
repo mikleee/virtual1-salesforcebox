@@ -7,6 +7,8 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import com.virtual1.salesforcebox.sf.model.Account;
 import com.virtual1.salesforcebox.sf.model.Contact;
 import com.virtual1.salesforcebox.sf.model.EndCustomer;
+import com.virtual1.salesforcebox.sf.model.Exchange;
+import com.virtual1.salesforcebox.sf.model.Site;
 import com.virtual1.salesforcebox.sf.model.User;
 import org.apache.commons.lang.StringUtils;
 
@@ -26,6 +28,8 @@ public class MappingRegistry {
         add(Account.class);
         add(Contact.class);
         add(EndCustomer.class);
+        add(Exchange.class);
+        add(Site.class);
         add(User.class);
     }};
 
@@ -94,20 +98,13 @@ public class MappingRegistry {
         String fieldSequence = getFieldSequence(type);
         String staticClause = type.getAnnotation(SalesforceObject.class).staticClause();
 
-        StringBuilder result = new StringBuilder()
-                .append("SELECT ")
-                .append(fieldSequence)
-                .append(" FROM ")
-                .append(table);
+        SfQueryBuilder builder = SfQueryBuilder.select(fieldSequence, table);
 
         if (StringUtils.isNotBlank(staticClause)) {
-            result
-                    .append(" WHERE ")
-                    .append(staticClause)
-                    .append(" ");
+            builder.where(staticClause);
         }
 
-        return result.toString();
+        return builder.toString();
     }
 
     private static String getFieldSequence(Class<?> type) {
@@ -118,8 +115,9 @@ public class MappingRegistry {
 
         Map<Field, SfAccessor> accessors = getAccessors(type, SalesforceRelation.class);
         for (Map.Entry<Field, SfAccessor> entry : accessors.entrySet()) {
-            String fieldSequence = getFieldSequence(entry.getKey().getType(), entry.getValue().getSfField());
-            result.append(" ,").append(fieldSequence);
+            String sfRelationName = SfQueryBuilder.normalizeRelationField(entry.getValue().getSfField());
+            String fieldSequence = getFieldSequence(entry.getKey().getType(), sfRelationName);
+            result.append(", ").append(fieldSequence);
         }
 
         return result.toString();

@@ -119,13 +119,13 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public String createContact(Contact contact) {
-        return create(contact);
+    public String create(Contact contact) {
+        return createObject(contact);
     }
 
     @Override
-    public String updateContact(Contact contact) {
-        return update(contact);
+    public String update(Contact contact) {
+        return updateObject(contact);
     }
 
     @Override
@@ -151,13 +151,63 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public String createEndCustomer(EndCustomer endCustomer) {
-        return create(endCustomer);
+    public String create(EndCustomer endCustomer) {
+        return createObject(endCustomer);
     }
 
     @Override
-    public String updateEndCustomer(EndCustomer endCustomer) {
-        return update(endCustomer);
+    public String update(EndCustomer endCustomer) {
+        return updateObject(endCustomer);
+    }
+
+    @Override
+    public Exchange getExchange(String id) {
+        return findById(Exchange.class, id);
+    }
+
+    @Override
+    public Exchange getExchangeByName(String name) {
+        String query = SfQueryBuilder.queryFor(Exchange.class)
+                .where("Name", name) // TODO: 03.10.16 which field
+                .toString();
+        return retrieveOne(query, Exchange.class);
+    }
+
+    @Override
+    public String create(Exchange exchange) {
+        return createObject(exchange);
+    }
+
+    @Override
+    public Site getSite(String id) {
+        return findById(Site.class, id);
+    }
+
+    @Override
+    public List<Site> getSites(String accountId) {
+        String query = SfQueryBuilder.queryFor(Site.class)
+                .where("End_Customer_Name__r.Account_Name__c", accountId)
+                .toString();
+        return retrieveAll(query, Site.class);
+    }
+
+    @Override
+    public List<Site> getEndCustomersSitesByName(String endCustomerId, String siteName) {
+        String query = SfQueryBuilder.queryFor(Site.class)
+                .where("End_Customer_Name__c", endCustomerId)
+                .and("Name", siteName)
+                .toString();
+        return retrieveAll(query, Site.class);
+    }
+
+    @Override
+    public String create(Site site) {
+        return createObject(site);
+    }
+
+    @Override
+    public String update(Site site) {
+        return updateObject(site);
     }
 
     public void testConnection() {
@@ -517,33 +567,8 @@ public class SalesforceService implements SalesforceApi {
     // ------------------------
 
 
-    // ------------------------ end customer ------------------------
-
-
-    // -----------------------------
-
-
     // ------------------------ exchange ------------------------
 
-    public Exchange getExchange(String id) {
-        String query = format("SELECT %s FROM Exchange__c WHERE Id='%s'", EXCHANGE_FIELDS, id);
-        return retrieveExchange(query);
-    }
-
-    public Exchange getExchangeByName(String name) {
-        String query = format("SELECT %s FROM Exchange__c WHERE Name='%s'", EXCHANGE_FIELDS, name);
-        return retrieveExchange(query);
-    }
-
-    private Exchange retrieveExchange(String query) {
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertExchange(sObject);
-    }
-
-    public String createExchangeCode(Exchange exchange) {
-        SObject sfObject = converter.convert(exchange);
-        return createOld(sfObject, exchange);
-    }
 
     // -----------------------------
 
@@ -784,40 +809,6 @@ public class SalesforceService implements SalesforceApi {
 
     // ------------------------ site ------------------------
 
-    public List<Site> getSites(String accountId) {
-        String query = format("SELECT %s FROM Site__c WHERE End_Customer_Name__r.Account_Name__c = '%s'", SITE_FIELDS, accountId);
-        return retrieveSites(query);
-    }
-
-    public List<Site> getSitesByName(String endCustomerId, String siteName) {
-        String query = format("SELECT %s FROM Site__c WHERE End_Customer_Name__r.Id = '%s' and Name = '%s'", SITE_FIELDS, endCustomerId, escapeSOQL(siteName));
-        return retrieveSites(query);
-    }
-
-    private List<Site> retrieveSites(String query) {
-        List<Site> result = new ArrayList<>();
-        for (SObject sObject : retrieveAll(query)) {
-            Site site = converter.convertSite(sObject);
-            result.add(site);
-        }
-        return result;
-    }
-
-    public Site getSite(String siteId) {
-        String query = format("SELECT %s FROM Site__c  WHERE Id = '%s'", SITE_FIELDS, siteId);
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertSite(sObject);
-    }
-
-    public String createSite(Site site) {
-        SObject sfObject = converter.convert(site);
-        return createOld(sfObject, site);
-    }
-
-    public String updateSite(Site site) {
-        SObject sfObject = converter.convert(site);
-        return update(sfObject, site);
-    }
 
     // -----------------------------
 
@@ -1067,12 +1058,12 @@ public class SalesforceService implements SalesforceApi {
         return id;
     }
 
-    private String create(Object o) {
+    private String createObject(Object o) {
         SObject sObject = objectConverter.convert(o);
         return dataSource.create(sObject);
     }
 
-    private String update(Object o) {
+    private String updateObject(Object o) {
         SObject sObject = objectConverter.convert(o);
         return dataSource.update(sObject);
     }

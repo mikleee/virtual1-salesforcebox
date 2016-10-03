@@ -37,7 +37,7 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
         endCustomer.setPrtgPassword("Automated test");
         endCustomer.setAccountId(ACCOUNT_ID);
 
-        String id = getSalesforceService().createEndCustomer(endCustomer);
+        String id = getSalesforceService().create(endCustomer);
         endCustomer.setId(id);
         Assert.assertNotNull(id);
         try {
@@ -57,7 +57,7 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
         endCustomer.setPrtgPassword("Automated test 2");
         endCustomer.setAccountId(null);
 
-        getSalesforceService().updateEndCustomer(endCustomer);
+        getSalesforceService().update(endCustomer);
         checkIsSalesforce(endCustomer);
         return endCustomer;
     }

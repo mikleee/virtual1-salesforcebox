@@ -3,6 +3,8 @@ package com.virtual1.salesforcebox.sf;
 import com.virtual1.salesforcebox.sf.model.Account;
 import com.virtual1.salesforcebox.sf.model.Contact;
 import com.virtual1.salesforcebox.sf.model.EndCustomer;
+import com.virtual1.salesforcebox.sf.model.Exchange;
+import com.virtual1.salesforcebox.sf.model.Site;
 import com.virtual1.salesforcebox.sf.model.User;
 
 import java.util.List;
@@ -22,9 +24,9 @@ public interface SalesforceApi {
 
     List<Contact> getContactsByRole(String accountId, String role);
 
-    String createContact(Contact contact);
+    String create(Contact contact);
 
-    String updateContact(Contact contact);
+    String update(Contact contact);
 
     EndCustomer getEndCustomer(String id);
 
@@ -32,9 +34,25 @@ public interface SalesforceApi {
 
     List<EndCustomer> getEndCustomers(String accountId);
 
-    String createEndCustomer(EndCustomer endCustomer);
+    String create(EndCustomer endCustomer);
 
-    String updateEndCustomer(EndCustomer endCustomer);
+    String update(EndCustomer endCustomer);
+
+    Exchange getExchange(String id);
+
+    Exchange getExchangeByName(String name);
+
+    String create(Exchange exchange);
+
+    Site getSite(String id);
+
+    List<Site> getSites(String accountId);
+
+    List<Site> getEndCustomersSitesByName(String endCustomerId, String siteName);
+
+    String create(Site site);
+
+    String update(Site site);
 
     void testConnection();
 

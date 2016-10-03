@@ -1,27 +1,104 @@
 package com.virtual1.salesforcebox.sf.model;
 
+import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 
+@SalesforceObject(table = "Site__c")
 public class Site extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
+    @SalesforceField(name = "Name")
+    private String name;
+    @SalesforceField(name = "Address_c__c")
     private String address;
-    private String phone;
+    @SalesforceField(name = "Post_Code__c")
     private String postCode;
+    @SalesforceField(name = "Phone__c")
+    private String phone;
+    @SalesforceField(name = "Site_Contact_End__c")
     private String siteContact;
+    @SalesforceField(name = "Unit_Building_number__c")
     private String unitBuildingNumber;
+    @SalesforceField(name = "Building_name__c")
     private String buildingName;
+    @SalesforceField(name = "Street_number__c")
     private String streetNumber;
+    @SalesforceField(name = "Street_name__c")
     private String streetName;
+    @SalesforceField(name = "Town_City__c")
     private String townCity;
+    @SalesforceField(name = "County__c")
     private String county;
+    @SalesforceField(name = "Address_Ref__c")
     private String addressRef;
+    @SalesforceField(name = "District_Code__c")
     private String districtCode;
+    @SalesforceField(name = "Qualifier__c")
     private String qualifier;
-    private String buildConstructedBefore;
+    @SalesforceField(name = "Building_Constructed_before_year_2000__c")
+    private String buildConstructedBefore2000;
+    @SalesforceField(name = "Asbestos_Register_Available_on_Site__c")
     private String asbestos;
-    @SalesforceRelation
+    @SalesforceRelation(name = "End_Customer_Name__c")
     private EndCustomer endCustomer = new EndCustomer();
+
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getAddressRef() {
+        return addressRef;
+    }
+
+    public void setAddressRef(String addressRef) {
+        this.addressRef = addressRef;
+    }
+
+    public String getAsbestos() {
+        return asbestos;
+    }
+
+    public void setAsbestos(String asbestos) {
+        this.asbestos = asbestos;
+    }
+
+    public String getBuildConstructedBefore2000() {
+        return buildConstructedBefore2000;
+    }
+
+    public void setBuildConstructedBefore2000(String buildConstructedBefore2000) {
+        this.buildConstructedBefore2000 = buildConstructedBefore2000;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
+    }
+
+    public String getCounty() {
+        return county;
+    }
+
+    public void setCounty(String county) {
+        this.county = county;
+    }
+
+    public String getDistrictCode() {
+        return districtCode;
+    }
+
+    public void setDistrictCode(String districtCode) {
+        this.districtCode = districtCode;
+    }
 
     public EndCustomer getEndCustomer() {
         return endCustomer;
@@ -31,12 +108,12 @@ public class Site extends BaseSalesforceObject {
         this.endCustomer = endCustomer;
     }
 
-    public String getAddress() {
-        return address;
+    public String getName() {
+        return name;
     }
 
-    public void setAddress(String address) {
-        this.address = address;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getPhone() {
@@ -55,52 +132,20 @@ public class Site extends BaseSalesforceObject {
         this.postCode = postCode;
     }
 
+    public String getQualifier() {
+        return qualifier;
+    }
+
+    public void setQualifier(String qualifier) {
+        this.qualifier = qualifier;
+    }
+
     public String getSiteContact() {
         return siteContact;
     }
 
     public void setSiteContact(String siteContact) {
         this.siteContact = siteContact;
-    }
-
-    public String getBuildConstructedBefore() {
-        return buildConstructedBefore;
-    }
-
-    public void setBuildConstructedBefore(String buildConstructedBefore) {
-        this.buildConstructedBefore = buildConstructedBefore;
-    }
-
-    public String getAsbestos() {
-        return asbestos;
-    }
-
-    public void setAsbestos(String asbestos) {
-        this.asbestos = asbestos;
-    }
-
-    public String getUnitBuildingNumber() {
-        return unitBuildingNumber;
-    }
-
-    public void setUnitBuildingNumber(String unitBuildingNumber) {
-        this.unitBuildingNumber = unitBuildingNumber;
-    }
-
-    public String getBuildingName() {
-        return buildingName;
-    }
-
-    public void setBuildingName(String buildingName) {
-        this.buildingName = buildingName;
-    }
-
-    public String getStreetNumber() {
-        return streetNumber;
-    }
-
-    public void setStreetNumber(String streetNumber) {
-        this.streetNumber = streetNumber;
     }
 
     public String getStreetName() {
@@ -111,6 +156,14 @@ public class Site extends BaseSalesforceObject {
         this.streetName = streetName;
     }
 
+    public String getStreetNumber() {
+        return streetNumber;
+    }
+
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
+    }
+
     public String getTownCity() {
         return townCity;
     }
@@ -119,35 +172,11 @@ public class Site extends BaseSalesforceObject {
         this.townCity = townCity;
     }
 
-    public String getCounty() {
-        return county;
+    public String getUnitBuildingNumber() {
+        return unitBuildingNumber;
     }
 
-    public void setCounty(String county) {
-        this.county = county;
-    }
-
-    public String getAddressRef() {
-        return addressRef;
-    }
-
-    public void setAddressRef(String addressRef) {
-        this.addressRef = addressRef;
-    }
-
-    public String getDistrictCode() {
-        return districtCode;
-    }
-
-    public void setDistrictCode(String districtCode) {
-        this.districtCode = districtCode;
-    }
-
-    public String getQualifier() {
-        return qualifier;
-    }
-
-    public void setQualifier(String qualifier) {
-        this.qualifier = qualifier;
+    public void setUnitBuildingNumber(String unitBuildingNumber) {
+        this.unitBuildingNumber = unitBuildingNumber;
     }
 }

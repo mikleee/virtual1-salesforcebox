@@ -34,7 +34,7 @@ public class SfObjectConverter {
     public SObject convert(Object source) {
         SObject sObject = new SObject();
         Class<?> type = source.getClass();
-        sObject.setType(type.getAnnotation(SalesforceObject.class).type());
+        sObject.setType(type.getAnnotation(SalesforceObject.class).table());
 
         Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type).getAccessors();
         for (Field field : accessors.keySet()) {
@@ -93,6 +93,7 @@ public class SfObjectConverter {
         } else if (type == Boolean.class || type == boolean.class) {
             return getBoolean(sObject, key);
         } else if (type.isAnnotationPresent(SalesforceObject.class)) {
+            key = SfQueryBuilder.normalizeRelationField(key);
             XmlObject child = sObject.getChild(key);
             return child != null && child.hasChildren() ? convert(child, type) : null;
         }

@@ -18,6 +18,20 @@ public class SfQueryBuilder {
         return new SfQueryBuilder(baseQuery);
     }
 
+    public static SfQueryBuilder select(String fieldSequence, String fromTable) {
+        return new SfQueryBuilder("SELECT " + fieldSequence + " FROM " + fromTable);
+    }
+
+    public static String normalizeRelationField(String fieldKey) {
+        final String customRelationMarker = "__c";
+        final String customRelationPath = "__r";
+
+        if (fieldKey.endsWith(customRelationMarker)) {
+            fieldKey = fieldKey.substring(0, fieldKey.length() - customRelationMarker.length()) + customRelationPath;
+        }
+        return fieldKey;
+    }
+
     public SfQueryBuilder where(String where) {
         if (isWithoutCondition()) {
             query.append(" WHERE ").append(where);

@@ -3,8 +3,6 @@ package com.virtual1.salesforcebox.sf;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.bind.XmlObject;
 import com.sforce.ws.util.Base64;
-import org.apache.commons.lang.BooleanUtils;
-import org.apache.commons.lang.StringUtils;
 import com.virtual1.salesforcebox.sf.model.Access;
 import com.virtual1.salesforcebox.sf.model.Account;
 import com.virtual1.salesforcebox.sf.model.AccountPbt;
@@ -38,6 +36,8 @@ import com.virtual1.salesforcebox.sf.model.VLAN;
 import com.virtual1.salesforcebox.sf.model.VPN;
 import com.virtual1.salesforcebox.sf.model.VPNItem;
 import com.virtual1.salesforcebox.sf.model.Virtual1DatacentrePostcode;
+import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.math.BigDecimal;
@@ -1375,7 +1375,7 @@ public class ConvertingSFObjects {
         sfObject.setField("Address_Ref__c", site.getAddressRef());
         sfObject.setField("Qualifier__c", site.getQualifier());
         sfObject.setField("District_Code__c", site.getDistrictCode());
-        sfObject.setField("Building_Constructed_before_year_2000__c", site.getBuildConstructedBefore());
+        sfObject.setField("Building_Constructed_before_year_2000__c", site.getBuildConstructedBefore2000());
         sfObject.setField("Asbestos_Register_Available_on_Site__c", site.getAsbestos());
 
 
@@ -1447,7 +1447,7 @@ public class ConvertingSFObjects {
         site.setQualifier((String) sObject.getField("Qualifier__c"));
         site.setDistrictCode((String) sObject.getField("District_Code__c"));
 
-        site.setBuildConstructedBefore((String) sObject.getField("Building_Constructed_before_year_2000__c"));
+        site.setBuildConstructedBefore2000((String) sObject.getField("Building_Constructed_before_year_2000__c"));
         site.setAsbestos((String) sObject.getField("Asbestos_Register_Available_on_Site__c"));
 
         XmlObject end_customer_name__r = sObject.getChild("End_Customer_Name__r");

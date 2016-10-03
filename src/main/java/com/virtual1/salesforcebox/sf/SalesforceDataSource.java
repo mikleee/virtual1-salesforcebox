@@ -3,6 +3,7 @@ package com.virtual1.salesforcebox.sf;
 import com.sforce.soap.partner.Connector;
 import com.sforce.soap.partner.DeleteResult;
 import com.sforce.soap.partner.DescribeSObjectResult;
+import com.sforce.soap.partner.Error;
 import com.sforce.soap.partner.Field;
 import com.sforce.soap.partner.PartnerConnection;
 import com.sforce.soap.partner.QueryResult;
@@ -11,7 +12,6 @@ import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import com.sforce.ws.SessionRenewer;
-import com.virtual1.salesforcebox.sf.SalesforceException;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
@@ -200,7 +200,11 @@ final class SalesforceDataSource {
 
     private void validateResult(com.sforce.soap.partner.Error[] errors) {
         if (errors.length > 0) {
-            throw new SalesforceException(errors[0].getMessage());
+            StringBuilder report = new StringBuilder();
+            for (Error error : errors) {
+                report.append(error.getStatusCode()).append(": ").append(error.getMessage()).append("; ");
+            }
+            throw new SalesforceException(report.toString());
         }
     }
 

@@ -13,6 +13,9 @@ public class AbstractTestFlow {
     final static String ACCOUNT_ID = "0013000000pI4zg";
     final static String CONTACT_ID = "003a000002Nfv4t";
     final static String END_CUSTOMER_ID = "a0cS0000001i5Fq";
+    final static String END_CUSTOMER_ID_2 = "a0cS0000001i5Ge";
+    final static String EXCHANGE_ID = "a0Ta000000943CpEAI";
+    final static String SITE_ID = "a08S000000CV8lG";
 
     private static SalesforceService salesforceService;
 
@@ -43,5 +46,9 @@ public class AbstractTestFlow {
 
     String formatAccountId(String id) {
         return id == null ? null : id.replaceAll("AAC", "");
+    }
+
+    String formatEndCustomerId(String id) {
+        return id == null ? null : id.replaceAll("IAI", "");
     }
 }
