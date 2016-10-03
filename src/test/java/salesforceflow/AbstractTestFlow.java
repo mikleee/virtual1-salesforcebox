@@ -11,10 +11,12 @@ import java.util.List;
  */
 public class AbstractTestFlow {
     final static String ACCOUNT_ID = "0013000000pI4zg";
+    final static String ANALOGUE_LINE_ID = "a0Qa000000L8ItbEAF";
     final static String CONTACT_ID = "003a000002Nfv4t";
     final static String END_CUSTOMER_ID = "a0cS0000001i5Fq";
     final static String END_CUSTOMER_ID_2 = "a0cS0000001i5Ge";
     final static String EXCHANGE_ID = "a0Ta000000943CpEAI";
+    final static String RECORD_TYPE_ID = "01230000000rpB9AAI";
     final static String SITE_ID = "a08S000000CV8lG";
 
     private static SalesforceService salesforceService;

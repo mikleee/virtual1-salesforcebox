@@ -1,9 +1,6 @@
-
 import com.virtual1.salesforcebox.sf.SalesforceService;
-import com.virtual1.salesforcebox.sf.model.Account;
 import com.virtual1.salesforcebox.sf.model.Contact;
 import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.User;
 import com.virtual1.salesforcebox.sf.util.MappingRegistry;
 
 /**
@@ -17,7 +14,7 @@ public class Main {
     private static String identifier = "misha test";
 
     public static void main(String[] args) {
-       new MappingRegistry();
+        new MappingRegistry();
         SalesforceService salesforceService = new SalesforceService(userName, password, token, sandbox, identifier);
 //        Account account = salesforceService.getAccount("0013000000pI4zg");
 //

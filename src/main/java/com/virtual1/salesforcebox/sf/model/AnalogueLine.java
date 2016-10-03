@@ -1,33 +1,65 @@
 package com.virtual1.salesforcebox.sf.model;
 
 
+import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
+
 import java.util.Date;
 
+@SalesforceObject(table = "Analogue_Line__c")
 public class AnalogueLine extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-    private String accessID; //Access_ID__c
-    private String annualRentalCost; //Annual_Rental_Cost__c (blank for now)
-    private Integer carrierContractMths; //Carrier_Contract_mths__c
-    private Date carrierEndDate; //Carrier_End_Date__c (derived field on salesforcebox)
-    private Date carrierLiveDate; //Carrier_Live_Date__c (blank for now)
-    private String carrierProductName; //Carrier_Product_Name__c
-    private String carrierProvider; //Carrier_Provider__c
-    private String carrierServiceID; //Carrier_Service_ID__c (blank for now)
-    private String endCustomerName; //End_Customer_Name__c (derived field on salesforcebox)
-    private String oneOffCost; //One_Off_Cost__c (blank for now)
-    private String projectNumber; //Project_Number__c
-    private String projectStatus; //Project_Status__c (derived field on salesforcebox)
-    private String siteName; //Site_Name__c (derived field on salesforcebox)
-    private String status; //Status__c
-    private boolean callBarring;    // Call_Barring__c
+    @SalesforceField(name = "Name")
+    private String name;
+    @SalesforceField(name = "Annual_Rental_Cost__c")
+    private String annualRentalCost;
+    @SalesforceField(name = "Carrier_Contract_mths__c")
+    private Integer carrierContractMths;
+    @SalesforceField(name = "Carrier_End_Date__c")
+    private Date carrierEndDate;
+    @SalesforceField(name = "Carrier_Live_Date__c")
+    private Date carrierLiveDate;
+    @SalesforceField(name = "Carrier_Product_Name__c")
+    private String carrierProductName;
+    @SalesforceField(name = "Carrier_Service_ID__c")
+    private String carrierServiceId;
+    @SalesforceField(name = "End_Customer_Name__c")
+    private String endCustomerName;
+    @SalesforceField(name = "One_Off_Cost__c")
+    private String oneOffCost;
+    @SalesforceField(name = "Project_Status__c")
+    private String projectStatus;
+    @SalesforceField(name = "Site_Name__c")
+    private String siteName;
+    @SalesforceField(name = "Status__c")
+    private String status;
+    @SalesforceField(name = "Call_Barring__c")
+    private boolean callBarring;
+    @SalesforceParentId(name = "Access_ID__c")
+    private String accessId;
+    @SalesforceParentId(name = "Project_Number__c")
+    private String projectId;
+    @SalesforceRelation(name = "Carrier_Provider__c")
+    private Account carrierProvider;
 
-    public String getAccessID() {
-        return accessID;
+
+    public String getName() {
+        return name;
     }
 
-    public void setAccessID(String accessID) {
-        this.accessID = accessID;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getAccessId() {
+        return accessId;
+    }
+
+    public void setAccessId(String accessID) {
+        this.accessId = accessID;
     }
 
     public String getAnnualRentalCost() {
@@ -72,20 +104,20 @@ public class AnalogueLine extends BaseSalesforceObject {
         this.carrierProductName = carrierProductName;
     }
 
-    public String getCarrierProvider() {
+    public Account getCarrierProvider() {
         return carrierProvider;
     }
 
-    public void setCarrierProvider(String carrierProvider) {
+    public void setCarrierProvider(Account carrierProvider) {
         this.carrierProvider = carrierProvider;
     }
 
-    public String getCarrierServiceID() {
-        return carrierServiceID;
+    public String getCarrierServiceId() {
+        return carrierServiceId;
     }
 
-    public void setCarrierServiceID(String carrierServiceID) {
-        this.carrierServiceID = carrierServiceID;
+    public void setCarrierServiceId(String carrierServiceId) {
+        this.carrierServiceId = carrierServiceId;
     }
 
     public String getEndCustomerName() {
@@ -104,12 +136,12 @@ public class AnalogueLine extends BaseSalesforceObject {
         this.oneOffCost = oneOffCost;
     }
 
-    public String getProjectNumber() {
-        return projectNumber;
+    public String getProjectId() {
+        return projectId;
     }
 
-    public void setProjectNumber(String projectNumber) {
-        this.projectNumber = projectNumber;
+    public void setProjectId(String projectId) {
+        this.projectId = projectId;
     }
 
     public String getProjectStatus() {

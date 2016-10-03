@@ -1,13 +1,7 @@
 package com.virtual1.salesforcebox.sf;
 
-import com.sforce.soap.partner.Connector;
-import com.sforce.soap.partner.DeleteResult;
-import com.sforce.soap.partner.DescribeSObjectResult;
+import com.sforce.soap.partner.*;
 import com.sforce.soap.partner.Error;
-import com.sforce.soap.partner.Field;
-import com.sforce.soap.partner.PartnerConnection;
-import com.sforce.soap.partner.QueryResult;
-import com.sforce.soap.partner.SaveResult;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;

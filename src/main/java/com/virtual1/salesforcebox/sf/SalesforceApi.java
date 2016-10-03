@@ -1,11 +1,6 @@
 package com.virtual1.salesforcebox.sf;
 
-import com.virtual1.salesforcebox.sf.model.Account;
-import com.virtual1.salesforcebox.sf.model.Contact;
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.Exchange;
-import com.virtual1.salesforcebox.sf.model.Site;
-import com.virtual1.salesforcebox.sf.model.User;
+import com.virtual1.salesforcebox.sf.model.*;
 
 import java.util.List;
 
@@ -17,6 +12,12 @@ public interface SalesforceApi {
     Account getAccount(String id);
 
     Account getAccountByName(String name);
+
+    AnalogueLine getAnalogueLine(String id);
+
+    List<AnalogueLine> getAnalogueLinesByAccess(String accessId);
+
+    String createAnalogueLine(AnalogueLine analogueLine);
 
     Contact getContact(String id);
 
@@ -45,6 +46,10 @@ public interface SalesforceApi {
     String create(Exchange exchange);
 
     Site getSite(String id);
+
+    RecordType getRecordType(String id);
+
+    RecordType getRecordTypeByObjectTypeAndName(String objectType, String name);
 
     List<Site> getSites(String accountId);
 

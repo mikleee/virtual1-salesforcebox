@@ -92,6 +92,8 @@ public class SfObjectConverter {
             return getDate(sObject, key);
         } else if (type == Boolean.class || type == boolean.class) {
             return getBoolean(sObject, key);
+        } else if (type == Integer.class || type == int.class) {
+            return getInteger(sObject, key);
         } else if (type.isAnnotationPresent(SalesforceObject.class)) {
             key = SfQueryBuilder.normalizeRelationField(key);
             XmlObject child = sObject.getChild(key);
@@ -113,6 +115,11 @@ public class SfObjectConverter {
     private boolean getBoolean(XmlObject sObject, String fieldName) {
         String str = (String) sObject.getField(fieldName);
         return Boolean.parseBoolean(str);
+    }
+
+    private Integer getInteger(XmlObject sObject, String fieldName) {
+        String str = (String) sObject.getField(fieldName);
+        return Double.valueOf(str).intValue();
     }
 
     private byte[] getBytes(XmlObject sObject, String fieldName) {

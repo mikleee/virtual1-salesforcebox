@@ -22,7 +22,7 @@ public enum SubnetIPMask {
 
     public static String getMask(String ip) {
         if (ip != null && ip.contains("/")) {
-            String [] spittedParts = ip.split("/");
+            String[] spittedParts = ip.split("/");
 
             if (spittedParts.length > 1) {
                 String prefix = "/" + spittedParts[1];

@@ -4,12 +4,7 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
-import com.virtual1.salesforcebox.sf.model.Account;
-import com.virtual1.salesforcebox.sf.model.Contact;
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.Exchange;
-import com.virtual1.salesforcebox.sf.model.Site;
-import com.virtual1.salesforcebox.sf.model.User;
+import com.virtual1.salesforcebox.sf.model.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.annotation.Annotation;
@@ -26,9 +21,11 @@ public class MappingRegistry {
 
     private final static List<Class<?>> CONTEXT = new ArrayList<Class<?>>() {{
         add(Account.class);
+        add(AnalogueLine.class);
         add(Contact.class);
         add(EndCustomer.class);
         add(Exchange.class);
+        add(RecordType.class);
         add(Site.class);
         add(User.class);
     }};

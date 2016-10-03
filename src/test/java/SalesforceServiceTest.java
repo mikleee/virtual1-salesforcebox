@@ -1,16 +1,8 @@
-import com.virtual1.salesforcebox.sf.model.Account;
-import com.virtual1.salesforcebox.sf.model.Contact;
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.Exchange;
-import com.virtual1.salesforcebox.sf.model.Site;
+import com.virtual1.salesforcebox.sf.model.*;
 import com.virtual1.salesforcebox.sf.util.MappingRegistry;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import salesforceflow.AccountTestFlow;
-import salesforceflow.ContactTestFlow;
-import salesforceflow.EndCustomerTestFlow;
-import salesforceflow.ExchangeTestFlow;
-import salesforceflow.SiteTestFlow;
+import salesforceflow.*;
 
 /**
  * @author Mikhail Tkachenko created on 30.09.16 9:46
@@ -19,9 +11,11 @@ import salesforceflow.SiteTestFlow;
 public class SalesforceServiceTest {
 
     private AccountTestFlow accountTestFlow = new AccountTestFlow();
+    private AnalogueLineTestFlow analogueLineTestFlow = new AnalogueLineTestFlow();
     private ContactTestFlow contactTestFlow = new ContactTestFlow();
     private EndCustomerTestFlow endCustomerTestFlow = new EndCustomerTestFlow();
     private ExchangeTestFlow exchangeTestFlow = new ExchangeTestFlow();
+    private RecordTypeTestFlow recordTypeTestFlow = new RecordTypeTestFlow();
     private SiteTestFlow siteTestFlow = new SiteTestFlow();
 
     @BeforeClass
@@ -40,6 +34,12 @@ public class SalesforceServiceTest {
         Contact contact = contactTestFlow.findExisting();
         contactTestFlow.findByEmailBasedOnExistingContact(contact);
         contactTestFlow.findByRoleBasedOnExistingContact(contact);
+    }
+
+    @Test
+    public void retrieveAnalogueLine() {
+        AnalogueLine analogueLine = analogueLineTestFlow.findExisting();
+        analogueLineTestFlow.findByAssetBasedOnExistingAnalogueLine(analogueLine);
     }
 
     @Test
@@ -73,6 +73,12 @@ public class SalesforceServiceTest {
     public void modifyExchange() {
         Exchange exchange = exchangeTestFlow.create();
         endCustomerTestFlow.delete(exchange.getId());
+    }
+
+    @Test
+    public void retrieveRecordType() {
+        RecordType recordType = recordTypeTestFlow.findExisting();
+        recordTypeTestFlow.findByObjectTypeAndNameBasedOnExistingRecordType(recordType);
     }
 
     @Test

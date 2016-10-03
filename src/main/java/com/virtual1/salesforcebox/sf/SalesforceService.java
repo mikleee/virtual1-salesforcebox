@@ -3,52 +3,14 @@ package com.virtual1.salesforcebox.sf;
 import com.sforce.soap.partner.Field;
 import com.sforce.soap.partner.PicklistEntry;
 import com.sforce.soap.partner.sobject.SObject;
-import com.virtual1.salesforcebox.sf.model.Access;
-import com.virtual1.salesforcebox.sf.model.Account;
-import com.virtual1.salesforcebox.sf.model.AccountPbt;
-import com.virtual1.salesforcebox.sf.model.AnalogueLine;
-import com.virtual1.salesforcebox.sf.model.Asset;
-import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
-import com.virtual1.salesforcebox.sf.model.Case;
-import com.virtual1.salesforcebox.sf.model.CaseComment;
-import com.virtual1.salesforcebox.sf.model.CaseContactRole;
-import com.virtual1.salesforcebox.sf.model.ChargeType;
-import com.virtual1.salesforcebox.sf.model.CloudProvisioning;
-import com.virtual1.salesforcebox.sf.model.Component;
-import com.virtual1.salesforcebox.sf.model.Contact;
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.Exchange;
-import com.virtual1.salesforcebox.sf.model.FeedItem;
-import com.virtual1.salesforcebox.sf.model.InnerVLAN;
-import com.virtual1.salesforcebox.sf.model.NNI;
-import com.virtual1.salesforcebox.sf.model.NetOpsCase;
-import com.virtual1.salesforcebox.sf.model.Opportunity;
-import com.virtual1.salesforcebox.sf.model.PartnerConnectWrapper;
-import com.virtual1.salesforcebox.sf.model.PricingEntry;
-import com.virtual1.salesforcebox.sf.model.Project;
-import com.virtual1.salesforcebox.sf.model.Quote;
-import com.virtual1.salesforcebox.sf.model.Radius;
-import com.virtual1.salesforcebox.sf.model.RecordType;
-import com.virtual1.salesforcebox.sf.model.RetailPortalLead;
-import com.virtual1.salesforcebox.sf.model.SFIPJustDevice;
-import com.virtual1.salesforcebox.sf.model.SfAttachment;
-import com.virtual1.salesforcebox.sf.model.SfEmail;
-import com.virtual1.salesforcebox.sf.model.SfIpJust;
-import com.virtual1.salesforcebox.sf.model.Site;
-import com.virtual1.salesforcebox.sf.model.User;
-import com.virtual1.salesforcebox.sf.model.VPN;
-import com.virtual1.salesforcebox.sf.model.Virtual1DatacentrePostcode;
+import com.virtual1.salesforcebox.sf.model.*;
 import com.virtual1.salesforcebox.sf.util.SfObjectConverter;
 import com.virtual1.salesforcebox.sf.util.SfQueryBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.virtual1.salesforcebox.sf.QueryTemplates.*;
 import static java.lang.String.format;
@@ -93,6 +55,25 @@ public class SalesforceService implements SalesforceApi {
     public Account getAccountByName(String name) {
         String query = SfQueryBuilder.queryFor(Account.class).byField("Name", name);
         return retrieveOne(query, Account.class);
+    }
+
+    @Override
+    public AnalogueLine getAnalogueLine(String id) {
+        return findById(AnalogueLine.class, id);
+    }
+
+    @Override
+    public List<AnalogueLine> getAnalogueLinesByAccess(String accessId) {
+        String query = SfQueryBuilder.queryFor(AnalogueLine.class)
+                .where("Access_ID__c", accessId)
+                .toString();
+        return retrieveAll(query, AnalogueLine.class);
+    }
+
+    @Override
+    public String createAnalogueLine(AnalogueLine analogueLine) {
+        SObject sfObject = converter.convert(analogueLine);
+        return createOld(sfObject, analogueLine);
     }
 
     @Override
@@ -181,6 +162,20 @@ public class SalesforceService implements SalesforceApi {
     @Override
     public Site getSite(String id) {
         return findById(Site.class, id);
+    }
+
+    @Override
+    public RecordType getRecordType(String id) {
+        return findById(RecordType.class, id);
+    }
+
+    @Override
+    public RecordType getRecordTypeByObjectTypeAndName(String objectType, String name) {
+        String query = SfQueryBuilder.queryFor(RecordType.class)
+                .where("SobjectType", objectType)
+                .and("Name", name)
+                .toString();
+        return retrieveOne(query, RecordType.class);
     }
 
     @Override
@@ -308,26 +303,6 @@ public class SalesforceService implements SalesforceApi {
 
     // ------------------------ analogue line ------------------------
 
-    public AnalogueLine getAnalogueLine(String id) {
-        String query = format("SELECT %s FROM Analogue_Line__c WHERE Id ='%s'", ANALOGUE_LINE_FIELDS, id);
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertAnalogueLine(sObject);
-    }
-
-    public List<AnalogueLine> getAnalogueLineForAccess(String accessId) {
-        String query = format("SELECT %s FROM Analogue_Line__c WHERE Access_ID__c ='%s'", ANALOGUE_LINE_FIELDS, accessId);
-        List<AnalogueLine> analogueLines = new ArrayList<>();
-        for (SObject sObject : retrieveAll(query)) {
-            AnalogueLine analogueLine = converter.convertAnalogueLine(sObject);
-            analogueLines.add(analogueLine);
-        }
-        return analogueLines;
-    }
-
-    public String createAnalogueLine(AnalogueLine analogueLine) {
-        SObject sfObject = converter.convert(analogueLine);
-        return createOld(sfObject, analogueLine);
-    }
 
     // ------------------------
 
@@ -781,38 +756,6 @@ public class SalesforceService implements SalesforceApi {
     // -----------------------------
 
 
-    // ------------------------ record type ------------------------
-
-    @Deprecated
-    public String getRecordTypeId(String objectType, String name) {
-        List<RecordType> recordTypes = getRecordTypes(objectType);
-        for (RecordType recordType : recordTypes) {
-            if (name.equals(recordType.getName())) {
-                return recordType.getId();
-            }
-        }
-        return null;
-    }
-
-    public List<RecordType> getRecordTypes(String objectType) {
-        String query = format("SELECT %s FROM RecordType WHERE SobjectType = '%s' and IsActive = True", RECORD_TYPE_FIELDS, objectType);
-        List<RecordType> result = new ArrayList<>();
-        for (SObject sObject : retrieveAll(query)) {
-            RecordType recordType = converter.convertRecordType(sObject);
-            result.add(recordType);
-        }
-        return result;
-    }
-
-    // -----------------------------
-
-
-    // ------------------------ site ------------------------
-
-
-    // -----------------------------
-
-
     // ------------------------ vpn ------------------------
 
     public VPN getVPNByName(String name) {
@@ -989,6 +932,27 @@ public class SalesforceService implements SalesforceApi {
 
 
     // ------------------------ misc ------------------------
+
+    @Deprecated
+    public String getRecordTypeId(String objectType, String name) {
+        List<RecordType> recordTypes = getRecordTypes(objectType);
+        for (RecordType recordType : recordTypes) {
+            if (name.equals(recordType.getName())) {
+                return recordType.getId();
+            }
+        }
+        return null;
+    }
+
+    public List<RecordType> getRecordTypes(String objectType) {
+        String query = format("SELECT %s FROM RecordType WHERE SobjectType = '%s' and IsActive = True", RECORD_TYPE_FIELDS, objectType);
+        List<RecordType> result = new ArrayList<>();
+        for (SObject sObject : retrieveAll(query)) {
+            RecordType recordType = converter.convertRecordType(sObject);
+            result.add(recordType);
+        }
+        return result;
+    }
 
 
     private SfAttachment getAttachment(String id) {

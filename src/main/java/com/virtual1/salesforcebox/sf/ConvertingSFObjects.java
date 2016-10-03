@@ -3,53 +3,14 @@ package com.virtual1.salesforcebox.sf;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.bind.XmlObject;
 import com.sforce.ws.util.Base64;
-import com.virtual1.salesforcebox.sf.model.Access;
-import com.virtual1.salesforcebox.sf.model.Account;
-import com.virtual1.salesforcebox.sf.model.AccountPbt;
-import com.virtual1.salesforcebox.sf.model.AnalogueLine;
-import com.virtual1.salesforcebox.sf.model.Asset;
-import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
-import com.virtual1.salesforcebox.sf.model.Case;
-import com.virtual1.salesforcebox.sf.model.CaseComment;
-import com.virtual1.salesforcebox.sf.model.CaseContactRole;
-import com.virtual1.salesforcebox.sf.model.ChargeType;
-import com.virtual1.salesforcebox.sf.model.CloudProvisioning;
-import com.virtual1.salesforcebox.sf.model.Component;
-import com.virtual1.salesforcebox.sf.model.Contact;
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.Exchange;
-import com.virtual1.salesforcebox.sf.model.FeedItem;
-import com.virtual1.salesforcebox.sf.model.InnerVLAN;
-import com.virtual1.salesforcebox.sf.model.NNI;
-import com.virtual1.salesforcebox.sf.model.NetOpsCase;
-import com.virtual1.salesforcebox.sf.model.Opportunity;
-import com.virtual1.salesforcebox.sf.model.PricingEntry;
-import com.virtual1.salesforcebox.sf.model.Project;
-import com.virtual1.salesforcebox.sf.model.Radius;
-import com.virtual1.salesforcebox.sf.model.RecordType;
-import com.virtual1.salesforcebox.sf.model.SFIPJustDevice;
-import com.virtual1.salesforcebox.sf.model.SfAttachment;
-import com.virtual1.salesforcebox.sf.model.SfEmail;
-import com.virtual1.salesforcebox.sf.model.SfIpJust;
-import com.virtual1.salesforcebox.sf.model.Site;
-import com.virtual1.salesforcebox.sf.model.VLAN;
-import com.virtual1.salesforcebox.sf.model.VPN;
-import com.virtual1.salesforcebox.sf.model.VPNItem;
-import com.virtual1.salesforcebox.sf.model.Virtual1DatacentrePostcode;
+import com.virtual1.salesforcebox.sf.model.*;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
 import static com.virtual1.salesforcebox.sf.QueryTemplates.escapeSOQL;
 
@@ -171,7 +132,7 @@ public class ConvertingSFObjects {
         SObject sObject = new SObject();
 
         sObject.setType("Analogue_Line__c");
-        sObject.setField("Access_ID__c", analogueLine.getAccessID());
+        sObject.setField("Access_ID__c", analogueLine.getAccessId());
         sObject.setField("Annual_Rental_Cost__c", analogueLine.getAnnualRentalCost());
         sObject.setField("Carrier_Contract_mths__c", analogueLine.getCarrierContractMths());
         sObject.setField("Carrier_End_Date__c", analogueLine.getCarrierEndDate());
@@ -180,7 +141,7 @@ public class ConvertingSFObjects {
         sObject.setField("Carrier_Provider__c", analogueLine.getCarrierProvider());
         sObject.setField("End_Customer_Name__c", analogueLine.getEndCustomerName());
         sObject.setField("One_Off_Cost__c", analogueLine.getOneOffCost());
-        sObject.setField("Project_Number__c", analogueLine.getProjectNumber());
+        sObject.setField("Project_Number__c", analogueLine.getProjectId());
         sObject.setField("Project_Status__c", analogueLine.getProjectStatus());
         sObject.setField("Site_Name__c", analogueLine.getSiteName());
         sObject.setField("Status__c", analogueLine.getStatus());
@@ -1175,7 +1136,7 @@ public class ConvertingSFObjects {
 
     RecordType convertRecordType(XmlObject sObject) {
         RecordType recordType = prepareObject(new RecordType(), sObject);
-        recordType.setsObjectType((String) sObject.getField("SobjectType"));
+        recordType.setSObjectType((String) sObject.getField("SobjectType"));
         recordType.setDescription((String) sObject.getField("Description"));
         return recordType;
     }
