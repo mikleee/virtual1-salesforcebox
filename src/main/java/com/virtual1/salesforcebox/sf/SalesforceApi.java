@@ -22,9 +22,19 @@ public interface SalesforceApi {
 
     List<Contact> getContactsByRole(String accountId, String role);
 
+    String createContact(Contact contact);
+
+    String updateContact(Contact contact);
+
     EndCustomer getEndCustomer(String id);
 
     EndCustomer getEndCustomerByName(String accountId, String name);
+
+    List<EndCustomer> getEndCustomers(String accountId);
+
+    String createEndCustomer(EndCustomer endCustomer);
+
+    String updateEndCustomer(EndCustomer endCustomer);
 
     void testConnection();
 

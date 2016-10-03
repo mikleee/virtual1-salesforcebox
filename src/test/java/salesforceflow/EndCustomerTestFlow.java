@@ -3,12 +3,14 @@ package salesforceflow;
 import com.virtual1.salesforcebox.sf.model.EndCustomer;
 import org.junit.Assert;
 
+import java.util.List;
+
 /**
  * @author Mikhail Tkachenko created on 03.10.16 11:13
  */
 public class EndCustomerTestFlow extends AbstractTestFlow {
 
-    public EndCustomer findExistingEndCustomer() {
+    public EndCustomer findExisting() {
         EndCustomer endCustomer = getSalesforceService().getEndCustomer(END_CUSTOMER_ID);
         Assert.assertNotNull(endCustomer);
         return endCustomer;
@@ -19,6 +21,56 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
         Assert.assertNotNull(endCustomer2);
         assertEquals(endCustomer, endCustomer2);
         return endCustomer2;
+    }
+
+    public List<EndCustomer> getAccountListBasedOnExistingEndCustomer(EndCustomer endCustomer) {
+        List<EndCustomer> endCustomers = getSalesforceService().getEndCustomers(endCustomer.getAccountId());
+        assertContains(endCustomers, endCustomer);
+        return endCustomers;
+    }
+
+    public EndCustomer create() {
+        EndCustomer endCustomer = new EndCustomer();
+        endCustomer.setName("Automated test");
+        endCustomer.setCompanyRegistration("Automated test");
+        endCustomer.setPrtgLogin("Automated test");
+        endCustomer.setPrtgPassword("Automated test");
+        endCustomer.setAccountId(ACCOUNT_ID);
+
+        String id = getSalesforceService().createEndCustomer(endCustomer);
+        endCustomer.setId(id);
+        Assert.assertNotNull(id);
+        try {
+            checkIsSalesforce(endCustomer);
+        } catch (Exception e) {
+            delete(id);
+            throw e;
+        }
+
+        return endCustomer;
+    }
+
+    public EndCustomer update(EndCustomer endCustomer) {
+        endCustomer.setName("Automated test 2");
+        endCustomer.setCompanyRegistration("Automated test 2");
+        endCustomer.setPrtgLogin("Automated test 2");
+        endCustomer.setPrtgPassword("Automated test 2");
+        endCustomer.setAccountId(null);
+
+        getSalesforceService().updateEndCustomer(endCustomer);
+        checkIsSalesforce(endCustomer);
+        return endCustomer;
+    }
+
+    private void checkIsSalesforce(EndCustomer endCustomer) {
+        EndCustomer inSf = getSalesforceService().getEndCustomer(endCustomer.getId());
+        assertEquals(endCustomer, inSf);
+    }
+
+    public void delete(String id) {
+        getSalesforceService().delete(new String[]{id});
+        EndCustomer endCustomer = getSalesforceService().getEndCustomer(id);
+        Assert.assertNull(endCustomer);
     }
 
     private void assertEquals(EndCustomer o1, EndCustomer o2) {

@@ -84,23 +84,23 @@ public class SalesforceService implements SalesforceApi {
         return map;
     }
 
-
-    // ------------------------ accounts ------------------------
-
-
+    @Override
     public Account getAccount(String id) {
         return findById(Account.class, id);
     }
 
+    @Override
     public Account getAccountByName(String name) {
         String query = SfQueryBuilder.queryFor(Account.class).byField("Name", name);
         return retrieveOne(query, Account.class);
     }
 
+    @Override
     public Contact getContact(String id) {
         return findById(Contact.class, id);
     }
 
+    @Override
     public Contact getContactByEmail(String accountId, String email) {
         String query = SfQueryBuilder.queryFor(Contact.class)
                 .where("AccountId", accountId)
@@ -109,6 +109,7 @@ public class SalesforceService implements SalesforceApi {
         return retrieveOne(query, Contact.class);
     }
 
+    @Override
     public List<Contact> getContactsByRole(String accountId, String role) {
         String query = SfQueryBuilder.queryFor(Contact.class)
                 .where("AccountId", accountId)
@@ -117,37 +118,46 @@ public class SalesforceService implements SalesforceApi {
         return retrieveAll(query, Contact.class);
     }
 
+    @Override
     public String createContact(Contact contact) {
-        SObject sObject = objectConverter.convert(contact);
-        return create(sObject);
+        return create(contact);
     }
 
+    @Override
     public String updateContact(Contact contact) {
-        SObject sObject = objectConverter.convert(contact);
-        return update(sObject);
+        return update(contact);
     }
 
-
-    public String createContactOld(Contact contact) {
-        SObject sfObject = converter.convert(contact);
-        return createOld(sfObject, contact);
-    }
-
-    public String updateContactOld(Contact contact) {
-        SObject sfObject = converter.convert(contact);
-        return update(sfObject, contact);
-    }
-
+    @Override
     public EndCustomer getEndCustomer(String id) {
         return findById(EndCustomer.class, id);
     }
 
+    @Override
     public EndCustomer getEndCustomerByName(String accountId, String name) {
         String query = SfQueryBuilder.queryFor(EndCustomer.class)
                 .where("Account_Name__c", accountId)
                 .and("Name", name)
                 .toString();
         return retrieveOne(query, EndCustomer.class);
+    }
+
+    @Override
+    public List<EndCustomer> getEndCustomers(String accountId) {
+        String query = SfQueryBuilder.queryFor(EndCustomer.class)
+                .where("Account_Name__c", accountId)
+                .toString();
+        return retrieveAll(query, EndCustomer.class);
+    }
+
+    @Override
+    public String createEndCustomer(EndCustomer endCustomer) {
+        return create(endCustomer);
+    }
+
+    @Override
+    public String updateEndCustomer(EndCustomer endCustomer) {
+        return update(endCustomer);
     }
 
     public void testConnection() {
@@ -507,49 +517,8 @@ public class SalesforceService implements SalesforceApi {
     // ------------------------
 
 
-    // ------------------------ contacts ------------------------
-
-
-//    private Contact retrieveContact(String query) {
-//        SObject sObject = retrieveOne(query);
-//        return sObject == null ? null : converter.convertContact(sObject);
-//    }
-//
-//    public String createContact(Contact contact) {
-//        SObject sfObject = converter.convert(contact);
-//        return createOld(sfObject, contact);
-//    }
-//
-//    public String updateContact(Contact contact) {
-//        SObject sfObject = converter.convert(contact);
-//        return update(sfObject, contact);
-//    }
-
-    // -----------------------------
-
-
     // ------------------------ end customer ------------------------
 
-
-    public List<EndCustomer> getEndCustomers(String accountId) {
-        String query = format("SELECT %s FROM End_Customer__c  WHERE Account_Name__r.Id = '%s'", END_CUSTOMER_FIELDS, accountId);
-        List<EndCustomer> result = new ArrayList<>();
-        for (SObject sObject : retrieveAll(query)) {
-            EndCustomer endCustomer = converter.convertEndCustomer(sObject);
-            result.add(endCustomer);
-        }
-        return result;
-    }
-
-    public String createEndCustomer(EndCustomer endCustomer) {
-        SObject sObject = converter.convert(endCustomer);
-        return createOld(sObject, endCustomer);
-    }
-
-    public String updateEndCustomer(EndCustomer endCustomer) {
-        SObject sObject = converter.convert(endCustomer);
-        return update(sObject, endCustomer);
-    }
 
     // -----------------------------
 
@@ -1098,11 +1067,13 @@ public class SalesforceService implements SalesforceApi {
         return id;
     }
 
-    private String create(SObject sObject) {
+    private String create(Object o) {
+        SObject sObject = objectConverter.convert(o);
         return dataSource.create(sObject);
     }
 
-    private String update(SObject sObject) {
+    private String update(Object o) {
+        SObject sObject = objectConverter.convert(o);
         return dataSource.update(sObject);
     }
 

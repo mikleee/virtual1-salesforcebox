@@ -14,7 +14,6 @@ import salesforceflow.EndCustomerTestFlow;
 
 public class SalesforceServiceTest {
 
-
     private AccountTestFlow accountTestFlow = new AccountTestFlow();
     private ContactTestFlow contactTestFlow = new ContactTestFlow();
     private EndCustomerTestFlow endCustomerTestFlow = new EndCustomerTestFlow();
@@ -26,27 +25,35 @@ public class SalesforceServiceTest {
 
     @Test
     public void retrieveAccount() {
-        Account account = accountTestFlow.findExistingAccount();
-        accountTestFlow.findAccountByNameBasedOnExistingAccount(account);
+        Account account = accountTestFlow.findExisting();
+        accountTestFlow.findByNameBasedOnExistingAccount(account);
     }
 
     @Test
     public void retrieveContact() {
-        Contact contact = contactTestFlow.findExistingContact();
-        contactTestFlow.findContactByEmailBasedOnExistingContact(contact);
-        contactTestFlow.findContactByRoleBasedOnExistingContact(contact);
+        Contact contact = contactTestFlow.findExisting();
+        contactTestFlow.findByEmailBasedOnExistingContact(contact);
+        contactTestFlow.findByRoleBasedOnExistingContact(contact);
     }
 
     @Test
     public void modifyContact() {
-        Contact contact = contactTestFlow.createContact();
-        contact = contactTestFlow.updateContact(contact);
+        Contact contact = contactTestFlow.create();
+        contact = contactTestFlow.update(contact);
         contactTestFlow.delete(contact.getId());
     }
 
     @Test
     public void retrieveEndCustomer() {
-        EndCustomer endCustomer = endCustomerTestFlow.findExistingEndCustomer();
+        EndCustomer endCustomer = endCustomerTestFlow.findExisting();
         endCustomerTestFlow.findByNameBasedOnExistingEndCustomer(endCustomer);
+        endCustomerTestFlow.getAccountListBasedOnExistingEndCustomer(endCustomer);
+    }
+
+    @Test
+    public void modifyEndCustomer() {
+        EndCustomer endCustomer = endCustomerTestFlow.create();
+        endCustomerTestFlow.update(endCustomer);
+        endCustomerTestFlow.delete(endCustomer.getId());
     }
 }

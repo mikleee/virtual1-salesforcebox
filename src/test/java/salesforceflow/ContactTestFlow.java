@@ -12,26 +12,26 @@ import java.util.List;
 public class ContactTestFlow extends AbstractTestFlow {
 
 
-    public Contact findExistingContact() {
+    public Contact findExisting() {
         Contact contact = getSalesforceService().getContact(CONTACT_ID);
         Assert.assertNotNull(contact);
         return contact;
     }
 
-    public Contact findContactByEmailBasedOnExistingContact(Contact contact) {
+    public Contact findByEmailBasedOnExistingContact(Contact contact) {
         Contact contact2 = getSalesforceService().getContactByEmail(contact.getAccountId(), contact.getEmail());
         Assert.assertNotNull(contact2);
         assertEquals(contact, contact2);
         return contact2;
     }
 
-    public Contact findContactByRoleBasedOnExistingContact(Contact contact) {
+    public Contact findByRoleBasedOnExistingContact(Contact contact) {
         List<Contact> contacts = getSalesforceService().getContactsByRole(contact.getAccountId(), contact.getRoles());
         assertContains(contacts, contact);
         return contact;
     }
 
-    public Contact createContact() {
+    public Contact create() {
         Contact contact = new Contact();
         contact.setName("atest atest");
         contact.setFirstName("atest");
@@ -50,7 +50,7 @@ public class ContactTestFlow extends AbstractTestFlow {
         contact.setId(id);
         Assert.assertNotNull(id);
         try {
-            checkIsSalesforce(contact);
+            checkInSalesforce(contact);
         } catch (Exception e) {
             delete(id);
             throw e;
@@ -59,7 +59,7 @@ public class ContactTestFlow extends AbstractTestFlow {
         return contact;
     }
 
-    public Contact updateContact(Contact contact) {
+    public Contact update(Contact contact) {
         contact.setName("atest1 atest1");
         contact.setFirstName("atest1");
         contact.setLastName("atest1");
@@ -74,14 +74,13 @@ public class ContactTestFlow extends AbstractTestFlow {
         contact.setAccountId(null);
 
         getSalesforceService().updateContact(contact);
-        checkIsSalesforce(contact);
+        checkInSalesforce(contact);
         return contact;
     }
 
-    private Contact checkIsSalesforce(Contact contact) {
+    private void checkInSalesforce(Contact contact) {
         Contact inSf = getSalesforceService().getContact(contact.getId());
         assertEquals(contact, inSf);
-        return contact;
     }
 
     public void delete(String id) {
@@ -103,7 +102,6 @@ public class ContactTestFlow extends AbstractTestFlow {
         Assert.assertEquals(c1.getDepartment(), c2.getDepartment());
         Assert.assertEquals(formatAccountId(c1.getAccountId()), formatAccountId(c2.getAccountId()));
     }
-
 
 
 }

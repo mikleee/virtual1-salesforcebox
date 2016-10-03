@@ -4,7 +4,7 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 
-@SalesforceObject(table = "End_Customer__c")
+@SalesforceObject(table = "End_Customer__c", type = "End_Customer__c")
 public class EndCustomer extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
