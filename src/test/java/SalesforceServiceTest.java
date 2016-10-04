@@ -18,11 +18,13 @@ public class SalesforceServiceTest {
     private AnalogueLineTestFlow analogueLineTestFlow = new AnalogueLineTestFlow();
     private AttachmentTestFlow attachmentTestFlow = new AttachmentTestFlow();
     private ContactTestFlow contactTestFlow = new ContactTestFlow();
+    private ChargeTypeTestFlow chargeTypeTestFlow = new ChargeTypeTestFlow();
     private EndCustomerTestFlow endCustomerTestFlow = new EndCustomerTestFlow();
     private ExchangeTestFlow exchangeTestFlow = new ExchangeTestFlow();
     private FeedItemTestFlow feedItemTestFlow = new FeedItemTestFlow();
     private RecordTypeTestFlow recordTypeTestFlow = new RecordTypeTestFlow();
     private SiteTestFlow siteTestFlow = new SiteTestFlow();
+    private Virtual1DataCenterTestFlow virtual1DataCenterTestFlow = new Virtual1DataCenterTestFlow();
 
     @BeforeClass
     public static void init() {
@@ -59,6 +61,17 @@ public class SalesforceServiceTest {
         attachmentTestFlow.delete(attachment.getId());
     }
 
+    @Test
+    public void retrieveChargeType() {
+        ChargeType chargeType = chargeTypeTestFlow.findExisting();
+        chargeTypeTestFlow.findByNameBasedOnExistingChargeType(chargeType);
+    }
+
+    @Test
+    public void modifyChargeType() {
+        ChargeType chargeType = chargeTypeTestFlow.create();
+        chargeTypeTestFlow.delete(chargeType.getId());
+    }
 
     @Test
     public void retrieveContact() {
@@ -137,6 +150,11 @@ public class SalesforceServiceTest {
         Site site = siteTestFlow.create();
         siteTestFlow.update(site);
         siteTestFlow.delete(site.getId());
+    }
+
+    @Test
+    public void retrieveVirtual1DataCenters() {
+        virtual1DataCenterTestFlow.findExisting();
     }
 
 }

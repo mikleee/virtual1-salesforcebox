@@ -6,9 +6,7 @@ import com.virtual1.salesforcebox.sf.model.*;
 import org.apache.commons.lang.StringUtils;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,18 +14,20 @@ import java.util.Map;
  */
 public class MappingRegistry {
 
-    private final static List<Class<?>> CONTEXT = new ArrayList<Class<?>>() {{
-        add(Account.class);
-        add(AnalogueLine.class);
-        add(Attachment.class);
-        add(Contact.class);
-        add(EndCustomer.class);
-        add(Exchange.class);
-        add(FeedItem.class);
-        add(RecordType.class);
-        add(Site.class);
-        add(User.class);
-    }};
+    private final static Class[] CONTEXT = {
+            Account.class,
+            AnalogueLine.class,
+            Attachment.class,
+            Contact.class,
+            ChargeType.class,
+            EndCustomer.class,
+            Exchange.class,
+            FeedItem.class,
+            RecordType.class,
+            Site.class,
+            User.class,
+            Virtual1DataCenter.class
+    };
 
     private static Map<Class<?>, SfObjectAccessor> accessors = new HashMap<>();
     private static Map<Class<?>, String> queries = new HashMap<>();

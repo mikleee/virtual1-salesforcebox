@@ -531,9 +531,9 @@ public class ConvertingSFObjects {
         return vpn;
     }
 
-    Virtual1DatacentrePostcode convertVirtul1DatacentrePostcode(XmlObject sObject) {
-        Virtual1DatacentrePostcode datacentrePostcode = prepareObject(new Virtual1DatacentrePostcode(), sObject);
-        datacentrePostcode.setPostcode((String) sObject.getField("Postcode__c"));
+    Virtual1DataCenter convertVirtul1DatacentrePostcode(XmlObject sObject) {
+        Virtual1DataCenter datacentrePostcode = prepareObject(new Virtual1DataCenter(), sObject);
+        datacentrePostcode.setPostCode((String) sObject.getField("Postcode__c"));
         datacentrePostcode.setExchangeName((String) sObject.getField("Virtual1_Exchange_Name__c"));
         return datacentrePostcode;
     }

@@ -19,6 +19,7 @@ public class AbstractTestFlow {
     final static String ATTACHMENT_ID = "00PS0000001xrO9MAI";
     final static String ATTACHMENT_PARENT_ID = "a06S0000006o881";
     final static String CONTACT_ID = "003a000002Nfv4t";
+    final static String CHARGE_TYPE_ID = "a0L3000000GpASOEA3";
     final static String END_CUSTOMER_ID = "a0cS0000001i5Fq";
     final static String END_CUSTOMER_ID_2 = "a0cS0000001i5Ge";
     final static String EXCHANGE_ID = "a0Ta000000943CpEAI";

@@ -48,9 +48,7 @@ public class SalesforceService implements SalesforceApi {
 
     @Override
     public List<AnalogueLine> getAnalogueLinesByAccess(String accessId) {
-        String query = SfQueryBuilder.queryFor(AnalogueLine.class)
-                .where("Access_ID__c", accessId)
-                .toString();
+        String query = SfQueryBuilder.queryFor(AnalogueLine.class).byField("Access_ID__c", accessId);
         return retrieveAll(query, AnalogueLine.class);
     }
 
@@ -72,6 +70,22 @@ public class SalesforceService implements SalesforceApi {
     @Override
     public Attachment update(Attachment attachment) {
         return updateObject(attachment);
+    }
+
+    @Override
+    public ChargeType getChargeType(String id) {
+        return findById(ChargeType.class, id);
+    }
+
+    @Override
+    public ChargeType getChargeTypeByName(String name) {
+        String query = SfQueryBuilder.queryFor(ChargeType.class).byField("Name", name);
+        return retrieveOne(query, ChargeType.class);
+    }
+
+    @Override
+    public ChargeType create(ChargeType chargeType) {
+        return createObject(chargeType);
     }
 
     @Override
@@ -123,9 +137,7 @@ public class SalesforceService implements SalesforceApi {
 
     @Override
     public List<EndCustomer> getEndCustomers(String accountId) {
-        String query = SfQueryBuilder.queryFor(EndCustomer.class)
-                .where("Account_Name__c", accountId)
-                .toString();
+        String query = SfQueryBuilder.queryFor(EndCustomer.class).byField("Account_Name__c", accountId);
         return retrieveAll(query, EndCustomer.class);
     }
 
@@ -146,9 +158,7 @@ public class SalesforceService implements SalesforceApi {
 
     @Override
     public Exchange getExchangeByName(String name) {
-        String query = SfQueryBuilder.queryFor(Exchange.class)
-                .where("Name", name) // TODO: 03.10.16 which field
-                .toString();
+        String query = SfQueryBuilder.queryFor(Exchange.class).byField("Name", name); // todo which field
         return retrieveOne(query, Exchange.class);
     }
 
@@ -203,9 +213,7 @@ public class SalesforceService implements SalesforceApi {
 
     @Override
     public List<Site> getSites(String accountId) {
-        String query = SfQueryBuilder.queryFor(Site.class)
-                .where("End_Customer_Name__r.Account_Name__c", accountId)
-                .toString();
+        String query = SfQueryBuilder.queryFor(Site.class).byField("End_Customer_Name__r.Account_Name__c", accountId);
         return retrieveAll(query, Site.class);
     }
 
@@ -231,6 +239,12 @@ public class SalesforceService implements SalesforceApi {
     public void testConnection() {
         String queryString = "SELECT count() FROM Account";
         dataSource.retrieveAll(queryString);
+    }
+
+    @Override
+    public List<Virtual1DataCenter> getVirtual1DataCenters() {
+        String query = SfQueryBuilder.queryFor(Virtual1DataCenter.class).toString();
+        return retrieveAll(query, Virtual1DataCenter.class);
     }
 
     public User getUser(String id) {
@@ -542,24 +556,6 @@ public class SalesforceService implements SalesforceApi {
 
     // ------------------------ charge relationType ------------------------
 
-    public ChargeType getChargeTypeByName(String chargeTypeName) {
-        if (StringUtils.isBlank(chargeTypeName)) {
-            return null;
-        }
-
-        String query = format("SELECT %s FROM Charge_Type__c WHERE Name='%s'", COMMON_FIELDS, escapeSOQL(chargeTypeName));
-        return retrieveChargeType(query);
-    }
-
-    private ChargeType retrieveChargeType(String query) {
-        SObject sObject = retrieveOne(query);
-        return sObject != null ? converter.convertChargeType(sObject) : null;
-    }
-
-    public String сreateChargeType(ChargeType chargeType) {
-        SObject sObject = converter.convert(chargeType);
-        return createOld(sObject, chargeType);
-    }
 
     // ------------------------
 
@@ -849,29 +845,6 @@ public class SalesforceService implements SalesforceApi {
         return result;
     }
 
-    // TODO: 29.07.16 cache
-    public List<String> getClosedStatuses() {
-        String query = "SELECT MasterLabel FROM CaseStatus WHERE IsClosed = true";
-
-        List<String> closedStatuses = new ArrayList<>();
-        for (SObject sObject : retrieveAll(query)) {
-            closedStatuses.add((String) sObject.getField("MasterLabel"));
-        }
-        return closedStatuses;
-    }
-
-    public List<Virtual1DatacentrePostcode> getDatacentrePostcodes() {
-        String queryString = "SELECT Id, Name, Postcode__c, Virtual1_Exchange_Name__c from Virtual1Datacentres__c WHERE IsDeleted=false";
-
-        List<Virtual1DatacentrePostcode> postcodes = new ArrayList<>();
-        List<SObject> sObjects = retrieveAll(queryString);
-        for (SObject sObject : sObjects) {
-            Virtual1DatacentrePostcode postcode = converter.convertVirtul1DatacentrePostcode(sObject);
-            postcodes.add(postcode);
-        }
-        return postcodes;
-    }
-
     /**
      * not cached
      */
@@ -1004,7 +977,7 @@ public class SalesforceService implements SalesforceApi {
         return delete(ids.toArray(new String[]{}));
     }
 
-    private String delete(String id) {
+    public String delete(String id) {
         id = dataSource.delete(id);
         LOGGER.info("Object deleted from salesforce " + id);
         return id;

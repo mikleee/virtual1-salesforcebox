@@ -27,6 +27,12 @@ public interface SalesforceApi {
 
     Attachment update(Attachment attachment);
 
+    ChargeType getChargeType(String id);
+
+    ChargeType getChargeTypeByName(String name);
+
+    ChargeType create(ChargeType chargeType);
+
     Contact getContact(String id);
 
     Contact getContactByEmail(String accountId, String email);
@@ -53,12 +59,14 @@ public interface SalesforceApi {
 
     Exchange create(Exchange exchange);
 
-    @Deprecated
-        // http://salesforce.stackexchange.com/questions/110855/rest-api-feeditem-contentdata-download
+    /**
+     * @deprecated http://salesforce.stackexchange.com/questions/110855/rest-api-feeditem-contentdata-download
+     */
     FeedItem getFeedItem(String id);
 
-    @Deprecated
-        // http://salesforce.stackexchange.com/questions/110855/rest-api-feeditem-contentdata-download
+    /**
+     * @deprecated http://salesforce.stackexchange.com/questions/110855/rest-api-feeditem-contentdata-download
+     */
     FeedItem create(FeedItem feedItem);
 
     Map<String, Set<String>> getPickListValues(String sObjectType);
@@ -78,6 +86,8 @@ public interface SalesforceApi {
     Site update(Site site);
 
     void testConnection();
+
+    List<Virtual1DataCenter> getVirtual1DataCenters();
 
     User getUser(String id);
 
