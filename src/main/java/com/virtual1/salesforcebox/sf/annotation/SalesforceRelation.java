@@ -12,4 +12,8 @@ import java.lang.annotation.Target;
 @Target({ElementType.FIELD})
 public @interface SalesforceRelation {
     String name() default "";
+
+    boolean readOnly() default false;
+
+    boolean immutable() default false;
 }

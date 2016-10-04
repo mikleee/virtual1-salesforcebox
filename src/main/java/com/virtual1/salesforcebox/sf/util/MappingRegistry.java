@@ -22,6 +22,7 @@ public class MappingRegistry {
     private final static List<Class<?>> CONTEXT = new ArrayList<Class<?>>() {{
         add(Account.class);
         add(AnalogueLine.class);
+        add(Attachment.class);
         add(Contact.class);
         add(EndCustomer.class);
         add(Exchange.class);
@@ -35,7 +36,12 @@ public class MappingRegistry {
 
 
     public static SfObjectAccessor getAccessor(Class<?> type) {
-        return accessors.get(type);
+        SfObjectAccessor objectAccessor = accessors.get(type);
+        if (objectAccessor == null) {
+            throw new SalesforceConfigurationException(type + " is not present in salesforce mapping registry context. Add that");
+        }
+
+        return objectAccessor;
     }
 
     public static Map<Field, SfAccessor> getAccessors(Class<?> type, Class<? extends Annotation> annotation) {
@@ -49,7 +55,11 @@ public class MappingRegistry {
     }
 
     public static String getBaseQuery(Class<?> type) {
-        return queries.get(type);
+        String query = queries.get(type);
+        if (query == null) {
+            throw new SalesforceConfigurationException(type + " is not present in salesforce mapping registry context. Add that");
+        }
+        return query;
     }
 
 

@@ -1192,7 +1192,7 @@ public class ConvertingSFObjects {
             Iterator<XmlObject> diagramIterator = sObject.getChild("Attachments").getChildren("records");
             if (diagramIterator.hasNext()) {
                 XmlObject attachmentObj = diagramIterator.next();
-                SfAttachment attachment = convertAttachment(attachmentObj);
+                Attachment attachment = convertAttachment(attachmentObj);
                 sfIpJust.setNetworkDiagram(attachment);
             }
         }
@@ -1211,8 +1211,8 @@ public class ConvertingSFObjects {
         return device;
     }
 
-    SfAttachment convertAttachment(XmlObject xmlObject) {
-        SfAttachment attachment = prepareObject(new SfAttachment(), xmlObject);
+    Attachment convertAttachment(XmlObject xmlObject) {
+        Attachment attachment = prepareObject(new Attachment(), xmlObject);
         attachment.setBody(getBytes(xmlObject, "Body"));
         attachment.setParentId((String) xmlObject.getField("ParentId"));
         return attachment;
@@ -1291,7 +1291,7 @@ public class ConvertingSFObjects {
         return bulk;
     }
 
-    SObject convert(SfAttachment attachment) {
+    SObject convert(Attachment attachment) {
         SObject sObject = new SObject();
 
         sObject.setId(attachment.getId());

@@ -10,16 +10,6 @@ public class FeedItem extends ChildObject {
     private String fileName;
     private byte[] contentData;
 
-    public FeedItem() {
-    }
-
-    public FeedItem(String parentId, String fileName, String body, byte[] contentData) {
-        this.parentId = parentId;
-        this.fileName = fileName;
-        this.contentData = contentData;
-        this.body = body;
-    }
-
     public String getBody() {
         return body;
     }

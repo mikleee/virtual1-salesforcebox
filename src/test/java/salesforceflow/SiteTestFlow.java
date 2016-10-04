@@ -35,20 +35,20 @@ public class SiteTestFlow extends AbstractTestFlow {
 
     public Site create() {
         Site site = new Site();
-        site.setName("atest site name");
-        site.setAddress("atest site address");
+        site.setName(randomString());
+        site.setAddress(randomString());
         site.setPostCode("E34JW");
         site.setPhone("01234567980");
-        site.setSiteContact("atest contact");
+        site.setSiteContact(randomString());
         site.setUnitBuildingNumber("1");
         site.setBuildingName("atest building");
         site.setStreetNumber("1");
-        site.setBuildingName("atest street");
-        site.setTownCity("London");
-        site.setCounty("UK");
-        site.setAddressRef("atest address ref");
-        site.setDistrictCode("atestDC");
-        site.setQualifier("atest qualifier");
+        site.setBuildingName(randomString());
+        site.setTownCity(randomString());
+        site.setCounty(randomString());
+        site.setAddressRef(randomString());
+        site.setDistrictCode(randomString());
+        site.setQualifier(randomString());
         site.setBuildConstructedBefore2000(SalesforceConstants.YES);
         site.setAsbestos(SalesforceConstants.YES);
 
@@ -69,20 +69,20 @@ public class SiteTestFlow extends AbstractTestFlow {
     }
 
     public Site update(Site site) {
-        site.setName("atest site name1");
-        site.setAddress("atest site address1");
+        site.setName(randomString());
+        site.setAddress(randomString());
         site.setPostCode("RH41EA");
         site.setPhone("01234567981");
-        site.setSiteContact("atest contact1");
+        site.setSiteContact(randomString());
         site.setUnitBuildingNumber("11");
-        site.setBuildingName("atest building1");
+        site.setBuildingName(randomString());
         site.setStreetNumber("11");
-        site.setBuildingName("atest street1");
-        site.setTownCity("Liverpool");
-        site.setCounty("UK1");
-        site.setAddressRef("atest address ref1");
-        site.setDistrictCode("atestDC1");
-        site.setQualifier("atest qualifier1");
+        site.setBuildingName(randomString());
+        site.setTownCity(randomString());
+        site.setCounty(randomString());
+        site.setAddressRef(randomString());
+        site.setDistrictCode(randomString());
+        site.setQualifier(randomString());
         site.setBuildConstructedBefore2000(SalesforceConstants.NO);
         site.setAsbestos(SalesforceConstants.NO);
 

@@ -9,7 +9,6 @@ import com.virtual1.salesforcebox.sf.util.SfQueryBuilder;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
-import java.nio.charset.Charset;
 import java.util.*;
 
 import static com.virtual1.salesforcebox.sf.QueryTemplates.*;
@@ -18,16 +17,15 @@ import static java.lang.String.format;
 
 public class SalesforceService implements SalesforceApi {
     private static final Logger LOGGER = Logger.getLogger(SalesforceService.class);
-    private static final Charset UTF8 = Charset.forName("UTF-8");
     private static final String[] EXCLUDED_RECORD_TYPES = {"Outage", "Planned Works"};
 
     private final SalesforceDataSource dataSource;
-    protected final ConvertingSFObjects converter;
+    private final ConvertingSFObjects converter;
     private SfObjectConverter objectConverter = new SfObjectConverter();
 
 
-    public SalesforceService(String username, String password, String token, boolean sandbox, String clientIdentifier) {
-        dataSource = new SalesforceDataSource(username, password, token, sandbox, clientIdentifier);
+    public SalesforceService(String username, String password, boolean sandbox, String clientIdentifier) {
+        dataSource = new SalesforceDataSource(username, password, sandbox, clientIdentifier);
         converter = new ConvertingSFObjects();
     }
 
@@ -73,6 +71,21 @@ public class SalesforceService implements SalesforceApi {
     @Override
     public AnalogueLine create(AnalogueLine analogueLine) {
         return createObject(analogueLine);
+    }
+
+    @Override
+    public Attachment getAttachment(String id) {
+        return findById(Attachment.class, id);
+    }
+
+    @Override
+    public Attachment create(Attachment attachment) {
+        return createObject(attachment);
+    }
+
+    @Override
+    public Attachment update(Attachment attachment) {
+        return updateObject(attachment);
     }
 
     @Override
@@ -585,7 +598,7 @@ public class SalesforceService implements SalesforceApi {
 
         if (sfIpJust.getNetworkDiagram() != null) {
             sfIpJust.getNetworkDiagram().setParentId(id);
-            createAttachment(sfIpJust.getNetworkDiagram());
+            create(sfIpJust.getNetworkDiagram());
         }
 
         return id;
@@ -634,8 +647,8 @@ public class SalesforceService implements SalesforceApi {
     }
 
     private void updateSfIpJustDiagram(SfIpJust ipJust, SfIpJust persisted) {
-        SfAttachment diagram = ipJust.getNetworkDiagram();
-        SfAttachment currentDiagram = persisted.getNetworkDiagram();
+        Attachment diagram = ipJust.getNetworkDiagram();
+        Attachment currentDiagram = persisted.getNetworkDiagram();
 
         if (diagram == null) {
             if (currentDiagram != null) {
@@ -645,7 +658,7 @@ public class SalesforceService implements SalesforceApi {
         } else {
             if (currentDiagram == null || !currentDiagram.getName().equals(diagram.getName())) {
                 diagram.setParentId(ipJust.getId());
-                createAttachment(diagram);
+                create(diagram);
             }
         }
     }
@@ -655,7 +668,7 @@ public class SalesforceService implements SalesforceApi {
         if (sObject != null) {
             SfIpJust sfIpJust = converter.convertSfIpJust(sObject);
             if (sfIpJust.getNetworkDiagram() != null) {
-                SfAttachment attachment = getAttachment(sfIpJust.getNetworkDiagram().getId());
+                Attachment attachment = getAttachment(sfIpJust.getNetworkDiagram().getId());
                 sfIpJust.setNetworkDiagram(attachment);
             }
             return sfIpJust;
@@ -953,43 +966,6 @@ public class SalesforceService implements SalesforceApi {
         return result;
     }
 
-
-    private SfAttachment getAttachment(String id) {
-        String query = format("SELECT %s FROM Attachment WHERE Id = '%s'", ATTACHMENT_FIELDS, id);
-        return retrieveAttachment(query);
-    }
-
-    private SfAttachment retrieveAttachment(String query) {
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertAttachment(sObject);
-    }
-
-
-    String createAttachment(SfAttachment attachment) {
-        SObject sObject = converter.convert(attachment);
-        return createOld(sObject, attachment);
-    }
-
-    public String createAttachment(String parentId, String name, byte[] content) {
-        SfAttachment attachment = new SfAttachment();
-        attachment.setParentId(parentId);
-        attachment.setName(name);
-        attachment.setBody(content);
-        return createAttachment(attachment);
-    }
-
-    public void createAttachment(String objectId, String filename, String data) {
-        if (data != null) {
-            byte[] content = data.getBytes(UTF8);
-            createAttachment(objectId, filename, content);
-        }
-    }
-
-    private String updateAttachment(SfAttachment attachment) {
-        SObject sObject = converter.convert(attachment);
-        return update(sObject, attachment);
-    }
-
     public String createEmailMessage(SfEmail sfEmail) {
         SObject sObject = converter.convert(sfEmail);
         return createOld(sObject, sfEmail);
@@ -1024,12 +1000,19 @@ public class SalesforceService implements SalesforceApi {
     private <T> T createObject(T o) {
         SObject sObject = objectConverter.convert(o);
         String id = dataSource.create(sObject);
-        return objectConverter.setId(o, id);
+        o = objectConverter.setId(o, id);
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace("Object created in salesforce: " + o);
+        }
+        return o;
     }
 
     private <T> T updateObject(T o) {
         SObject sObject = objectConverter.convert(o);
         dataSource.update(sObject);
+        if (LOGGER.isTraceEnabled()) {
+            LOGGER.trace("Object updated in salesforce: " + o);
+        }
         return o;
     }
 

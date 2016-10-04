@@ -12,6 +12,7 @@ public class SalesforceServiceTest {
 
     private AccountTestFlow accountTestFlow = new AccountTestFlow();
     private AnalogueLineTestFlow analogueLineTestFlow = new AnalogueLineTestFlow();
+    private AttachmentTestFlow attachmentTestFlow = new AttachmentTestFlow();
     private ContactTestFlow contactTestFlow = new ContactTestFlow();
     private EndCustomerTestFlow endCustomerTestFlow = new EndCustomerTestFlow();
     private ExchangeTestFlow exchangeTestFlow = new ExchangeTestFlow();
@@ -40,6 +41,19 @@ public class SalesforceServiceTest {
         AnalogueLine analogueLine = analogueLineTestFlow.create();
         analogueLineTestFlow.delete(analogueLine.getId());
     }
+
+    @Test
+    public void retrieveAttachment() {
+        attachmentTestFlow.findExisting();
+    }
+
+    @Test
+    public void modifyAttachment() {
+        Attachment attachment = attachmentTestFlow.create();
+        attachmentTestFlow.update(attachment);
+        attachmentTestFlow.delete(attachment.getId());
+    }
+
 
     @Test
     public void retrieveContact() {

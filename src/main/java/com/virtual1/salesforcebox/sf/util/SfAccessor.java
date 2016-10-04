@@ -11,31 +11,39 @@ import java.lang.reflect.Field;
  */
 class SfAccessor extends Accessor {
     private final String sfField;
+    private final boolean readOnly;
     private final boolean immutable;
 
 
     SfAccessor(Field field, SalesforceField a) {
         super(field);
         this.sfField = a.name();
-        this.immutable = a.readOnly();
+        this.readOnly = a.readOnly();
+        this.immutable = a.immutable();
     }
 
 
     SfAccessor(Field field, SalesforceParentId a) {
         super(field);
         this.sfField = a.name();
-        this.immutable = false; //todo
+        this.readOnly = a.readOnly();
+        this.immutable = a.immutable();
     }
 
     SfAccessor(Field field, SalesforceRelation a) {
         super(field);
         this.sfField = a.name();
-        this.immutable = false; //todo
+        this.readOnly = a.readOnly();
+        this.immutable = a.immutable();
     }
 
 
     public String getSfField() {
         return sfField;
+    }
+
+    public boolean isReadOnly() {
+        return readOnly;
     }
 
     public boolean isImmutable() {

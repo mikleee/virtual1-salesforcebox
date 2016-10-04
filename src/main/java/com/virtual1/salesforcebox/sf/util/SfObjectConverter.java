@@ -40,16 +40,32 @@ public class SfObjectConverter {
         Map<Field, SfAccessor> accessors = MappingRegistry.getAccessor(type).getAccessors();
         for (Field field : accessors.keySet()) {
             SfAccessor accessor = accessors.get(field);
-            if (field.isAnnotationPresent(SalesforceField.class)) {
-                setSalesforceField(sObject, accessor, source);
-            } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
-                setSalesforceRelation(sObject, accessor, source);
-            } else if (field.isAnnotationPresent(SalesforceParentId.class)) {
-                setSalesforceParentId(sObject, accessor, source);
+            if (shouldValueBeSet(accessor, source)) {
+                if (field.isAnnotationPresent(SalesforceField.class)) {
+                    setSalesforceField(sObject, accessor, source);
+                } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
+                    setSalesforceRelation(sObject, accessor, source);
+                } else if (field.isAnnotationPresent(SalesforceParentId.class)) {
+                    setSalesforceParentId(sObject, accessor, source);
+                }
             }
         }
 
         return sObject;
+    }
+
+    private boolean shouldValueBeSet(SfAccessor accessor, Object source) {
+        if (accessor.isReadOnly()) { // if value readonly
+            return false;
+        }
+
+        Object id = MappingRegistry.getAccessor(source.getClass()).getId(source);
+        //noinspection RedundantIfStatement
+        if (id != null && accessor.isImmutable()) { // if value is not allowed to be changed during update
+            return false;
+        }
+
+        return true;
     }
 
     public <T> T setId(T source, String id) {
@@ -59,10 +75,8 @@ public class SfObjectConverter {
     }
 
     private void setSalesforceField(SObject sObject, SfAccessor accessor, Object source) {
-        if (!accessor.isImmutable()) {
-            Object value = accessor.get(source);
-            sObject.setField(accessor.getSfField(), convertSimpleSalesforceFieldValue(value));
-        }
+        Object value = accessor.get(source);
+        sObject.setField(accessor.getSfField(), convertSimpleSalesforceFieldValue(value));
     }
 
     private Object convertSimpleSalesforceFieldValue(Object value) {
@@ -115,6 +129,8 @@ public class SfObjectConverter {
             return getInteger(sObject, key);
         } else if (type == BigDecimal.class) {
             return getBigDecimal(sObject, key);
+        } else if (type == byte[].class) {
+            return getBytes(sObject, key);
         } else if (type.isAnnotationPresent(SalesforceObject.class)) {
             key = SfQueryBuilder.normalizeRelationField(key);
             XmlObject child = sObject.getChild(key);

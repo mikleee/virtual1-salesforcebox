@@ -26,7 +26,7 @@ public class SfIpJust extends BaseSalesforceObject {
     private String abuseContact; //AbuseContact__c , Text 255, Mandatory
     private Date detailRecordLastModifiedDate; //DetailRecordLastModifiedDate__c , DateTime
     private String subnetGranted; //SubnetGranted__c , Text 15,
-    private SfAttachment networkDiagram;
+    private Attachment networkDiagram;
     private String subnetName; //SubnetName__c , Text 255, Mandatory
     private String briefDescription; //BriefDescription__c , Text 500, Mandatory
     private List<SFIPJustDevice> sfipJustDevices = new ArrayList<>();
@@ -165,11 +165,11 @@ public class SfIpJust extends BaseSalesforceObject {
         this.detailRecordLastModifiedDate = detailRecordLastModifiedDate;
     }
 
-    public SfAttachment getNetworkDiagram() {
+    public Attachment getNetworkDiagram() {
         return networkDiagram;
     }
 
-    public void setNetworkDiagram(SfAttachment networkDiagram) {
+    public void setNetworkDiagram(Attachment networkDiagram) {
         this.networkDiagram = networkDiagram;
     }
 

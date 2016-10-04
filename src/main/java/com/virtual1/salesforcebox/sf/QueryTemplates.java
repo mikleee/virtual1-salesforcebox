@@ -20,10 +20,10 @@ class QueryTemplates {
     final static String CONTACT_FIELDS = COMMON_FIELDS + ",AccountId,FirstName,LastName,Email,Phone,Title,Role__c";
 
 
-    final static String ATTACHMENT_FIELDS = COMMON_FIELDS + ",Body,ParentId";
+//    final static String ATTACHMENT_FIELDS = COMMON_FIELDS + ",Body,ParentId";
 
 
-    final static String ANALOGUE_LINE_FIELDS = COMMON_FIELDS + ",Call_Barring__c,Status__c";
+//    final static String ANALOGUE_LINE_FIELDS = COMMON_FIELDS + ",Call_Barring__c,Status__c";
 
 
     final static String END_CUSTOMER_FIELDS = COMMON_FIELDS + ",Account_Name__c,Company_Registration__c,PRTG_Username__c,PRTG_Password__c";

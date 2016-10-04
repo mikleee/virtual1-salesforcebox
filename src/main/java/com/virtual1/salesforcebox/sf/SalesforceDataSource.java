@@ -6,7 +6,6 @@ import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.ConnectionException;
 import com.sforce.ws.ConnectorConfig;
 import com.sforce.ws.SessionRenewer;
-import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Logger;
 
 import javax.xml.namespace.QName;
@@ -22,17 +21,15 @@ final class SalesforceDataSource {
 
     private final String username;
     private final String password;
-    private final String token;
     private final boolean sandbox;
     private final String clientIdentifier;
 
     private PartnerConnection connection;
 
 
-    SalesforceDataSource(String username, String password, String token, boolean sandbox, String clientIdentifier) {
+    SalesforceDataSource(String username, String password, boolean sandbox, String clientIdentifier) {
         this.username = username;
         this.password = password;
-        this.token = token;
         this.sandbox = sandbox;
         this.clientIdentifier = clientIdentifier;
     }
@@ -75,7 +72,7 @@ final class SalesforceDataSource {
         }
 
         config.setUsername(username);
-        config.setPassword(password + StringUtils.defaultString(token));
+        config.setPassword(password);
         config.setSessionRenewer(new SessionRenewerImpl());
         return config;
     }

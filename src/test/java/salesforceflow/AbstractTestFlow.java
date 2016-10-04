@@ -4,6 +4,9 @@ import com.virtual1.salesforcebox.sf.SalesforceService;
 import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
 import org.junit.Assert;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -13,6 +16,8 @@ import java.util.List;
 public class AbstractTestFlow {
     final static String ACCOUNT_ID = "0013000000pI4zg";
     final static String ANALOGUE_LINE_ID = "a0Qa000000L8ItbEAF";
+    final static String ATTACHMENT_ID = "00PS0000001xrO9MAI";
+    final static String ATTACHMENT_PARENT_ID = "a06S0000006o881";
     final static String CONTACT_ID = "003a000002Nfv4t";
     final static String END_CUSTOMER_ID = "a0cS0000001i5Fq";
     final static String END_CUSTOMER_ID_2 = "a0cS0000001i5Ge";
@@ -27,12 +32,15 @@ public class AbstractTestFlow {
             salesforceService = new SalesforceService(
                     "system.attendant@virtual1.com.v1testing",
                     "p4GuCbdGPL",
-                    "",
                     true,
                     "Mikhail Tkachenko automated testing"
             );
         }
         return salesforceService;
+    }
+
+    String randomString() {
+        return "AutoTest-" + System.currentTimeMillis();
     }
 
     void assertContains(List<? extends BaseSalesforceObject> list, BaseSalesforceObject object) {
@@ -59,19 +67,17 @@ public class AbstractTestFlow {
         return id != null && id.length() == 18 ? id.substring(0, 15) : id;
     }
 
-//    String formatAccountId(String id) {
-//        return id == null ? null : id.replaceAll("AAC", "");
-//    }
-//
-//    String formatAccessId(String id) {
-//        return id == null ? null : id.replaceAll("AAI", "");
-//    }
-//
-//    String formatProjectId(String id) {
-//        return id == null ? null : id.replaceAll("AAO", "");
-//    }
-//
-//    String formatEndCustomerId(String id) {
-//        return id == null ? null : id.replaceAll("IAI", "");
-//    }
+    byte[] getTestAttachment() {
+        try (InputStream is = getClass().getResourceAsStream("/test-attachment.png")) {
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            int read;
+            while ((read = is.read()) != -1) {
+                os.write(read);
+            }
+            return os.toByteArray();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }

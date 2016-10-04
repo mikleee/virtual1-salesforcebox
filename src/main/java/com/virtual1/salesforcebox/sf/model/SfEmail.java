@@ -12,17 +12,6 @@ public class SfEmail extends ChildObject {
     private String fromAddress;
     private String body;
 
-    public SfEmail() {
-    }
-
-    public SfEmail(String parentId, String fromAddress, String fromName, String subject, String body) {
-        this.body = body;
-        this.fromAddress = fromAddress;
-        this.fromName = fromName;
-        this.parentId = parentId;
-        this.subject = subject;
-    }
-
     public String getBody() {
         return body;
     }

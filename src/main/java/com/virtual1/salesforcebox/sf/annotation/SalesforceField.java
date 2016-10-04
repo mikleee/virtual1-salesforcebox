@@ -14,4 +14,6 @@ public @interface SalesforceField {
     String name();
 
     boolean readOnly() default false;
+
+    boolean immutable() default false;
 }

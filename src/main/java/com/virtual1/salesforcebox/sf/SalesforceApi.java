@@ -19,6 +19,12 @@ public interface SalesforceApi {
 
     AnalogueLine create(AnalogueLine analogueLine);
 
+    Attachment getAttachment(String id);
+
+    Attachment create(Attachment attachment);
+
+    Attachment update(Attachment attachment);
+
     Contact getContact(String id);
 
     Contact getContactByEmail(String accountId, String email);

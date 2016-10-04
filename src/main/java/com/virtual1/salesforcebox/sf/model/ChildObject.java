@@ -1,10 +1,25 @@
 package com.virtual1.salesforcebox.sf.model;
 
+import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
+import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
+
 /**
  * @author Mikhail Tkachenko created on 17.08.16 15:05
  */
-abstract class ChildObject extends BaseSalesforceObject {
-    String parentId;
+public abstract class ChildObject extends BaseSalesforceObject {
+    @SalesforceField(name = "Name")
+    private String name;
+    @SalesforceParentId(name = "ParentId", immutable = true)
+    private String parentId;
+
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public String getParentId() {
         return parentId;
@@ -17,7 +32,7 @@ abstract class ChildObject extends BaseSalesforceObject {
     @Override
     public String toString() {
         StringBuilder builder = new StringBuilder(super.toString());
-        if (parentId != null) builder.append("parentId=").append(parentId);
+        if (parentId != null) builder.append(", parentId=").append(parentId);
         return builder.toString();
     }
 
