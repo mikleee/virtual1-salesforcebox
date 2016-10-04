@@ -157,4 +157,9 @@ public class SalesforceServiceTest {
         virtual1DataCenterTestFlow.findExisting();
     }
 
+    @Test
+    public void testConnection() {
+        AbstractTestFlow.getSalesforceService().testConnection();
+    }
+
 }

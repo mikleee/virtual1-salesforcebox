@@ -237,8 +237,7 @@ public class SalesforceService implements SalesforceApi {
     }
 
     public void testConnection() {
-        String queryString = "SELECT count() FROM Account";
-        dataSource.retrieveAll(queryString);
+        dataSource.retrieveAll("SELECT count() FROM Account");
     }
 
     @Override
