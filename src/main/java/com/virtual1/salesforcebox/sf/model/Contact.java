@@ -2,7 +2,6 @@ package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 import org.apache.commons.lang.StringUtils;
 
 @SalesforceObject(table = "Contact", staticClause = "Left_the_Company__c = false")
@@ -31,7 +30,7 @@ public class Contact extends BaseSalesforceObject {
     private Boolean doNotCall = false;
     @SalesforceField(name = "Department")
     private String department = StringUtils.EMPTY;
-    @SalesforceParentId(name = "AccountId")
+    @SalesforceField(name = "AccountId", relationType = SalesforceField.RelationType.RELATION_ID)
     private String accountId;
 
 

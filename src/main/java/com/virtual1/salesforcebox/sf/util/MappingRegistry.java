@@ -2,12 +2,9 @@ package com.virtual1.salesforcebox.sf.util;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import com.virtual1.salesforcebox.sf.model.*;
 import org.apache.commons.lang.StringUtils;
 
-import java.lang.annotation.Annotation;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,16 +41,6 @@ public class MappingRegistry {
         return objectAccessor;
     }
 
-    public static Map<Field, SfAccessor> getAccessors(Class<?> type, Class<? extends Annotation> annotation) {
-        Map<Field, SfAccessor> result = new HashMap<>();
-        for (Map.Entry<Field, SfAccessor> entry : getAccessor(type).getAccessors().entrySet()) {
-            if (entry.getKey().isAnnotationPresent(annotation)) {
-                result.put(entry.getKey(), entry.getValue());
-            }
-        }
-        return result;
-    }
-
     public static String getBaseQuery(Class<?> type) {
         String query = queries.get(type);
         if (query == null) {
@@ -82,10 +69,6 @@ public class MappingRegistry {
             for (Field field : currentType.getDeclaredFields()) {
                 if (field.isAnnotationPresent(SalesforceField.class)) {
                     map.put(field, new SfAccessor(field, field.getAnnotation(SalesforceField.class)));
-                } else if (field.isAnnotationPresent(SalesforceParentId.class)) {
-                    map.put(field, new SfAccessor(field, field.getAnnotation(SalesforceParentId.class)));
-                } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
-                    map.put(field, new SfAccessor(field, field.getAnnotation(SalesforceRelation.class)));
                 }
             }
 
@@ -117,7 +100,7 @@ public class MappingRegistry {
         String simpleFields = getFieldSequence(type, null);
         result.append(simpleFields);
 
-        Map<Field, SfAccessor> accessors = getAccessors(type, SalesforceRelation.class);
+        Map<Field, SfAccessor> accessors = getAccessorsByTypes(type, SalesforceField.RelationType.RELATION);
         for (Map.Entry<Field, SfAccessor> entry : accessors.entrySet()) {
             String sfRelationName = SfQueryBuilder.normalizeRelationField(entry.getValue().getSfField());
             String fieldSequence = getFieldSequence(entry.getKey().getType(), sfRelationName);
@@ -129,8 +112,8 @@ public class MappingRegistry {
 
     private static String getFieldSequence(Class<?> type, String allias) {
         StringBuilder result = new StringBuilder();
-        Map<Field, SfAccessor> accessors = getAccessors(type, SalesforceField.class);
-        accessors.putAll(getAccessors(type, SalesforceParentId.class));
+        Map<Field, SfAccessor> accessors = getAccessorsByTypes(type, SalesforceField.RelationType.SIMPLE_FIELD, SalesforceField.RelationType.RELATION_ID);
+
         int position = 0;
         for (Map.Entry<Field, SfAccessor> accessorEntry : accessors.entrySet()) {
             if (StringUtils.isNotBlank(allias)) {
@@ -141,6 +124,20 @@ public class MappingRegistry {
                     .append(position++ == accessors.size() - 1 ? ' ' : ',');
         }
         return result.toString();
+    }
+
+    private static Map<Field, SfAccessor> getAccessorsByTypes(Class<?> objectType, SalesforceField.RelationType... relationTypes) {
+        Map<Field, SfAccessor> result = new HashMap<>();
+        for (Map.Entry<Field, SfAccessor> entry : getAccessor(objectType).getAccessors().entrySet()) {
+            SalesforceField.RelationType relationType = entry.getKey().getAnnotation(SalesforceField.class).relationType();
+            for (SalesforceField.RelationType t : relationTypes) {
+                if (relationType == t) {
+                    result.put(entry.getKey(), entry.getValue());
+                    break;
+                }
+            }
+        }
+        return result;
     }
 
 }

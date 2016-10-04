@@ -2,7 +2,6 @@ package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 
 @SalesforceObject(table = "Site__c")
 public class Site extends BaseSalesforceObject {
@@ -40,7 +39,7 @@ public class Site extends BaseSalesforceObject {
     private String buildConstructedBefore2000;
     @SalesforceField(name = "Asbestos_Register_Available_on_Site__c")
     private String asbestos;
-    @SalesforceRelation(name = "End_Customer_Name__c")
+    @SalesforceField(name = "End_Customer_Name__c", relationType = SalesforceField.RelationType.RELATION)
     private EndCustomer endCustomer = new EndCustomer();
 
 

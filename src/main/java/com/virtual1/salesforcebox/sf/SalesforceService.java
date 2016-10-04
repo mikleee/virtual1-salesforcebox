@@ -512,7 +512,7 @@ public class SalesforceService implements SalesforceApi {
     // ------------------------
 
 
-    // ------------------------ charge type ------------------------
+    // ------------------------ charge relationType ------------------------
 
     public ChargeType getChargeTypeByName(String chargeTypeName) {
         if (StringUtils.isBlank(chargeTypeName)) {

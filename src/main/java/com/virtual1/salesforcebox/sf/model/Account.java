@@ -2,7 +2,6 @@ package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import org.apache.commons.lang.StringUtils;
 
 import java.util.Date;
@@ -55,7 +54,7 @@ public class Account extends BaseSalesforceObject {
     private String pbt;
     @SalesforceField(name = "Sales_Order_Special_Instructions__c")
     private String salesOrderSpecialInstructions;
-    @SalesforceRelation(name = "Owner")
+    @SalesforceField(name = "Owner", relationType = SalesforceField.RelationType.RELATION)
     private User owner;
 
 

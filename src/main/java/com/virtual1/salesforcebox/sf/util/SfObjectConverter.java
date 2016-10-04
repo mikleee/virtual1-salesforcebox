@@ -42,7 +42,16 @@ public class SfObjectConverter {
             SfAccessor accessor = accessors.get(field);
             if (shouldValueBeSet(accessor, source)) {
                 if (field.isAnnotationPresent(SalesforceField.class)) {
-                    setSalesforceField(sObject, accessor, source);
+
+                    SalesforceField.RelationType salesforceFieldType = field.getAnnotation(SalesforceField.class).relationType();
+                    if (salesforceFieldType == SalesforceField.RelationType.SIMPLE_FIELD) {
+                        setSalesforceField(sObject, accessor, source);
+                    } else if (salesforceFieldType == SalesforceField.RelationType.RELATION) {
+                        setSalesforceRelation(sObject, accessor, source);
+                    } else if (salesforceFieldType == SalesforceField.RelationType.RELATION_ID) {
+                        setSalesforceParentId(sObject, accessor, source);
+                    }
+
                 } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
                     setSalesforceRelation(sObject, accessor, source);
                 } else if (field.isAnnotationPresent(SalesforceParentId.class)) {
@@ -137,7 +146,7 @@ public class SfObjectConverter {
             return child != null && child.hasChildren() ? convert(child, type) : null;
         }
 
-        throw new SalesforceConfigurationException("Cant retrieve value with type " + type + " from raw salesforce object. If it is Salesforce object it must be marked as @SalesforceObject");
+        throw new SalesforceConfigurationException("Cant retrieve value with relationType " + type + " from raw salesforce object. If it is Salesforce object it must be marked as @SalesforceObject");
     }
 
     private String getString(XmlObject sObject, String key) {

@@ -1,8 +1,6 @@
 package com.virtual1.salesforcebox.sf.util;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 
 import java.lang.reflect.Field;
 
@@ -16,21 +14,6 @@ class SfAccessor extends Accessor {
 
 
     SfAccessor(Field field, SalesforceField a) {
-        super(field);
-        this.sfField = a.name();
-        this.readOnly = a.readOnly();
-        this.immutable = a.immutable();
-    }
-
-
-    SfAccessor(Field field, SalesforceParentId a) {
-        super(field);
-        this.sfField = a.name();
-        this.readOnly = a.readOnly();
-        this.immutable = a.immutable();
-    }
-
-    SfAccessor(Field field, SalesforceRelation a) {
         super(field);
         this.sfField = a.name();
         this.readOnly = a.readOnly();

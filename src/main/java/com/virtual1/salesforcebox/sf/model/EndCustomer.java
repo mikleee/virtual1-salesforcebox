@@ -2,7 +2,6 @@ package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 
 @SalesforceObject(table = "End_Customer__c")
 public class EndCustomer extends BaseSalesforceObject {
@@ -16,7 +15,7 @@ public class EndCustomer extends BaseSalesforceObject {
     private String prtgLogin;
     @SalesforceField(name = "PRTG_Password__c")
     private String prtgPassword;
-    @SalesforceParentId(name = "Account_Name__c")
+    @SalesforceField(name = "Account_Name__c", relationType = SalesforceField.RelationType.RELATION_ID)
     private String accountId;
 
 

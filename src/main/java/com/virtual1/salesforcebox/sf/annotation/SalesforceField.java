@@ -11,9 +11,17 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target({ElementType.FIELD})
 public @interface SalesforceField {
+
     String name();
+
+    RelationType relationType() default RelationType.SIMPLE_FIELD;
 
     boolean readOnly() default false;
 
     boolean immutable() default false;
+
+
+    enum RelationType {
+        SIMPLE_FIELD, RELATION, RELATION_ID, COLLECTION
+    }
 }

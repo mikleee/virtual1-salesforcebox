@@ -3,8 +3,6 @@ package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -41,11 +39,11 @@ public class AnalogueLine extends BaseSalesforceObject {
     private boolean callBarring;
     @SalesforceField(name = "Telephone_Number__c")
     private String telephoneNumber;
-    @SalesforceParentId(name = "Access_ID__c")
+    @SalesforceField(name = "Access_ID__c", relationType = SalesforceField.RelationType.RELATION_ID)
     private String accessId;
-    @SalesforceParentId(name = "Project_Number__c")
+    @SalesforceField(name = "Project_Number__c", relationType = SalesforceField.RelationType.RELATION_ID)
     private String projectId;
-    @SalesforceRelation(name = "Carrier_Provider__c")
+    @SalesforceField(name = "Carrier_Provider__c", relationType = SalesforceField.RelationType.RELATION)
     private Account carrierProvider;
 
 

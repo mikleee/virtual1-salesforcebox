@@ -1,7 +1,6 @@
 package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 
 /**
  * @author Mikhail Tkachenko created on 17.08.16 15:05
@@ -9,7 +8,7 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 public abstract class ChildObject extends BaseSalesforceObject {
     @SalesforceField(name = "Name")
     private String name;
-    @SalesforceParentId(name = "ParentId", immutable = true)
+    @SalesforceField(name = "ParentId", relationType = SalesforceField.RelationType.RELATION_ID, immutable = true)
     private String parentId;
 
 

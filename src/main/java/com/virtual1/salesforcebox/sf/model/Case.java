@@ -221,14 +221,14 @@ public class Case extends BaseSalesforceObject {
     }
 
     /**
-     * @return the type
+     * @return the relationType
      */
     public String getType() {
         return type;
     }
 
     /**
-     * @param type the type to set
+     * @param type the relationType to set
      */
     public void setType(String type) {
         this.type = type;

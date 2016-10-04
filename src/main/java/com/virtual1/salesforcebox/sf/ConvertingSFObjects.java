@@ -1094,7 +1094,7 @@ public class ConvertingSFObjects {
                 sObject.setField("Previous_Rental_Amount__c", toDouble(pricingEntry.getPreviousRentalAmount()));
                 return sObject;
             default:
-                throw new SalesforceException("Pricing entry type " + pricingEntry.getRecordType() + " is not supported");
+                throw new SalesforceException("Pricing entry relationType " + pricingEntry.getRecordType() + " is not supported");
         }
     }
 
