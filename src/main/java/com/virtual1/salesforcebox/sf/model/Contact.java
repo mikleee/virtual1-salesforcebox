@@ -4,11 +4,13 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import org.apache.commons.lang.StringUtils;
 
+import static com.virtual1.salesforcebox.sf.annotation.SalesforceField.AccessLevel.READ_ONLY;
+
 @SalesforceObject(table = "Contact", staticClause = "Left_the_Company__c = false")
 public class Contact extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-    @SalesforceField(name = "Name", readOnly = true)
+    @SalesforceField(name = "Name", accessLevel = READ_ONLY)
     private String name;
     @SalesforceField(name = "FirstName")
     private String firstName;

@@ -7,17 +7,19 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import static com.virtual1.salesforcebox.sf.annotation.SalesforceField.AccessLevel.READ_ONLY;
+
 @SalesforceObject(table = "Analogue_Line__c")
 public class AnalogueLine extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-    @SalesforceField(name = "Name", readOnly = true)
+    @SalesforceField(name = "Name", accessLevel = READ_ONLY)
     private String name;
     @SalesforceField(name = "Annual_Rental_Cost__c")
     private BigDecimal annualRentalCost;
     @SalesforceField(name = "Carrier_Contract_mths__c")
     private Integer carrierContractMths;
-    @SalesforceField(name = "Carrier_End_Date__c", readOnly = true)
+    @SalesforceField(name = "Carrier_End_Date__c", accessLevel = READ_ONLY)
     private Date carrierEndDate;
     @SalesforceField(name = "Carrier_Live_Date__c")
     private Date carrierLiveDate;
@@ -25,11 +27,11 @@ public class AnalogueLine extends BaseSalesforceObject {
     private String carrierProductName;
     @SalesforceField(name = "Carrier_Service_ID__c")
     private String carrierServiceId;
-    @SalesforceField(name = "End_Customer_Name__c", readOnly = true)
+    @SalesforceField(name = "End_Customer_Name__c", accessLevel = READ_ONLY)
     private String endCustomerName;
     @SalesforceField(name = "One_Off_Cost__c")
     private BigDecimal oneOffCost;
-    @SalesforceField(name = "Project_Status__c", readOnly = true)
+    @SalesforceField(name = "Project_Status__c", accessLevel = READ_ONLY)
     private String projectStatus;
     @SalesforceField(name = "Site_Name__c")
     private String siteName;

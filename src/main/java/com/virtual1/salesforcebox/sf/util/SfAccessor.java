@@ -9,15 +9,15 @@ import java.lang.reflect.Field;
  */
 class SfAccessor extends Accessor {
     private final String sfField;
-    private final boolean readOnly;
-    private final boolean immutable;
+    private final SalesforceField.RelationType relationType;
+    private final SalesforceField.AccessLevel accessLevel;
 
 
     SfAccessor(Field field, SalesforceField a) {
         super(field);
         this.sfField = a.name();
-        this.readOnly = a.readOnly();
-        this.immutable = a.immutable();
+        this.relationType = a.relationType();
+        this.accessLevel = a.accessLevel();
     }
 
 
@@ -25,11 +25,12 @@ class SfAccessor extends Accessor {
         return sfField;
     }
 
-    public boolean isReadOnly() {
-        return readOnly;
+
+    public SalesforceField.AccessLevel getAccessLevel() {
+        return accessLevel;
     }
 
-    public boolean isImmutable() {
-        return immutable;
+    public SalesforceField.RelationType getRelationType() {
+        return relationType;
     }
 }

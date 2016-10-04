@@ -9,13 +9,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.virtual1.salesforcebox.sf.annotation.SalesforceField.AccessLevel.READ_ONLY;
+
 public abstract class BaseSalesforceObject extends CachedSalesforceObject {
     @SalesforceId
     @SalesforceField(name = "Id")
     protected String id;
-    @SalesforceField(name = "CreatedDate", readOnly = true)
+    @SalesforceField(name = "CreatedDate", accessLevel = READ_ONLY)
     private Date createdDate;
-    @SalesforceField(name = "LastModifiedDate", readOnly = true)
+    @SalesforceField(name = "LastModifiedDate", accessLevel = READ_ONLY)
     private Date lastModifiedDate;
 
     protected String name;

@@ -15,6 +15,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
+import static com.virtual1.salesforcebox.sf.annotation.SalesforceField.RelationType.*;
+
 /**
  * @author Mikhail Tkachenko created on 29.09.16 12:38
  */
@@ -44,11 +46,11 @@ public class SfObjectConverter {
                 if (field.isAnnotationPresent(SalesforceField.class)) {
 
                     SalesforceField.RelationType salesforceFieldType = field.getAnnotation(SalesforceField.class).relationType();
-                    if (salesforceFieldType == SalesforceField.RelationType.SIMPLE_FIELD) {
+                    if (salesforceFieldType == SIMPLE_FIELD) {
                         setSalesforceField(sObject, accessor, source);
-                    } else if (salesforceFieldType == SalesforceField.RelationType.RELATION) {
+                    } else if (salesforceFieldType == RELATION) {
                         setSalesforceRelation(sObject, accessor, source);
-                    } else if (salesforceFieldType == SalesforceField.RelationType.RELATION_ID) {
+                    } else if (salesforceFieldType == RELATION_ID) {
                         setSalesforceParentId(sObject, accessor, source);
                     }
 
@@ -64,17 +66,15 @@ public class SfObjectConverter {
     }
 
     private boolean shouldValueBeSet(SfAccessor accessor, Object source) {
-        if (accessor.isReadOnly()) { // if value readonly
-            return false;
+        switch (accessor.getAccessLevel()) {
+            case READ_ONLY:
+                return false;
+            case IMMUTABLE:
+                Object id = MappingRegistry.getAccessor(source.getClass()).getId(source);
+                return id == null;
+            default:
+                return true;
         }
-
-        Object id = MappingRegistry.getAccessor(source.getClass()).getId(source);
-        //noinspection RedundantIfStatement
-        if (id != null && accessor.isImmutable()) { // if value is not allowed to be changed during update
-            return false;
-        }
-
-        return true;
     }
 
     public <T> T setId(T source, String id) {

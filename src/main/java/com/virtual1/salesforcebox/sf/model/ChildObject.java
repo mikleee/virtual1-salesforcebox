@@ -2,13 +2,16 @@ package com.virtual1.salesforcebox.sf.model;
 
 import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 
+import static com.virtual1.salesforcebox.sf.annotation.SalesforceField.AccessLevel.IMMUTABLE;
+import static com.virtual1.salesforcebox.sf.annotation.SalesforceField.RelationType.RELATION_ID;
+
 /**
  * @author Mikhail Tkachenko created on 17.08.16 15:05
  */
 public abstract class ChildObject extends BaseSalesforceObject {
     @SalesforceField(name = "Name")
     private String name;
-    @SalesforceField(name = "ParentId", relationType = SalesforceField.RelationType.RELATION_ID, immutable = true)
+    @SalesforceField(name = "ParentId", relationType = RELATION_ID, accessLevel = IMMUTABLE)
     private String parentId;
 
 
