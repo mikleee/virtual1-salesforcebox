@@ -35,13 +35,12 @@ public class ExchangeTestFlow extends AbstractTestFlow {
         exchange.setName("Automated test");
         exchange.setExchangeName("Automated test");
 
-        String id = getSalesforceService().create(exchange);
-        exchange.setId(id);
-        Assert.assertNotNull(id);
+        exchange = getSalesforceService().create(exchange);
+        Assert.assertNotNull(exchange.getId());
         try {
             checkIsSalesforce(exchange);
         } catch (Exception e) {
-            delete(id);
+            delete(exchange.getId());
             throw e;
         }
 

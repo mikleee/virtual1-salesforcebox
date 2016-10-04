@@ -11,6 +11,7 @@ import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
 import java.lang.reflect.Field;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
 
@@ -21,7 +22,7 @@ public class SfObjectConverter {
 
     public <T> T convert(XmlObject sObject, Class<T> type) {
         T t = instantiate(type);
-        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type).getAccessors();
+        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessor(type).getAccessors();
         for (Map.Entry<Field, SfAccessor> entry : accessors.entrySet()) {
             SfAccessor accessor = entry.getValue();
             Object value = retrieveFieldValue(accessor.getType(), accessor.getSfField(), sObject);
@@ -36,7 +37,7 @@ public class SfObjectConverter {
         Class<?> type = source.getClass();
         sObject.setType(type.getAnnotation(SalesforceObject.class).table());
 
-        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessors(type).getAccessors();
+        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessor(type).getAccessors();
         for (Field field : accessors.keySet()) {
             SfAccessor accessor = accessors.get(field);
             if (field.isAnnotationPresent(SalesforceField.class)) {
@@ -51,10 +52,28 @@ public class SfObjectConverter {
         return sObject;
     }
 
+    public <T> T setId(T source, String id) {
+        SfObjectAccessor accessor = MappingRegistry.getAccessor(source.getClass());
+        accessor.setId(source, id);
+        return source;
+    }
+
     private void setSalesforceField(SObject sObject, SfAccessor accessor, Object source) {
         if (!accessor.isImmutable()) {
-            sObject.setField(accessor.getSfField(), accessor.get(source));
+            Object value = accessor.get(source);
+            sObject.setField(accessor.getSfField(), convertSimpleSalesforceFieldValue(value));
         }
+    }
+
+    private Object convertSimpleSalesforceFieldValue(Object value) {
+        if (value == null) {
+            return null;
+        } else if (value instanceof BigDecimal) {
+            return value.toString();
+        } else {
+            return value;
+        }
+
     }
 
     private void setSalesforceRelation(SObject sObject, SfAccessor accessor, Object source) {
@@ -62,7 +81,7 @@ public class SfObjectConverter {
         if (value == null) {
             sObject.setFieldsToNull(new String[]{accessor.getSfField()});
         } else {
-            SfObjectAccessor relationAccessor = MappingRegistry.getAccessors(accessor.getType());
+            SfObjectAccessor relationAccessor = MappingRegistry.getAccessor(accessor.getType());
             sObject.setField(accessor.getSfField(), relationAccessor.getId(value));
         }
     }
@@ -94,6 +113,8 @@ public class SfObjectConverter {
             return getBoolean(sObject, key);
         } else if (type == Integer.class || type == int.class) {
             return getInteger(sObject, key);
+        } else if (type == BigDecimal.class) {
+            return getBigDecimal(sObject, key);
         } else if (type.isAnnotationPresent(SalesforceObject.class)) {
             key = SfQueryBuilder.normalizeRelationField(key);
             XmlObject child = sObject.getChild(key);
@@ -120,6 +141,11 @@ public class SfObjectConverter {
     private Integer getInteger(XmlObject sObject, String fieldName) {
         String str = (String) sObject.getField(fieldName);
         return Double.valueOf(str).intValue();
+    }
+
+    private BigDecimal getBigDecimal(XmlObject sObject, String fieldName) {
+        String str = (String) sObject.getField(fieldName);
+        return str == null ? null : new BigDecimal(str);
     }
 
     private byte[] getBytes(XmlObject sObject, String fieldName) {

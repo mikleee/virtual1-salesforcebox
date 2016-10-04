@@ -17,7 +17,7 @@ public interface SalesforceApi {
 
     List<AnalogueLine> getAnalogueLinesByAccess(String accessId);
 
-    String createAnalogueLine(AnalogueLine analogueLine);
+    AnalogueLine create(AnalogueLine analogueLine);
 
     Contact getContact(String id);
 
@@ -25,9 +25,9 @@ public interface SalesforceApi {
 
     List<Contact> getContactsByRole(String accountId, String role);
 
-    String create(Contact contact);
+    Contact create(Contact contact);
 
-    String update(Contact contact);
+    Contact update(Contact contact);
 
     EndCustomer getEndCustomer(String id);
 
@@ -35,15 +35,15 @@ public interface SalesforceApi {
 
     List<EndCustomer> getEndCustomers(String accountId);
 
-    String create(EndCustomer endCustomer);
+    EndCustomer create(EndCustomer endCustomer);
 
-    String update(EndCustomer endCustomer);
+    EndCustomer update(EndCustomer endCustomer);
 
     Exchange getExchange(String id);
 
     Exchange getExchangeByName(String name);
 
-    String create(Exchange exchange);
+    Exchange create(Exchange exchange);
 
     Site getSite(String id);
 
@@ -55,9 +55,9 @@ public interface SalesforceApi {
 
     List<Site> getEndCustomersSitesByName(String endCustomerId, String siteName);
 
-    String create(Site site);
+    Site create(Site site);
 
-    String update(Site site);
+    Site update(Site site);
 
     void testConnection();
 

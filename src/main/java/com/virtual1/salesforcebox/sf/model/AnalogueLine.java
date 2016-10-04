@@ -6,19 +6,20 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 @SalesforceObject(table = "Analogue_Line__c")
 public class AnalogueLine extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-    @SalesforceField(name = "Name")
+    @SalesforceField(name = "Name", readOnly = true)
     private String name;
     @SalesforceField(name = "Annual_Rental_Cost__c")
-    private String annualRentalCost;
+    private BigDecimal annualRentalCost;
     @SalesforceField(name = "Carrier_Contract_mths__c")
     private Integer carrierContractMths;
-    @SalesforceField(name = "Carrier_End_Date__c")
+    @SalesforceField(name = "Carrier_End_Date__c", readOnly = true)
     private Date carrierEndDate;
     @SalesforceField(name = "Carrier_Live_Date__c")
     private Date carrierLiveDate;
@@ -26,11 +27,11 @@ public class AnalogueLine extends BaseSalesforceObject {
     private String carrierProductName;
     @SalesforceField(name = "Carrier_Service_ID__c")
     private String carrierServiceId;
-    @SalesforceField(name = "End_Customer_Name__c")
+    @SalesforceField(name = "End_Customer_Name__c", readOnly = true)
     private String endCustomerName;
     @SalesforceField(name = "One_Off_Cost__c")
-    private String oneOffCost;
-    @SalesforceField(name = "Project_Status__c")
+    private BigDecimal oneOffCost;
+    @SalesforceField(name = "Project_Status__c", readOnly = true)
     private String projectStatus;
     @SalesforceField(name = "Site_Name__c")
     private String siteName;
@@ -38,6 +39,8 @@ public class AnalogueLine extends BaseSalesforceObject {
     private String status;
     @SalesforceField(name = "Call_Barring__c")
     private boolean callBarring;
+    @SalesforceField(name = "Telephone_Number__c")
+    private String telephoneNumber;
     @SalesforceParentId(name = "Access_ID__c")
     private String accessId;
     @SalesforceParentId(name = "Project_Number__c")
@@ -62,11 +65,11 @@ public class AnalogueLine extends BaseSalesforceObject {
         this.accessId = accessID;
     }
 
-    public String getAnnualRentalCost() {
+    public BigDecimal getAnnualRentalCost() {
         return annualRentalCost;
     }
 
-    public void setAnnualRentalCost(String annualRentalCost) {
+    public void setAnnualRentalCost(BigDecimal annualRentalCost) {
         this.annualRentalCost = annualRentalCost;
     }
 
@@ -78,6 +81,14 @@ public class AnalogueLine extends BaseSalesforceObject {
         if (carrierContractMths > 0) {
             this.carrierContractMths = carrierContractMths;
         }
+    }
+
+    public String getTelephoneNumber() {
+        return telephoneNumber;
+    }
+
+    public void setTelephoneNumber(String telephoneNumber) {
+        this.telephoneNumber = telephoneNumber;
     }
 
     public Date getCarrierEndDate() {
@@ -128,11 +139,11 @@ public class AnalogueLine extends BaseSalesforceObject {
         this.endCustomerName = endCustomerName;
     }
 
-    public String getOneOffCost() {
+    public BigDecimal getOneOffCost() {
         return oneOffCost;
     }
 
-    public void setOneOffCost(String oneOffCost) {
+    public void setOneOffCost(BigDecimal oneOffCost) {
         this.oneOffCost = oneOffCost;
     }
 

@@ -10,22 +10,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public abstract class BaseSalesforceObject extends CachedSalesforceObject {
-    private static final long serialVersionUID = 1L;
-
     @SalesforceId
     @SalesforceField(name = "Id")
     protected String id;
-    protected String name;
     @SalesforceField(name = "CreatedDate", readOnly = true)
-    protected Date createdDate;
+    private Date createdDate;
     @SalesforceField(name = "LastModifiedDate", readOnly = true)
-    protected Date lastModifiedDate;
+    private Date lastModifiedDate;
 
+    protected String name;
     private String recordTypeId;
     private String recordType;
 
     private final Map<String, Object> customFields = new HashMap<>();
-
 
     public String getId() {
         return id;

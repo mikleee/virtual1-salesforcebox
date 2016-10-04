@@ -4,6 +4,7 @@ import com.virtual1.salesforcebox.sf.SalesforceService;
 import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
 import org.junit.Assert;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -46,11 +47,31 @@ public class AbstractTestFlow {
         Assert.assertTrue("Collection of salesforce objects does not contain " + object.getId(), contains);
     }
 
-    String formatAccountId(String id) {
-        return id == null ? null : id.replaceAll("AAC", "");
+    void assertEquals(BigDecimal o1, BigDecimal o2) {
+        if (o1 != null & o2 != null) {
+            Assert.assertEquals(o1.doubleValue(), o1.doubleValue(), 4);
+        } else {
+            Assert.assertEquals(o1, o1);
+        }
     }
 
-    String formatEndCustomerId(String id) {
-        return id == null ? null : id.replaceAll("IAI", "");
+    String formatSfId(String id) {
+        return id != null && id.length() == 18 ? id.substring(0, 15) : id;
     }
+
+//    String formatAccountId(String id) {
+//        return id == null ? null : id.replaceAll("AAC", "");
+//    }
+//
+//    String formatAccessId(String id) {
+//        return id == null ? null : id.replaceAll("AAI", "");
+//    }
+//
+//    String formatProjectId(String id) {
+//        return id == null ? null : id.replaceAll("AAO", "");
+//    }
+//
+//    String formatEndCustomerId(String id) {
+//        return id == null ? null : id.replaceAll("IAI", "");
+//    }
 }

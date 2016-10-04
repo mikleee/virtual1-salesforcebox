@@ -7,8 +7,10 @@ public interface SalesforceConstants {
 
     // project
     String PROJECT_TYPE_INTERNET_ACCESS = "Internet Access";
+    String PROJECT_TYPE_INTERNET = "Internet";
     String PROJECT_TYPE_MPLS = "MPLS";
     String PROJECT_TYPE_LAYER_2 = "Layer 2";
+    String PROJECT_TYPE_1CLOUD_ENTERPRISE = "1Cloud Enterprise";
 
     // asset
     String ASSET_TYPE_1CLOUD_ENTERPRISE = "1Cloud Enterprise";
@@ -37,5 +39,10 @@ public interface SalesforceConstants {
     String ROLE_PROVISIONING = "Provisioning";
 
     String POINT_TO_POINT_RECORD_TYPE = "Ethernet Point-to-Point";
+
+
+    String YES = "Yes";
+    String NO = "No";
+    String DONT_KNOW = "Don't know";
 
 }

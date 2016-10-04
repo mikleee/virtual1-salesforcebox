@@ -1,5 +1,6 @@
 package salesforceflow;
 
+import com.virtual1.salesforcebox.sf.SalesforceConstants;
 import com.virtual1.salesforcebox.sf.model.Contact;
 import com.virtual1.salesforcebox.sf.model.EndCustomer;
 import com.virtual1.salesforcebox.sf.model.Site;
@@ -48,20 +49,19 @@ public class SiteTestFlow extends AbstractTestFlow {
         site.setAddressRef("atest address ref");
         site.setDistrictCode("atestDC");
         site.setQualifier("atest qualifier");
-        site.setBuildConstructedBefore2000("Yes");
-        site.setAsbestos("Yes");
+        site.setBuildConstructedBefore2000(SalesforceConstants.YES);
+        site.setAsbestos(SalesforceConstants.YES);
 
         EndCustomer endCustomer = new EndCustomer();
         endCustomer.setId(END_CUSTOMER_ID);
         site.setEndCustomer(endCustomer);
 
-        String id = getSalesforceService().create(site);
-        site.setId(id);
-        Assert.assertNotNull(id);
+        site = getSalesforceService().create(site);
+        Assert.assertNotNull(site.getId());
         try {
             checkInSalesforce(site);
         } catch (Exception e) {
-            delete(id);
+            delete(site.getId());
             throw e;
         }
 
@@ -83,8 +83,8 @@ public class SiteTestFlow extends AbstractTestFlow {
         site.setAddressRef("atest address ref1");
         site.setDistrictCode("atestDC1");
         site.setQualifier("atest qualifier1");
-        site.setBuildConstructedBefore2000("No");
-        site.setAsbestos("No");
+        site.setBuildConstructedBefore2000(SalesforceConstants.NO);
+        site.setAsbestos(SalesforceConstants.NO);
 
         EndCustomer endCustomer = new EndCustomer();
         endCustomer.setId(END_CUSTOMER_ID_2);
@@ -122,7 +122,7 @@ public class SiteTestFlow extends AbstractTestFlow {
         Assert.assertEquals(o1.getQualifier(), o2.getQualifier());
         Assert.assertEquals(o1.getBuildConstructedBefore2000(), o2.getBuildConstructedBefore2000());
         Assert.assertEquals(o1.getAsbestos(), o2.getAsbestos());
-        Assert.assertEquals(formatEndCustomerId(o1.getEndCustomer().getId()), formatEndCustomerId(o2.getEndCustomer().getId()));
+        Assert.assertEquals(formatSfId(o1.getEndCustomer().getId()), formatSfId(o2.getEndCustomer().getId()));
     }
 
 

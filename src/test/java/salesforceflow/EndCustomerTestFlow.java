@@ -37,13 +37,12 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
         endCustomer.setPrtgPassword("Automated test");
         endCustomer.setAccountId(ACCOUNT_ID);
 
-        String id = getSalesforceService().create(endCustomer);
-        endCustomer.setId(id);
-        Assert.assertNotNull(id);
+        endCustomer = getSalesforceService().create(endCustomer);
+        Assert.assertNotNull(endCustomer.getId());
         try {
             checkIsSalesforce(endCustomer);
         } catch (Exception e) {
-            delete(id);
+            delete(endCustomer.getId());
             throw e;
         }
 
@@ -79,7 +78,7 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
         Assert.assertEquals(o1.getCompanyRegistration(), o2.getCompanyRegistration());
         Assert.assertEquals(o1.getPrtgLogin(), o2.getPrtgLogin());
         Assert.assertEquals(o1.getPrtgPassword(), o2.getPrtgPassword());
-        Assert.assertEquals(formatAccountId(o1.getAccountId()), formatAccountId(o2.getAccountId()));
+        Assert.assertEquals(formatSfId(o1.getAccountId()), formatSfId(o2.getAccountId()));
     }
 
 

@@ -20,7 +20,7 @@ public class SalesforceServiceTest {
 
     @BeforeClass
     public static void init() {
-        new MappingRegistry();
+        MappingRegistry.init();
     }
 
     @Test
@@ -30,16 +30,22 @@ public class SalesforceServiceTest {
     }
 
     @Test
+    public void retrieveAnalogueLine() {
+        AnalogueLine analogueLine = analogueLineTestFlow.findExisting();
+        analogueLineTestFlow.findByAssetBasedOnExistingAnalogueLine(analogueLine);
+    }
+
+    @Test
+    public void modifyAnalogueLine() {
+        AnalogueLine analogueLine = analogueLineTestFlow.create();
+        analogueLineTestFlow.delete(analogueLine.getId());
+    }
+
+    @Test
     public void retrieveContact() {
         Contact contact = contactTestFlow.findExisting();
         contactTestFlow.findByEmailBasedOnExistingContact(contact);
         contactTestFlow.findByRoleBasedOnExistingContact(contact);
-    }
-
-    @Test
-    public void retrieveAnalogueLine() {
-        AnalogueLine analogueLine = analogueLineTestFlow.findExisting();
-        analogueLineTestFlow.findByAssetBasedOnExistingAnalogueLine(analogueLine);
     }
 
     @Test

@@ -34,13 +34,13 @@ public class MappingRegistry {
     private static Map<Class<?>, String> queries = new HashMap<>();
 
 
-    public static SfObjectAccessor getAccessors(Class<?> type) {
+    public static SfObjectAccessor getAccessor(Class<?> type) {
         return accessors.get(type);
     }
 
     public static Map<Field, SfAccessor> getAccessors(Class<?> type, Class<? extends Annotation> annotation) {
         Map<Field, SfAccessor> result = new HashMap<>();
-        for (Map.Entry<Field, SfAccessor> entry : getAccessors(type).getAccessors().entrySet()) {
+        for (Map.Entry<Field, SfAccessor> entry : getAccessor(type).getAccessors().entrySet()) {
             if (entry.getKey().isAnnotationPresent(annotation)) {
                 result.put(entry.getKey(), entry.getValue());
             }
@@ -52,11 +52,8 @@ public class MappingRegistry {
         return queries.get(type);
     }
 
-    static {
-        init();
-    }
 
-    private static void init() {
+    public static void init() {
         for (Class<?> type : CONTEXT) {
             accessors.put(type, getModelAccessors(type));
         }

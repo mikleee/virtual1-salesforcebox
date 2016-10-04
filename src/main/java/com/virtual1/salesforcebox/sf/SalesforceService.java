@@ -71,9 +71,8 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public String createAnalogueLine(AnalogueLine analogueLine) {
-        SObject sfObject = converter.convert(analogueLine);
-        return createOld(sfObject, analogueLine);
+    public AnalogueLine create(AnalogueLine analogueLine) {
+        return createObject(analogueLine);
     }
 
     @Override
@@ -100,12 +99,12 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public String create(Contact contact) {
+    public Contact create(Contact contact) {
         return createObject(contact);
     }
 
     @Override
-    public String update(Contact contact) {
+    public Contact update(Contact contact) {
         return updateObject(contact);
     }
 
@@ -132,12 +131,12 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public String create(EndCustomer endCustomer) {
+    public EndCustomer create(EndCustomer endCustomer) {
         return createObject(endCustomer);
     }
 
     @Override
-    public String update(EndCustomer endCustomer) {
+    public EndCustomer update(EndCustomer endCustomer) {
         return updateObject(endCustomer);
     }
 
@@ -155,7 +154,7 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public String create(Exchange exchange) {
+    public Exchange create(Exchange exchange) {
         return createObject(exchange);
     }
 
@@ -196,12 +195,12 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public String create(Site site) {
+    public Site create(Site site) {
         return createObject(site);
     }
 
     @Override
-    public String update(Site site) {
+    public Site update(Site site) {
         return updateObject(site);
     }
 
@@ -1022,14 +1021,16 @@ public class SalesforceService implements SalesforceApi {
         return id;
     }
 
-    private String createObject(Object o) {
+    private <T> T createObject(T o) {
         SObject sObject = objectConverter.convert(o);
-        return dataSource.create(sObject);
+        String id = dataSource.create(sObject);
+        return objectConverter.setId(o, id);
     }
 
-    private String updateObject(Object o) {
+    private <T> T updateObject(T o) {
         SObject sObject = objectConverter.convert(o);
-        return dataSource.update(sObject);
+        dataSource.update(sObject);
+        return o;
     }
 
     private String update(SObject sObject, BaseSalesforceObject object) {

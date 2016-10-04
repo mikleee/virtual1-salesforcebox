@@ -1,17 +1,19 @@
 package salesforceflow;
 
+import com.virtual1.salesforcebox.sf.model.Account;
 import com.virtual1.salesforcebox.sf.model.AnalogueLine;
-import com.virtual1.salesforcebox.sf.model.Contact;
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
-import com.virtual1.salesforcebox.sf.model.Site;
 import org.junit.Assert;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
  * @author Mikhail Tkachenko created on 03.10.16 11:13
  */
 public class AnalogueLineTestFlow extends AbstractTestFlow {
+    private final static String ANALOGUE_LINE_ACCESS_ID = "a09a000000d2zYc";
+    private final static String ANALOGUE_LINE_PROJECT_ID = "a06a000000dXXKs";
+    private final static String ANALOGUE_LINE_CARRIER_ID = "0013000000pK6CE";
 
     public AnalogueLine findExisting() {
         AnalogueLine analogueLine = getSalesforceService().getAnalogueLine(ANALOGUE_LINE_ID);
@@ -25,104 +27,59 @@ public class AnalogueLineTestFlow extends AbstractTestFlow {
         return list;
     }
 
-    public List<Site> findByEndCustomerAndNameBasedOnExistingSite(Site site) {
-        List<Site> list = getSalesforceService().getEndCustomersSitesByName(site.getEndCustomer().getId(), site.getName());
-        assertContains(list, site);
-        return list;
-    }
 
+    public AnalogueLine create() {
+        AnalogueLine analogueLine = new AnalogueLine();
+        analogueLine.setName("atest");
+        analogueLine.setAnnualRentalCost(new BigDecimal("10.00"));
+        analogueLine.setCarrierContractMths(10);
+        analogueLine.setCarrierProductName("atest product name");
+        analogueLine.setCarrierServiceId("atest carrier service id");
+        analogueLine.setOneOffCost(new BigDecimal("12"));
+        analogueLine.setCallBarring(true);
+        analogueLine.setTelephoneNumber("01480367890");
+        analogueLine.setAccessId(ANALOGUE_LINE_ACCESS_ID);
+        analogueLine.setProjectId(ANALOGUE_LINE_PROJECT_ID);
 
-    public Site create() {
-        Site site = new Site();
-        site.setName("atest site name");
-        site.setAddress("atest site address");
-        site.setPostCode("E34JW");
-        site.setPhone("01234567980");
-        site.setSiteContact("atest contact");
-        site.setUnitBuildingNumber("1");
-        site.setBuildingName("atest building");
-        site.setStreetNumber("1");
-        site.setBuildingName("atest street");
-        site.setTownCity("London");
-        site.setCounty("UK");
-        site.setAddressRef("atest address ref");
-        site.setDistrictCode("atestDC");
-        site.setQualifier("atest qualifier");
-        site.setBuildConstructedBefore2000("Yes");
-        site.setAsbestos("Yes");
+        Account account = new Account();
+        account.setId(ANALOGUE_LINE_CARRIER_ID);
+        analogueLine.setCarrierProvider(account);
 
-        EndCustomer endCustomer = new EndCustomer();
-        endCustomer.setId(END_CUSTOMER_ID);
-        site.setEndCustomer(endCustomer);
-
-        String id = getSalesforceService().create(site);
-        site.setId(id);
-        Assert.assertNotNull(id);
+        analogueLine = getSalesforceService().create(analogueLine);
+        Assert.assertNotNull(analogueLine.getId());
         try {
-            checkInSalesforce(site);
+            checkInSalesforce(analogueLine);
         } catch (Exception e) {
-            delete(id);
+            delete(analogueLine.getId());
             throw e;
         }
 
-        return site;
+        return analogueLine;
     }
 
-    public Site update(Site site) {
-        site.setName("atest site name1");
-        site.setAddress("atest site address1");
-        site.setPostCode("RH41EA");
-        site.setPhone("01234567981");
-        site.setSiteContact("atest contact1");
-        site.setUnitBuildingNumber("11");
-        site.setBuildingName("atest building1");
-        site.setStreetNumber("11");
-        site.setBuildingName("atest street1");
-        site.setTownCity("Liverpool");
-        site.setCounty("UK1");
-        site.setAddressRef("atest address ref1");
-        site.setDistrictCode("atestDC1");
-        site.setQualifier("atest qualifier1");
-        site.setBuildConstructedBefore2000("No");
-        site.setAsbestos("No");
-
-        EndCustomer endCustomer = new EndCustomer();
-        endCustomer.setId(END_CUSTOMER_ID_2);
-        site.setEndCustomer(endCustomer);
-
-        getSalesforceService().update(site);
-        checkInSalesforce(site);
-        return site;
-    }
-
-    private void checkInSalesforce(Site site) {
-        Site inSf = getSalesforceService().getSite(site.getId());
-        assertEquals(site, inSf);
+    private void checkInSalesforce(AnalogueLine analogueLine) {
+        AnalogueLine inSf = getSalesforceService().getAnalogueLine(analogueLine.getId());
+        assertEquals(analogueLine, inSf);
     }
 
     public void delete(String id) {
         getSalesforceService().delete(new String[]{id});
-        Contact contact = getSalesforceService().getContact(id);
-        Assert.assertNull(contact);
+        AnalogueLine analogueLine = getSalesforceService().getAnalogueLine(id);
+        Assert.assertNull(analogueLine);
     }
 
-    private void assertEquals(Site o1, Site o2) {
+    private void assertEquals(AnalogueLine o1, AnalogueLine o2) {
         Assert.assertEquals(o1.getId(), o2.getId());
-        Assert.assertEquals(o1.getName(), o2.getName());
-        Assert.assertEquals(o1.getAddress(), o2.getAddress());
-        Assert.assertEquals(o1.getPostCode(), o2.getPostCode());
-        Assert.assertEquals(o1.getPhone(), o2.getPhone());
-        Assert.assertEquals(o1.getSiteContact(), o2.getSiteContact());
-        Assert.assertEquals(o1.getUnitBuildingNumber(), o2.getUnitBuildingNumber());
-        Assert.assertEquals(o1.getBuildingName(), o2.getBuildingName());
-        Assert.assertEquals(o1.getTownCity(), o2.getTownCity());
-        Assert.assertEquals(o1.getCounty(), o2.getCounty());
-        Assert.assertEquals(o1.getAddressRef(), o2.getAddressRef());
-        Assert.assertEquals(o1.getDistrictCode(), o2.getDistrictCode());
-        Assert.assertEquals(o1.getQualifier(), o2.getQualifier());
-        Assert.assertEquals(o1.getBuildConstructedBefore2000(), o2.getBuildConstructedBefore2000());
-        Assert.assertEquals(o1.getAsbestos(), o2.getAsbestos());
-        Assert.assertEquals(formatEndCustomerId(o1.getEndCustomer().getId()), formatEndCustomerId(o2.getEndCustomer().getId()));
+        assertEquals(o1.getAnnualRentalCost(), o2.getAnnualRentalCost());
+        Assert.assertEquals(o1.getCarrierContractMths(), o2.getCarrierContractMths());
+        Assert.assertEquals(o1.getCarrierProductName(), o2.getCarrierProductName());
+        Assert.assertEquals(o1.getCarrierServiceId(), o2.getCarrierServiceId());
+        assertEquals(o1.getOneOffCost(), o2.getOneOffCost());
+        Assert.assertEquals(o1.isCallBarring(), o2.isCallBarring());
+        Assert.assertEquals(o1.getTelephoneNumber(), o2.getTelephoneNumber());
+        Assert.assertEquals(formatSfId(o1.getAccessId()), formatSfId(o2.getAccessId()));
+        Assert.assertEquals(formatSfId(o1.getProjectId()), formatSfId(o2.getProjectId()));
+        Assert.assertEquals(formatSfId(o1.getCarrierProvider().getId()), formatSfId(o2.getCarrierProvider().getId()));
     }
 
 

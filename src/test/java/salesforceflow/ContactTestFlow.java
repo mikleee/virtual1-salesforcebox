@@ -46,13 +46,12 @@ public class ContactTestFlow extends AbstractTestFlow {
         contact.setDepartment("Department");
         contact.setAccountId(ACCOUNT_ID);
 
-        String id = getSalesforceService().create(contact);
-        contact.setId(id);
-        Assert.assertNotNull(id);
+        contact = getSalesforceService().create(contact);
+        Assert.assertNotNull(contact.getId());
         try {
             checkInSalesforce(contact);
         } catch (Exception e) {
-            delete(id);
+            delete(contact.getId());
             throw e;
         }
 
@@ -100,7 +99,7 @@ public class ContactTestFlow extends AbstractTestFlow {
         Assert.assertEquals(c1.getHasOptedOutOfEmail(), c2.getHasOptedOutOfEmail());
         Assert.assertEquals(c1.getDoNotCall(), c2.getDoNotCall());
         Assert.assertEquals(c1.getDepartment(), c2.getDepartment());
-        Assert.assertEquals(formatAccountId(c1.getAccountId()), formatAccountId(c2.getAccountId()));
+        Assert.assertEquals(formatSfId(c1.getAccountId()), formatSfId(c2.getAccountId()));
     }
 
 
