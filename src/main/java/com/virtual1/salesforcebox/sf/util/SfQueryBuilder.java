@@ -42,7 +42,7 @@ public class SfQueryBuilder {
     }
 
     public SfQueryBuilder where(String field, String value) {
-        return where(String.format("%s='%s'", field, value));
+        return where(String.format("%s='%s'", field, applyValue(value)));
     }
 
     public SfQueryBuilder and(String and) {
@@ -54,7 +54,7 @@ public class SfQueryBuilder {
     }
 
     public SfQueryBuilder and(String field, String value) {
-        return and(String.format("%s='%s'", field, value));
+        return and(String.format("%s='%s'", field, applyValue(value)));
     }
 
     public SfQueryBuilder or(String or) {
@@ -66,7 +66,7 @@ public class SfQueryBuilder {
     }
 
     public SfQueryBuilder or(String field, String value) {
-        return or(String.format("%s='%s'", field, value));
+        return or(String.format("%s='%s'", field, applyValue(value)));
     }
 
     public SfQueryBuilder andIncludes(String field, String... values) {
@@ -100,5 +100,23 @@ public class SfQueryBuilder {
     @Override
     public String toString() {
         return query.toString();
+    }
+
+
+    private String applyValue(String value) {
+        return value == null ? "" : escapeSOQL(value);
+    }
+
+    /**
+     * http://www.salesforce.com/us/developer/docs/api/Content/sforce_api_calls_soql_select_quotedstringescapes.htm
+     */
+    private String escapeSOQL(String value) {
+        String result = value;
+        String[] reservedChars = {"\\", "'", "\""};
+
+        for (String res : reservedChars) {
+            result = result.replace(res, "\\" + res);
+        }
+        return result;
     }
 }

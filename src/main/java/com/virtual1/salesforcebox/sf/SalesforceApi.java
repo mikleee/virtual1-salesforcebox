@@ -71,6 +71,12 @@ public interface SalesforceApi {
 
     Map<String, Set<String>> getPickListValues(String sObjectType);
 
+    NNI getNni(String id);
+
+    NNI getNniByName(String name);
+
+    NNI getNniByUpstreamDeviceName(String carrierProviderName, String nniType, String upstreamDeviceName);
+
     RecordType getRecordType(String id);
 
     RecordType getRecordTypeByObjectTypeAndName(String objectType, String name);
@@ -92,4 +98,5 @@ public interface SalesforceApi {
     User getUser(String id);
 
 
+    String delete(String id);
 }

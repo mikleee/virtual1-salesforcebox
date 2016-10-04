@@ -1048,7 +1048,7 @@ public class ConvertingSFObjects {
             sObject.setField(entry.getKey(), entry.getValue());
         }
 
-        switch (pricingEntry.getRecordType()) {
+        switch (pricingEntry.getRecordTypeOld()) {
             case SalesforceConstants.ACCESS_PRICING_ENTRY_TYPE:
                 sObject.setField("Project_Number__c", pricingEntry.getProjectId());
                 sObject.setField("Case_Number__c", pricingEntry.getCaseId());
@@ -1094,7 +1094,7 @@ public class ConvertingSFObjects {
                 sObject.setField("Previous_Rental_Amount__c", toDouble(pricingEntry.getPreviousRentalAmount()));
                 return sObject;
             default:
-                throw new SalesforceException("Pricing entry relationType " + pricingEntry.getRecordType() + " is not supported");
+                throw new SalesforceException("Pricing entry relationType " + pricingEntry.getRecordTypeOld() + " is not supported");
         }
     }
 
@@ -1433,8 +1433,8 @@ public class ConvertingSFObjects {
         nni.setName((String) sObject.getField("Name"));
         nni.setStatus((String) sObject.getField("Status__c"));
         nni.setCarrierNniId((String) sObject.getField("Carrier_NNI_ID__c"));
-        nni.setCarrierProvider(getSubField(sObject, "Carrier_Provider__r.Name"));
-        nni.setCarrierProviderId(getSubField(sObject, "Carrier_Provider__r.Id"));
+//        nni.setCarrierProvider(getSubField(sObject, "Carrier_Provider__r.Name"));
+//        nni.setCarrierProviderId(getSubField(sObject, "Carrier_Provider__r.Id"));
         nni.setNniType((String) sObject.getField("NNI_Type__c"));
         nni.setNniDescription((String) sObject.getField("NNI_Description__c"));
         nni.setUpstreamDeviceName((String) sObject.getField("Upstream_Device_Name__c"));

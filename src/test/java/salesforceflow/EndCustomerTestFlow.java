@@ -67,7 +67,7 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
     }
 
     public void delete(String id) {
-        getSalesforceService().delete(new String[]{id});
+        getSalesforceService().delete(id);
         EndCustomer endCustomer = getSalesforceService().getEndCustomer(id);
         Assert.assertNull(endCustomer);
     }

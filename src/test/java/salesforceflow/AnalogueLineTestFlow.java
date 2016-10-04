@@ -63,7 +63,7 @@ public class AnalogueLineTestFlow extends AbstractTestFlow {
     }
 
     public void delete(String id) {
-        getSalesforceService().delete(new String[]{id});
+        getSalesforceService().delete(id);
         AnalogueLine analogueLine = getSalesforceService().getAnalogueLine(id);
         Assert.assertNull(analogueLine);
     }

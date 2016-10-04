@@ -8,9 +8,6 @@ import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
 public class Virtual1DataCenter extends BaseSalesforceObject {
     private static final long serialVersionUID = 1L;
 
-    public static final String RECORD_TYPE_VPN = "Datacentre Postcode";
-
-
     @SalesforceField(name = "Name")
     private String name;
     @SalesforceField(name = "Postcode__c")

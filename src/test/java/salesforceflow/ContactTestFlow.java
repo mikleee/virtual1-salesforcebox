@@ -83,7 +83,7 @@ public class ContactTestFlow extends AbstractTestFlow {
     }
 
     public void delete(String id) {
-        getSalesforceService().delete(new String[]{id});
+        getSalesforceService().delete(id);
         Contact contact = getSalesforceService().getContact(id);
         Assert.assertNull(contact);
     }

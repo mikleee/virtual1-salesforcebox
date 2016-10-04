@@ -42,7 +42,7 @@ public abstract class BaseSalesforceObject extends CachedSalesforceObject {
         this.name = name;
     }
 
-    public String getRecordType() {
+    public String getRecordTypeOld() {
         return recordType;
     }
 

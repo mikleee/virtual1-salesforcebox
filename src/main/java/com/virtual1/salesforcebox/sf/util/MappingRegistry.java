@@ -23,6 +23,7 @@ public class MappingRegistry {
             EndCustomer.class,
             Exchange.class,
             FeedItem.class,
+            NNI.class,
             RecordType.class,
             Site.class,
             User.class,

@@ -44,7 +44,7 @@ public class ExchangeTestFlow extends AbstractTestFlow {
     }
 
     public void delete(String id) {
-        getSalesforceService().delete(new String[]{id});
+        getSalesforceService().delete(id);
         Exchange exchange = getSalesforceService().getExchange(id);
         Assert.assertNull(exchange);
     }

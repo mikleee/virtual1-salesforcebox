@@ -193,6 +193,27 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
+    public NNI getNni(String id) {
+        return findById(NNI.class, id);
+    }
+
+    @Override
+    public NNI getNniByName(String name) {
+        String query = SfQueryBuilder.queryFor(NNI.class).byField("Name", name);
+        return retrieveOne(query, NNI.class);
+    }
+
+    @Override
+    public NNI getNniByUpstreamDeviceName(String carrierProviderName, String nniType, String upstreamDeviceName) {
+        String query = SfQueryBuilder.queryFor(NNI.class)
+                .where("Carrier_Provider__r.Name", carrierProviderName)
+                .and("NNI_Type__c", nniType)
+                .and("Upstream_Device_Name__c", upstreamDeviceName)
+                .toString();
+        return retrieveOne(query, NNI.class);
+    }
+
+    @Override
     public RecordType getRecordType(String id) {
         return findById(RecordType.class, id);
     }
@@ -246,8 +267,16 @@ public class SalesforceService implements SalesforceApi {
         return retrieveAll(query, Virtual1DataCenter.class);
     }
 
+    @Override
     public User getUser(String id) {
         return findById(User.class, id);
+    }
+
+    @Override
+    public String delete(String id) {
+        id = dataSource.delete(id);
+        LOGGER.info("Object deleted from salesforce " + id);
+        return id;
     }
 
     @Deprecated
@@ -705,18 +734,6 @@ public class SalesforceService implements SalesforceApi {
 
     // ------------------------ NNI ------------------------
 
-    public NNI getNniByName(String name) {
-        String query = format("SELECT %s FROM NNI__c WHERE Name='%s'", NNI_FIELDS, name);
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertNNI(sObject);
-    }
-
-    public NNI getNniByUpstreamDeviceName(String carrierProvider, String nniType, String upstreamDeviceName) {
-        String query = format("SELECT %s FROM NNI__c WHERE Carrier_Provider__r.Name='%s' AND NNI_Type__c='%s' and Upstream_Device_Name__c='%s'",
-                NNI_FIELDS, escapeSOQL(carrierProvider), escapeSOQL(nniType), escapeSOQL(upstreamDeviceName));
-        SObject sObject = retrieveOne(query);
-        return sObject == null ? null : converter.convertNNI(sObject);
-    }
 
     // -----------------------------
 
@@ -976,11 +993,6 @@ public class SalesforceService implements SalesforceApi {
         return delete(ids.toArray(new String[]{}));
     }
 
-    public String delete(String id) {
-        id = dataSource.delete(id);
-        LOGGER.info("Object deleted from salesforce " + id);
-        return id;
-    }
 
     private String createOld(SObject sObject, BaseSalesforceObject object) {
         String id = dataSource.create(sObject);

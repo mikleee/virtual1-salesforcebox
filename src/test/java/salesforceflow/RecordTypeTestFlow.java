@@ -27,7 +27,7 @@ public class RecordTypeTestFlow extends AbstractTestFlow {
     }
 
     public void delete(String id) {
-        getSalesforceService().delete(new String[]{id});
+        getSalesforceService().delete(id);
         RecordType recordType = getSalesforceService().getRecordType(id);
         Assert.assertNull(recordType);
     }

@@ -22,6 +22,7 @@ public class SalesforceServiceTest {
     private EndCustomerTestFlow endCustomerTestFlow = new EndCustomerTestFlow();
     private ExchangeTestFlow exchangeTestFlow = new ExchangeTestFlow();
     private FeedItemTestFlow feedItemTestFlow = new FeedItemTestFlow();
+    private NniTestFlow nniTestFlow = new NniTestFlow();
     private RecordTypeTestFlow recordTypeTestFlow = new RecordTypeTestFlow();
     private SiteTestFlow siteTestFlow = new SiteTestFlow();
     private Virtual1DataCenterTestFlow virtual1DataCenterTestFlow = new Virtual1DataCenterTestFlow();
@@ -122,6 +123,13 @@ public class SalesforceServiceTest {
     public void modifyFeedItem() {
         FeedItem feedItem = feedItemTestFlow.create();
         feedItemTestFlow.delete(feedItem.getId());
+    }
+
+    @Test
+    public void retrieveNni() {
+        NNI nni = nniTestFlow.findExisting();
+        nniTestFlow.findByNameBasedOnExistingNni(nni);
+        nniTestFlow.findByUpstreamDeviceNameBasedOnExistingNni(nni);
     }
 
     @Test

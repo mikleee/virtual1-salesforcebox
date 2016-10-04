@@ -1,5 +1,6 @@
 package salesforceflow;
 
+import com.virtual1.salesforcebox.sf.SalesforceApi;
 import com.virtual1.salesforcebox.sf.SalesforceService;
 import com.virtual1.salesforcebox.sf.model.BaseSalesforceObject;
 import org.junit.Assert;
@@ -24,12 +25,13 @@ public class AbstractTestFlow {
     final static String END_CUSTOMER_ID_2 = "a0cS0000001i5Ge";
     final static String EXCHANGE_ID = "a0Ta000000943CpEAI";
     final static String FEED_ITEM_ID = "0D5S000000F3I3xKAF";
+    final static String NNI_ID = "a0Ca000001OwF7AEAV";
     final static String RECORD_TYPE_ID = "01230000000rpB9AAI";
     final static String SITE_ID = "a08S000000CV8lG";
 
-    private static SalesforceService salesforceService;
+    private static SalesforceApi salesforceService;
 
-    public static SalesforceService getSalesforceService() {
+    public static SalesforceApi getSalesforceService() {
         if (salesforceService == null) {
             salesforceService = new SalesforceService(
                     "system.attendant@virtual1.com.v1testing",
