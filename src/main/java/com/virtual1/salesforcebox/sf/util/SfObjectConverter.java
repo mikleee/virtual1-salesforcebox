@@ -3,10 +3,7 @@ package com.virtual1.salesforcebox.sf.util;
 import com.sforce.soap.partner.sobject.SObject;
 import com.sforce.ws.bind.XmlObject;
 import com.sforce.ws.util.Base64;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceField;
 import com.virtual1.salesforcebox.sf.annotation.SalesforceObject;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceParentId;
-import com.virtual1.salesforcebox.sf.annotation.SalesforceRelation;
 import org.apache.commons.lang.StringUtils;
 
 import javax.xml.bind.DatatypeConverter;
@@ -14,8 +11,6 @@ import java.lang.reflect.Field;
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.Map;
-
-import static com.virtual1.salesforcebox.sf.annotation.SalesforceField.RelationType.*;
 
 /**
  * @author Mikhail Tkachenko created on 29.09.16 12:38
@@ -39,25 +34,21 @@ public class SfObjectConverter {
         Class<?> type = source.getClass();
         sObject.setType(type.getAnnotation(SalesforceObject.class).table());
 
-        Map<Field, SfAccessor> accessors = MappingRegistry.getAccessor(type).getAccessors();
-        for (Field field : accessors.keySet()) {
-            SfAccessor accessor = accessors.get(field);
-            if (shouldValueBeSet(accessor, source)) {
-                if (field.isAnnotationPresent(SalesforceField.class)) {
+        SfObjectAccessor objectAccessor = MappingRegistry.getAccessor(type);
+        for (Map.Entry<Field, SfAccessor> e : objectAccessor.getAccessors().entrySet()) {
+            SfAccessor fieldAccessor = e.getValue();
 
-                    SalesforceField.RelationType salesforceFieldType = field.getAnnotation(SalesforceField.class).relationType();
-                    if (salesforceFieldType == SIMPLE_FIELD) {
-                        setSalesforceField(sObject, accessor, source);
-                    } else if (salesforceFieldType == RELATION) {
-                        setSalesforceRelation(sObject, accessor, source);
-                    } else if (salesforceFieldType == RELATION_ID) {
-                        setSalesforceParentId(sObject, accessor, source);
-                    }
-
-                } else if (field.isAnnotationPresent(SalesforceRelation.class)) {
-                    setSalesforceRelation(sObject, accessor, source);
-                } else if (field.isAnnotationPresent(SalesforceParentId.class)) {
-                    setSalesforceParentId(sObject, accessor, source);
+            if (shouldValueBeSet(fieldAccessor, source)) {
+                switch (fieldAccessor.getRelationType()) {
+                    case SIMPLE_FIELD:
+                        setSalesforceField(sObject, fieldAccessor, source);
+                        break;
+                    case RELATION:
+                        setSalesforceRelation(sObject, fieldAccessor, source);
+                        break;
+                    case RELATION_ID:
+                        setSalesforceParentId(sObject, fieldAccessor, source);
+                        break;
                 }
             }
         }

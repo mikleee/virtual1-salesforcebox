@@ -3,6 +3,8 @@ package com.virtual1.salesforcebox.sf;
 import com.virtual1.salesforcebox.sf.model.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Mikhail Tkachenko created on 29.09.16 10:30
@@ -51,11 +53,21 @@ public interface SalesforceApi {
 
     Exchange create(Exchange exchange);
 
-    Site getSite(String id);
+    @Deprecated
+        // http://salesforce.stackexchange.com/questions/110855/rest-api-feeditem-contentdata-download
+    FeedItem getFeedItem(String id);
+
+    @Deprecated
+        // http://salesforce.stackexchange.com/questions/110855/rest-api-feeditem-contentdata-download
+    FeedItem create(FeedItem feedItem);
+
+    Map<String, Set<String>> getPickListValues(String sObjectType);
 
     RecordType getRecordType(String id);
 
     RecordType getRecordTypeByObjectTypeAndName(String objectType, String name);
+
+    Site getSite(String id);
 
     List<Site> getSites(String accountId);
 

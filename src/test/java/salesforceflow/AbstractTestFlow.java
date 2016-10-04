@@ -22,12 +22,13 @@ public class AbstractTestFlow {
     final static String END_CUSTOMER_ID = "a0cS0000001i5Fq";
     final static String END_CUSTOMER_ID_2 = "a0cS0000001i5Ge";
     final static String EXCHANGE_ID = "a0Ta000000943CpEAI";
+    final static String FEED_ITEM_ID = "0D5S000000F3I3xKAF";
     final static String RECORD_TYPE_ID = "01230000000rpB9AAI";
     final static String SITE_ID = "a08S000000CV8lG";
 
     private static SalesforceService salesforceService;
 
-    SalesforceService getSalesforceService() {
+    public static SalesforceService getSalesforceService() {
         if (salesforceService == null) {
             salesforceService = new SalesforceService(
                     "system.attendant@virtual1.com.v1testing",

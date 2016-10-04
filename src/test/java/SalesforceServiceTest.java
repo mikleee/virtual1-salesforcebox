@@ -1,8 +1,12 @@
 import com.virtual1.salesforcebox.sf.model.*;
 import com.virtual1.salesforcebox.sf.util.MappingRegistry;
+import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import salesforceflow.*;
+
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Mikhail Tkachenko created on 30.09.16 9:46
@@ -16,6 +20,7 @@ public class SalesforceServiceTest {
     private ContactTestFlow contactTestFlow = new ContactTestFlow();
     private EndCustomerTestFlow endCustomerTestFlow = new EndCustomerTestFlow();
     private ExchangeTestFlow exchangeTestFlow = new ExchangeTestFlow();
+    private FeedItemTestFlow feedItemTestFlow = new FeedItemTestFlow();
     private RecordTypeTestFlow recordTypeTestFlow = new RecordTypeTestFlow();
     private SiteTestFlow siteTestFlow = new SiteTestFlow();
 
@@ -93,6 +98,25 @@ public class SalesforceServiceTest {
     public void modifyExchange() {
         Exchange exchange = exchangeTestFlow.create();
         endCustomerTestFlow.delete(exchange.getId());
+    }
+
+    @Test
+    public void retrieveFeedItem() {
+        feedItemTestFlow.findExisting();
+    }
+
+    @Test
+    public void modifyFeedItem() {
+        FeedItem feedItem = feedItemTestFlow.create();
+        feedItemTestFlow.delete(feedItem.getId());
+    }
+
+    @Test
+    public void retrievePickListValues() {
+        Map<String, Set<String>> values = AbstractTestFlow.getSalesforceService().getPickListValues("Case");
+        Assert.assertFalse(values.isEmpty());
+        values = AbstractTestFlow.getSalesforceService().getPickListValues("Account");
+        Assert.assertFalse(values.isEmpty());
     }
 
     @Test

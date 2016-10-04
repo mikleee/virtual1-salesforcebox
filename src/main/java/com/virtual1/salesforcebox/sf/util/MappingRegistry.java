@@ -23,6 +23,7 @@ public class MappingRegistry {
         add(Contact.class);
         add(EndCustomer.class);
         add(Exchange.class);
+        add(FeedItem.class);
         add(RecordType.class);
         add(Site.class);
         add(User.class);

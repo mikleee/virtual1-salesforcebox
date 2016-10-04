@@ -1224,7 +1224,7 @@ public class ConvertingSFObjects {
         sObject.setField("ParentId", feedItem.getParentId());
         sObject.setField("Type", "ContentPost");
         sObject.setField("Body", feedItem.getBody());
-        sObject.setField("ContentFileName", feedItem.getFileName());
+        sObject.setField("ContentFileName", feedItem.getContentFileName());
         sObject.setField("ContentData", feedItem.getContentData());
         return sObject;
     }

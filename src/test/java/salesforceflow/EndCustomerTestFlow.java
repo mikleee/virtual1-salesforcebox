@@ -31,10 +31,10 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
 
     public EndCustomer create() {
         EndCustomer endCustomer = new EndCustomer();
-        endCustomer.setName("Automated test");
-        endCustomer.setCompanyRegistration("Automated test");
-        endCustomer.setPrtgLogin("Automated test");
-        endCustomer.setPrtgPassword("Automated test");
+        endCustomer.setName(randomString());
+        endCustomer.setCompanyRegistration(randomString());
+        endCustomer.setPrtgLogin(randomString());
+        endCustomer.setPrtgPassword(randomString());
         endCustomer.setAccountId(ACCOUNT_ID);
 
         endCustomer = getSalesforceService().create(endCustomer);
@@ -50,10 +50,10 @@ public class EndCustomerTestFlow extends AbstractTestFlow {
     }
 
     public EndCustomer update(EndCustomer endCustomer) {
-        endCustomer.setName("Automated test 2");
-        endCustomer.setCompanyRegistration("Automated test 2");
-        endCustomer.setPrtgLogin("Automated test 2");
-        endCustomer.setPrtgPassword("Automated test 2");
+        endCustomer.setName(randomString());
+        endCustomer.setCompanyRegistration(randomString());
+        endCustomer.setPrtgLogin(randomString());
+        endCustomer.setPrtgPassword(randomString());
         endCustomer.setAccountId(null);
 
         getSalesforceService().update(endCustomer);

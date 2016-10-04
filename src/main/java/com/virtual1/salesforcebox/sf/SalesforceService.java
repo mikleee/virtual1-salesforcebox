@@ -30,20 +30,6 @@ public class SalesforceService implements SalesforceApi {
     }
 
 
-    public Map<String, String> getPickListValue(String object, String fieldName) {
-        Map<String, String> map = new LinkedHashMap<>();
-
-        for (Field field : dataSource.describeSObject(object)) {
-            if (field.getName().equalsIgnoreCase(fieldName)) {
-                PicklistEntry[] picklistValues = field.getPicklistValues();
-                for (PicklistEntry picklistEntry : picklistValues) {
-                    map.put(picklistEntry.getValue(), picklistEntry.getLabel());
-                }
-            }
-        }
-        return map;
-    }
-
     @Override
     public Account getAccount(String id) {
         return findById(Account.class, id);
@@ -172,8 +158,28 @@ public class SalesforceService implements SalesforceApi {
     }
 
     @Override
-    public Site getSite(String id) {
-        return findById(Site.class, id);
+    public FeedItem getFeedItem(String id) {
+        return findById(FeedItem.class, id);
+    }
+
+    @Override
+    public FeedItem create(FeedItem feedItem) {
+        return createObject(feedItem);
+    }
+
+    @Override
+    public Map<String, Set<String>> getPickListValues(String sObjectType) {
+        Map<String, Set<String>> result = new LinkedHashMap<>();
+        for (Field field : dataSource.describeSObject(sObjectType)) {
+            if (field.getPicklistValues().length > 0) {
+                Set<String> pickList = new HashSet<>();
+                for (PicklistEntry picklistEntry : field.getPicklistValues()) {
+                    pickList.add(picklistEntry.getValue());
+                }
+                result.put(field.getName(), pickList);
+            }
+        }
+        return result;
     }
 
     @Override
@@ -188,6 +194,11 @@ public class SalesforceService implements SalesforceApi {
                 .and("Name", name)
                 .toString();
         return retrieveOne(query, RecordType.class);
+    }
+
+    @Override
+    public Site getSite(String id) {
+        return findById(Site.class, id);
     }
 
     @Override
@@ -226,6 +237,7 @@ public class SalesforceService implements SalesforceApi {
         return findById(User.class, id);
     }
 
+    @Deprecated
     public AccountPbt getAccountPBT(String accountId) {
         String query = format("SELECT %s FROM Account WHERE Id='%s' ", ACCOUNT_FIELDS, accountId);
         SObject sObject = retrieveOne(query);
@@ -237,6 +249,7 @@ public class SalesforceService implements SalesforceApi {
         }
     }
 
+    @Deprecated
     private AccountPbt populateAccountPbt(AccountPbt accountPbt) {
         String pbt = accountPbt.getPbt();
         if (pbt == null || pbt.equals("None")) {
@@ -252,6 +265,21 @@ public class SalesforceService implements SalesforceApi {
             accountPbt.setStatus(AccountPbt.PbtValue.SELECTED);
         }
         return accountPbt;
+    }
+
+    @Deprecated
+    public Map<String, String> getPickListValue(String object, String fieldName) {
+        Map<String, String> map = new LinkedHashMap<>();
+
+        for (Field field : dataSource.describeSObject(object)) {
+            if (field.getName().equalsIgnoreCase(fieldName)) {
+                PicklistEntry[] picklistValues = field.getPicklistValues();
+                for (PicklistEntry picklistEntry : picklistValues) {
+                    map.put(picklistEntry.getValue(), picklistEntry.getLabel());
+                }
+            }
+        }
+        return map;
     }
 
 
@@ -864,14 +892,6 @@ public class SalesforceService implements SalesforceApi {
         dataSource.create(caseObject);
     }
 
-    /**
-     * not cached
-     */
-    String addFeedItem(FeedItem feedItem) {
-        SObject sObject = converter.convert(feedItem);
-        return createOld(sObject, feedItem);
-    }
-
     public void createRetailPortalLead(RetailPortalLead lead) {
         LOGGER.info("Create new retail portal lead");
 
@@ -976,7 +996,7 @@ public class SalesforceService implements SalesforceApi {
 
     public List<String> delete(String[] ids) {
         List<String> result = dataSource.delete(ids);
-        LOGGER.info("Objects deleted from salesforcebox " + result);
+        LOGGER.info("Objects deleted from salesforce " + result);
         return result;
     }
 
@@ -986,7 +1006,7 @@ public class SalesforceService implements SalesforceApi {
 
     private String delete(String id) {
         id = dataSource.delete(id);
-        LOGGER.info("Objects deleted from salesforcebox " + id);
+        LOGGER.info("Object deleted from salesforce " + id);
         return id;
     }
 

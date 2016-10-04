@@ -13,9 +13,19 @@ import java.nio.charset.Charset;
 public class Attachment extends ChildObject {
     private static final long serialVersionUID = 1L;
 
+    @SalesforceField(name = "Name")
+    private String name;
     @SalesforceField(name = "Body")
     private byte[] body;
 
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public byte[] getBody() {
         return body;

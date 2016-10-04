@@ -1,10 +1,7 @@
 package salesforceflow;
 
-import com.virtual1.salesforcebox.sf.model.EndCustomer;
 import com.virtual1.salesforcebox.sf.model.Exchange;
 import org.junit.Assert;
-
-import java.util.List;
 
 /**
  * @author Mikhail Tkachenko created on 03.10.16 11:13
@@ -22,12 +19,6 @@ public class ExchangeTestFlow extends AbstractTestFlow {
         Assert.assertNotNull(exchange1);
         assertEquals(exchange, exchange1);
         return exchange1;
-    }
-
-    public List<EndCustomer> getAccountListBasedOnExistingEndCustomer(EndCustomer endCustomer) {
-        List<EndCustomer> endCustomers = getSalesforceService().getEndCustomers(endCustomer.getAccountId());
-        assertContains(endCustomers, endCustomer);
-        return endCustomers;
     }
 
     public Exchange create() {

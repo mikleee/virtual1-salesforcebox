@@ -33,17 +33,17 @@ public class ContactTestFlow extends AbstractTestFlow {
 
     public Contact create() {
         Contact contact = new Contact();
-        contact.setName("atest atest");
-        contact.setFirstName("atest");
-        contact.setLastName("atest");
+        contact.setName(randomString());
+        contact.setFirstName(randomString());
+        contact.setLastName(randomString());
         contact.setTelephone("01234567890");
         contact.setEmail("atest@atest.atest");
-        contact.setJobTitle("Job Title");
+        contact.setJobTitle(randomString());
         contact.setRoles(SalesforceConstants.ROLE_PROVISIONING);
         contact.setX1PortalUSer(true);
         contact.setHasOptedOutOfEmail(true);
         contact.setDoNotCall(true);
-        contact.setDepartment("Department");
+        contact.setDepartment(randomString());
         contact.setAccountId(ACCOUNT_ID);
 
         contact = getSalesforceService().create(contact);
@@ -59,17 +59,17 @@ public class ContactTestFlow extends AbstractTestFlow {
     }
 
     public Contact update(Contact contact) {
-        contact.setName("atest1 atest1");
-        contact.setFirstName("atest1");
-        contact.setLastName("atest1");
+        contact.setName(randomString());
+        contact.setFirstName(randomString());
+        contact.setLastName(randomString());
         contact.setTelephone("01234567891");
         contact.setEmail("atest1@atest.atest");
-        contact.setJobTitle("Job Title1");
+        contact.setJobTitle(randomString());
         contact.setRoles(SalesforceConstants.ROLE_PROVISIONING);
         contact.setX1PortalUSer(false);
         contact.setHasOptedOutOfEmail(false);
         contact.setDoNotCall(false);
-        contact.setDepartment("Department1");
+        contact.setDepartment(randomString());
         contact.setAccountId(null);
 
         getSalesforceService().update(contact);
